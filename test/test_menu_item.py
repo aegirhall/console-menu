@@ -24,4 +24,4 @@ class TestMenuItem(BaseTestCase):
 
     def test_show(self):
         menu_item = MenuItem("menu_item", self.menu)
-        self.assertEqual(menu_item.show(0), "1 - menu_item")
+        self.assertEqual(menu_item.show(0), " 1 - menu_item")

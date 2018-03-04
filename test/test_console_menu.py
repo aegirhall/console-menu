@@ -70,7 +70,7 @@ class TestSampleMenu(BaseTestCase):
         self.assertFalse(self.menu.is_alive())
 
 
-class TestCursesMenu(BaseTestCase):
+class TestConsoleMenu(BaseTestCase):
 
     def setUp(self):
         ConsoleMenu.currently_active_menu = None

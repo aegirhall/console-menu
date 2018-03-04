@@ -1,12 +1,11 @@
 from __future__ import print_function
 
-# XXX import curses
 import os
 import platform
-import sys
 import threading
-import textwrap
 
+from consolemenu.screen import Screen
+from consolemenu.menu_formatter import MenuFormatBuilder
 
 
 class ConsoleMenu(object):
@@ -18,7 +17,7 @@ class ConsoleMenu(object):
     """
     currently_active_menu = None
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None):
+    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None):
         """
         :ivar str title: The title of the menu
         :ivar str subtitle: The subtitle of the menu
@@ -35,6 +34,7 @@ class ConsoleMenu(object):
         :ivar MenuItem selected_item: The item in :attr:`items` that the user most recently selected
         :ivar returned_value: The value returned by the most recently selected item
         :ivar screen: the screen object associated with this menu
+        :ivar formatter: the MenuFormatBuilder instance used to format this menu.
         :ivar normal: the normal text color pair for this menu
         :ivar highlight: the highlight color pair associated with this window
         """
@@ -43,14 +43,20 @@ class ConsoleMenu(object):
             screen = Screen()
         self.screen = screen
 
+        if formatter is None:
+            formatter = MenuFormatBuilder()
+        self.formatter = formatter
+
+        # These are properties stored in formatter
+        self.title = title
+        self.subtitle = subtitle
+
         self.highlight = None
         self.normal = None
 
-        self.title = title
-        self.subtitle = subtitle
         self.show_exit_option = show_exit_option
 
-        self.items = list()
+        # XXX self.items = list()
 
         self.parent = None
 
@@ -71,6 +77,23 @@ class ConsoleMenu(object):
 
     def __repr__(self):
         return "%s: %s. %d items" % (self.title, self.subtitle, len(self.items))
+
+    @property
+    def title(self): return self.formatter.title
+
+    @title.setter
+    def title(self, title):
+        self.formatter.set_title(title)
+
+    @property
+    def subtitle(self): return self.formatter.subtitle
+
+    @subtitle.setter
+    def subtitle(self, subtitle):
+        self.formatter.set_subtitle(subtitle)
+
+    @property
+    def items(self): return self.formatter.items
 
     @property
     def current_item(self):
@@ -184,18 +207,6 @@ class ConsoleMenu(object):
         self.join()
 
     def _main_loop(self):
-        #if scr is not None:
-        #    CursesMenu.stdscr = scr
-        #self.screen = curses.newpad(len(self.items) + 6, CursesMenu.stdscr.getmaxyx()[1])
-        #self._set_up_colors()
-        #curses.curs_set(0)
-        #CursesMenu.stdscr.refresh()
-        #self.draw()
-        #CursesMenu.currently_active_menu = self
-        #self._running.set()
-        #while self._running.wait() is not False and not self.should_exit:
-        #    self.process_user_input()
-
         self._set_up_colors()
         ConsoleMenu.currently_active_menu = self
         self._running.set()
@@ -207,36 +218,9 @@ class ConsoleMenu(object):
 
     def draw(self):
         """
-        Redraws the menu and refreshes the screen. Should be called whenever something changes that needs to be redrawn.
+        Refreshes the screen and redraws the menu. Should be called whenever something changes that needs to be redrawn.
         """
-
-        if self.title is not None:
-            # TODO self.screen.addstr(2, 2, self.title, curses.A_STANDOUT)
-            self.screen.wprintln(self.title)
-        if self.subtitle is not None:
-            # TODO self.screen.addstr(4, 2, self.subtitle, curses.A_BOLD)
-            self.screen.wprintln(self.subtitle)
-
-        for index, item in enumerate(self.items):
-            if self.current_option == index:
-                #XXX text_style = self.highlight
-                self.screen.wprint('-->')
-            else:
-                #XXX text_style = self.normal
-                pass
-            # TODO self.screen.addstr(5 + index, 4, item.show(index), text_style)
-            self.screen.wprintln(item.show(index))
-
-        # XXX
-        #screen_rows, screen_cols = ConsoleMenu.stdscr.getmaxyx()
-        #top_row = 0
-        #if 6 + len(self.items) > screen_rows:
-        #    if screen_rows + self.current_option < 6 + len(self.items):
-        #        top_row = self.current_option
-        #    else:
-        #        top_row = 6 + len(self.items) - screen_rows
-        #
-        #self.screen.refresh(top_row, 0, 0, 0, screen_rows - 1, screen_cols - 1)
+        self.screen.printf(self.formatter.format())
 
     def is_running(self):
         """
@@ -287,7 +271,6 @@ class ConsoleMenu(object):
         :return: the ordinal value of a single character
         :rtype: int
         """
-        # TODO return ConsoleMenu.stdscr.getch()
         return self.screen.input()
 
     def process_user_input(self):
@@ -295,17 +278,6 @@ class ConsoleMenu(object):
         Gets the next single character and decides what to do with it
         """
         user_input = self.get_input()
-
-        #go_to_max = ord("9") if len(self.items) >= 9 else ord(str(len(self.items)))
-        #
-        #if ord('1') <= user_input <= go_to_max:
-        #    self.go_to(user_input - ord('0') - 1)
-        #elif user_input == curses.KEY_DOWN:
-        #    self.go_down()
-        #elif user_input == curses.KEY_UP:
-        #    self.go_up()
-        #elif user_input == ord("\n"):
-        #    self.select()
 
         try:
             num = int(user_input)
@@ -352,15 +324,15 @@ class ConsoleMenu(object):
         Select the current item and run it
         """
         self.selected_option = self.current_option
-        print("DEBUG: inside select(): selected_option:", self.selected_option)
+        # print("DEBUG: inside select(): selected_option:", self.selected_option)
         self.selected_item.set_up()
         self.selected_item.action()
         self.selected_item.clean_up()
         self.returned_value = self.selected_item.get_return()
         self.should_exit = self.selected_item.should_exit
 
-        if not self.should_exit:
-            self.draw()
+        #if not self.should_exit:
+        #    self.draw()
 
     def exit(self):
         """
@@ -370,7 +342,7 @@ class ConsoleMenu(object):
         self.join()
 
     def _set_up_colors(self):
-        # TODO
+        # TODO add color support
         #curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
         #self.highlight = curses.color_pair(1)
         #self.normal = curses.A_NORMAL
@@ -415,7 +387,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%d - %s" % (index + 1, self.text)
+        return "%2d - %s" % (index + 1, self.text)
 
     def set_up(self):
         """
@@ -460,38 +432,6 @@ class ExitItem(MenuItem):
         else:
             self.text = "Exit"
         return super(ExitItem, self).show(index)
-
-
-class Screen(object):
-    """
-    Class representing a console screen.
-    """
-    def __init__(self, height=20, width=80):
-        self.__tw = textwrap.TextWrapper()
-        self.__height = height
-        self.__width = width
-
-    @property
-    def screen_height(self): return self.__height
-
-    @property
-    def screen_width(self): return self.__width
-
-    def clear(self):
-        if platform.system() == 'Windows':
-            os.system('cls')
-        else:
-            os.system('clear')
-
-    def input(self, prompt=''):
-        return raw_input(prompt)
-
-    def wprint(self, *args):
-        sys.stdout.write(' '.join(args))
-        sys.stdout.flush()
-
-    def wprintln(self, *args):
-        print(' '.join(args))
 
 
 def clear_terminal():
