@@ -43,7 +43,7 @@ class TestCommandItem(TestExternalItem):
         if platform.system().lower() == "windows":
             return_command_item = CommandItem("return_command_item", "exit 1")
         else:
-            return_command_item = CommandItem("return_command_item", "return 1")
+            return_command_item = CommandItem("return_command_item", "exit 1")
 
         return_command_item.action()
 

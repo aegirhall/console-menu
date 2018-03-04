@@ -12,6 +12,7 @@ except ImportError:
     from mock import Mock, patch
 
 import consolemenu.console_menu
+from consolemenu.screen import Screen
 
 class ThreadedReturnGetter(Thread):
     def __init__(self, function, args=None, kwargs=None):
@@ -35,22 +36,9 @@ class ThreadedReturnGetter(Thread):
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         pass
-        ''' XXX
-        self.mock_curses = Mock(spec=curses)
-        self.mock_window = Mock(spec=['keypad', 'addstr', 'border', 'getch', 'refresh', 'clear', 'getmaxyx'])
-        self.mock_window.getch.return_value = ord('a')
-        self.mock_window.getmaxyx.return_value = (999999999, 999999999)
-        self.mock_curses.initscr.return_value = self.mock_window
-        self.mock_curses.wrapper.side_effect = lambda x: x(self.mock_window)
-
-        self.patcher = patch(target='consolemenu.console_menu.curses', new=self.mock_curses)
-        self.patcher.start()
-        self.addCleanup(self.patcher.stop)
-        '''
-        self.mock_screen = Mock(spec=['input'])
-        self.mock_screen.input.return_value = 'a'
+        self.mock_screen = Mock(spec=Screen())
+        self.mock_screen.input.return_value = 4
 
         self.patcher = patch(target='consolemenu.console_menu.Screen', new=self.mock_screen)
         self.patcher.start()
         self.addCleanup(self.patcher.stop)
-

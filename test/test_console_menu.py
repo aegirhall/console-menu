@@ -99,3 +99,5 @@ class TestConsoleMenu(BaseTestCase):
         menu2.start()
         menu2.wait_for_start(10)
         self.assertIs(ConsoleMenu.currently_active_menu, menu2)
+        menu2.join(timeout=10)
+        menu1.join(timeout=10)
