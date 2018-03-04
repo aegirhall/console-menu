@@ -1,0 +1,239 @@
+from consolemenu.format import MenuStyle
+
+
+class Dimension(object):
+    """
+    The Dimension class encapsulates the height and width of a component.
+    """
+    def __init__(self, width=0, height=0, dimension=None):
+        self.width = width
+        self.height = height
+        if dimension is not None:
+            self.width = dimension.width
+            self.height = dimension.height
+
+
+class MenuComponent(object):
+    """
+    Base class for a menu component.
+    """
+    def __init__(self, menu_style, max_dimension=None):
+        if not isinstance(menu_style, MenuStyle):
+            raise TypeError('menu_style must be of type MenuStyle')
+        if max_dimension is None:
+            max_dimension = Dimension(width=80, height=40)
+        self.__max_dimension = max_dimension
+        self.__style = menu_style
+
+    @property
+    def max_dimension(self): return self.__max_dimension
+
+    @property
+    def style(self): return self.__style
+
+    @property
+    def margins(self): return self.__style.margins
+
+    @property
+    def padding(self): return self.__style.padding
+
+    @property
+    def border_style(self): return self.__style.border_style
+
+    def calculate_border_width(self):
+        """
+        Calculate the width of the menu border. This will be the width of the maximum allowable
+        dimensions (usually the screen size), minus the left and right margins and the newline character.
+        For example, given a maximum width of 80 characters, with left and right margins both
+        set to 1, the outer_horizontal size would be 77.
+        :return: an integer representing the menu border width.
+        """
+        return (self.max_dimension.width - self.margins.left - self.margins.right - 1)  # 1=newline
+
+    def generate(self):
+        """
+        Generate this section.
+        """
+        raise NotImplemented()
+
+    def inner_horizontals(self):
+        """
+        The inner horizontal border section (not including the menu margins or verticals).
+        """
+        return u"{0}".format(self.border_style.inner_horizontal * (self.calculate_border_width() - 2))
+
+    def inner_horizontal_border(self):
+        """
+        The complete inner horizontal border section.
+        """
+        return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
+                                          lv=self.border_style.outer_vertical_inner_right,
+                                          rv=self.border_style.outer_vertical_inner_left,
+                                          hz=self.inner_horizontals())
+
+    def outer_horizontals(self):
+        """
+        The outer horizontal border section (not including the menu margins or verticals).
+        """
+        return u"{0}".format(self.border_style.outer_horizontal * (self.calculate_border_width() - 2))
+
+    def outer_horizontal_border_bottom(self):
+        """
+        The complete outer top horizontal border section, including left and right margins.
+        """
+        return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
+                                          lv=self.border_style.bottom_left_corner,
+                                          rv=self.border_style.bottom_right_corner,
+                                          hz=self.outer_horizontals())
+
+    def outer_horizontal_border_top(self):
+        """
+        The complete outer top horizontal border section, including left and right margins.
+        """
+        return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
+                                          lv=self.border_style.top_left_corner,
+                                          rv=self.border_style.top_right_corner,
+                                          hz=self.outer_horizontals())
+
+    def row(self, content='', align='left'):
+        """
+        A row of the menu, which comprises the left and right verticals plus the given content.
+        """
+        return u"{lm}{vert}{cont}{vert}".format(lm=' ' * self.margins.left,
+                                                vert=self.border_style.outer_vertical,
+                                                cont=self._format_content(content, align))
+
+    @staticmethod
+    def _alignment_char(align):
+        if str(align).strip() == 'center':
+            return '^'
+        elif str(align).strip() == 'right':
+            return '>'
+        else:
+            return '<'
+
+    def _format_content(self, content='', align='left'):
+        return '{lp}{text:{al}{width}}{rp}'.format(lp=' ' * self.padding.left,
+                                                   rp=' ' * self.padding.right,
+                                                   text=content, al=self._alignment_char(align),
+                                                   width=(self.calculate_border_width() - self.padding.left -
+                                                          self.padding.right - 2))
+
+
+class MenuHeader(MenuComponent):
+    """
+    The menu header section.
+    The menu header contains the top margin, menu top, title/subtitle verticals, and
+    bottom padding verticals.
+    """
+    def __init__(self, menu_style, max_dimension=None, title=None, title_align='left',
+                 subtitle=None, subtitle_align='left'):
+        super(MenuHeader, self).__init__(menu_style, max_dimension)
+        self.title = title
+        self.title_align = title_align
+        self.subtitle = subtitle
+        self.subtitle_align = subtitle_align
+
+    def generate(self):
+        for x in range(0, self.margins.top):
+            yield ''
+        yield self.outer_horizontal_border_top()
+        for x in range(0, self.padding.top):
+            yield self.row()
+        if self.title is not None and self.title != '':
+            yield self.row(content=self.title, align=self.title_align)
+        if self.subtitle is not None and self.subtitle != '':
+            yield self.row()
+            yield self.row(content=self.subtitle, align=self.subtitle_align)
+        for x in range(0, self.padding.bottom):
+            yield self.row()
+
+
+class MenuTextSection(MenuComponent):
+    """
+    The menu text block section.
+    A text block section can be used for displaying text to the user above or below the main items section.
+    """
+    def __init__(self, menu_style, max_dimension=None, text=None, text_align='left',
+                 show_top_border=False, show_bottom_border=False):
+        super(MenuTextSection, self).__init__(menu_style, max_dimension)
+        self.text = text
+        self.text_align = text_align
+        self.show_top_border = show_top_border
+        self.show_bottom_border = show_bottom_border
+
+    def generate(self):
+        if self.show_top_border:
+            yield self.inner_horizontal_border()
+        for x in range(0, self.padding.top):
+            yield self.row()
+        if self.text is not None and self.text != '':
+            yield self.row(content=self.text, align=self.text_align)
+            # XXX yield self.row()
+        for x in range(0, self.padding.bottom):
+            yield self.row()
+        if self.show_bottom_border:
+            yield self.inner_horizontal_border()
+
+
+class MenuItemsSection(MenuComponent):
+    """
+    The menu section for displaying the menu items.
+    """
+    def __init__(self, menu_style, max_dimension=None, items=None, items_align='left'):
+        super(MenuItemsSection, self).__init__(menu_style, max_dimension)
+        if items is not None:
+            self.__items = items
+        else:
+            self.__items = list()
+        self.items_align = items_align
+
+    @property
+    def items(self): return self.__items
+
+    def add_item(self, item):
+        self.__items.append(item)
+
+    def generate(self):
+        for x in range(0, self.padding.top):
+            yield self.row()
+        for index, item in enumerate(self.items):
+            yield self.row(content=item.show(index), align=self.items_align)
+        for x in range(0, self.padding.bottom):
+            yield self.row()
+
+
+class MenuFooter(MenuComponent):
+    """
+    The menu footer section.
+    The menu footer contains the menu bottom, bottom padding verticals, and bottom margin.
+    """
+
+    def generate(self):
+        for x in range(0, self.padding.top):
+            yield self.row()
+        yield self.outer_horizontal_border_bottom()
+        for x in range(0, self.margins.bottom):
+            yield ''
+
+
+class MenuPrompt(MenuComponent):
+    """
+    A string representing the menu prompt for user input.
+    """
+    def __init__(self, menu_style, max_dimension=None, prompt_string="::>"):
+        super(MenuPrompt, self).__init__(menu_style, max_dimension)
+        self.__prompt = prompt_string
+
+    @property
+    def prompt(self): return self.__prompt
+
+    @prompt.setter
+    def prompt(self, prompt):
+        self.__prompt = prompt
+
+    def generate(self):
+        for x in range(0, self.padding.top):
+            yield ''
+        for line in self.prompt.split():
+            yield u"{lm}{line} ".format(lm=' ' * self.margins.left, line=line)
