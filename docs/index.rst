@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to console-menu's documentation!
-=======================================
+========================================
 
 Contents:
 

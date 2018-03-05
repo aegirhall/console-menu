@@ -52,8 +52,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'console-menu'
-copyright = '2015, Paul Barrett, 2018, Aegir Hall'
-author = 'Paul Barrett, Aegir Hall'
+copyright = '2018, Aegir Hall, 2015, Paul Barrett'
+author = 'Aegir Hall, Paul Barrett'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -89,7 +89,7 @@ language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', 'lib']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -122,7 +122,7 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'nature'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

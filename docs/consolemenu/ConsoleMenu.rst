@@ -1,5 +1,5 @@
 ConsoleMenu --- Standard menu class
-==================================
+===================================
 
 .. autoclass:: consolemenu.ConsoleMenu
 
