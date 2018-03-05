@@ -184,15 +184,14 @@ class MenuItemsSection(MenuComponent):
         super(MenuItemsSection, self).__init__(menu_style, max_dimension)
         if items is not None:
             self.__items = items
-        else:
-            self.__items = list()
         self.items_align = items_align
 
     @property
     def items(self): return self.__items
 
-    def add_item(self, item):
-        self.__items.append(item)
+    @items.setter
+    def items(self, items):
+        self.__items = items
 
     def generate(self):
         for x in range(0, self.padding.top):
@@ -221,7 +220,7 @@ class MenuPrompt(MenuComponent):
     """
     A string representing the menu prompt for user input.
     """
-    def __init__(self, menu_style, max_dimension=None, prompt_string="::>"):
+    def __init__(self, menu_style, max_dimension=None, prompt_string=">"):
         super(MenuPrompt, self).__init__(menu_style, max_dimension)
         self.__prompt = prompt_string
 

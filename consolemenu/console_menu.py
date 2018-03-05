@@ -47,7 +47,6 @@ class ConsoleMenu(object):
             formatter = MenuFormatBuilder()
         self.formatter = formatter
 
-        # These are properties stored in formatter
         self.title = title
         self.subtitle = subtitle
 
@@ -56,7 +55,7 @@ class ConsoleMenu(object):
 
         self.show_exit_option = show_exit_option
 
-        # XXX self.items = list()
+        self.items = list()
 
         self.parent = None
 
@@ -77,23 +76,6 @@ class ConsoleMenu(object):
 
     def __repr__(self):
         return "%s: %s. %d items" % (self.title, self.subtitle, len(self.items))
-
-    @property
-    def title(self): return self.formatter.title
-
-    @title.setter
-    def title(self, title):
-        self.formatter.set_title(title)
-
-    @property
-    def subtitle(self): return self.formatter.subtitle
-
-    @subtitle.setter
-    def subtitle(self, subtitle):
-        self.formatter.set_subtitle(subtitle)
-
-    @property
-    def items(self): return self.formatter.items
 
     @property
     def current_item(self):
@@ -220,7 +202,7 @@ class ConsoleMenu(object):
         """
         Refreshes the screen and redraws the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format())
+        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items))
 
     def is_running(self):
         """

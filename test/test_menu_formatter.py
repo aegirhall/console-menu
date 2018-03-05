@@ -20,36 +20,42 @@ def print_screen_edge(width=80):
 
 class TestMenuFormatBuilder(BaseTestCase):
 
+    def test_empty(self):
+        Screen().printf(MenuFormatBuilder().format())
+
     def test_defaults(self):
-        screen = Screen()
         print_screen_edge()
-        builder = MenuFormatBuilder()
-        builder.set_title("This Is My Title").\
-            set_subtitle("This is a little subtitle").\
-            add_item(MenuItem("This is Item 1")). \
-            add_item(MenuItem("This is Item 2")).\
-            add_item(MenuItem("This is Item 3"))
-        screen.printf(builder.format())
+        format = MenuFormatBuilder()
+        items = [MenuItem("This is Item 1"),
+                 MenuItem("This is Item 2"),
+                 MenuItem("This is Item 3")]
+        Screen().printf(format.format(title="This is My Title",
+                                      subtitle="This is My Little Subtitle",
+                                      items=items))
 
     def test_format_with_prologue_no_border(self):
-        screen = Screen()
-        builder = MenuFormatBuilder()
-        builder.set_title("This Is My Title").\
-            set_subtitle("This is a little subtitle").\
-            add_item(MenuItem("This is Item 1")). \
-            add_item(MenuItem("This is Item 2")).\
-            add_item(MenuItem("This is Item 3")).\
-            set_prologue_text('This a very long prologue, which can be used to explain how to use this menu, for people that might not understand it.')
-        screen.printf(builder.format())
+        format = MenuFormatBuilder()
+        items = [MenuItem("This is Item 1"),
+                 MenuItem("This is Item 2"),
+                 MenuItem("This is Item 3")]
+        prologue_text = 'This a very long prologue, which can be used to explain how to use this menu, for people that might not understand it.'
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=items, prologue_text=prologue_text))
 
-    def test_format_with_prologue(self):
-        screen = Screen()
-        builder = MenuFormatBuilder()
-        builder.set_title("This Is My Title"). \
-            set_subtitle("This is a little subtitle"). \
-            add_item(MenuItem("This is Item 1")). \
-            add_item(MenuItem("This is Item 2")). \
-            add_item(MenuItem("This is Item 3")). \
-            set_prologue_text("This is my prologue. Follow these instructions.")
-        screen.printf(builder.format())
+    def test_format_with_prologue_with_top_border(self):
+        format = MenuFormatBuilder().show_prologue_top_border(True)
+        items = [MenuItem("This is Item 1"),
+                 MenuItem("This is Item 2"),
+                 MenuItem("This is Item 3")]
+        prologue_text = "This is my prologue. Follow these instructions."
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=items, prologue_text=prologue_text))
 
+    def test_format_with_prologue_with_top_and_bottom_borders(self):
+        format = MenuFormatBuilder().show_prologue_top_border(True).show_prologue_bottom_border(True)
+        items = [MenuItem("This is Item 1"),
+                 MenuItem("This is Item 2"),
+                 MenuItem("This is Item 3")]
+        prologue_text = "This is my prologue. Follow these instructions."
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=items, prologue_text=prologue_text))

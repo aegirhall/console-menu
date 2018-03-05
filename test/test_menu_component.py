@@ -247,8 +247,9 @@ class TestMenuPrompt(BaseTestCase):
 
     def test_unicode_prompt_no_top_margin(self):
         # Set top padding to 0 so prompt is touching bottom of menu.
-        footer = MenuFooter(MenuStyle())
-        mp = MenuPrompt(MenuStyle(padding=MenuPadding(0, 2, 0, 2), border_style=UnicodeLightBorderStyle()))
+        style = MenuStyle(padding=MenuPadding(0, 2, 0, 2), border_style=UnicodeLightBorderStyle())
+        footer = MenuFooter(style)
+        mp = MenuPrompt(style, prompt_string=u"\u27EB")
         for line in footer.generate():
             print(line)
         for line in mp.generate():

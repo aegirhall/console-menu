@@ -31,6 +31,7 @@ class MenuFormatBuilder(object):
         self.__prologue.style.border_style = border_style
         self.__items_section.style.border_style = border_style
         self.__epilogue.style.border_style = border_style
+        self.__footer.style.border_style = border_style
         self.__prompt.style.border_style = border_style
         return self
 
@@ -62,19 +63,11 @@ class MenuFormatBuilder(object):
     # Header Settings
     # ============================================================
 
-    @property
-    def title(self): return self.__header.title
-
-    @property
-    def subtitle(self): return self.__header.subtitle
-
-    def set_title(self, title, align='left'):
-        self.__header.title = title
+    def set_title_align(self, align='left'):
         self.__header.title_align = align
         return self
 
-    def set_subtitle(self, subtitle, align='left'):
-        self.__header.subtitle = subtitle
+    def set_subtitle_align(self, align='left'):
         self.__header.subtitle_align = align
         return self
 
@@ -118,13 +111,6 @@ class MenuFormatBuilder(object):
     # Items Section Settings
     # ============================================================
 
-    @property
-    def items(self): return self.__items_section.items
-
-    def add_item(self, item):
-        self.__items_section.items.append(item)
-        return self
-
     def set_items_left_padding(self, x):
         self.__items_section.style.padding.left = x
         return self
@@ -145,8 +131,7 @@ class MenuFormatBuilder(object):
     # Prologue Section Settings
     # ============================================================
 
-    def set_prologue_text(self, text, align='left'):
-        self.__prologue.text = text
+    def set_prologue_text_align(self, align='left'):
         self.__prologue.text_align = align
         return self
 
@@ -162,8 +147,7 @@ class MenuFormatBuilder(object):
     # Epilogue Section Settings
     # ============================================================
 
-    def set_epilogue_text(self, text, align='left'):
-        self.__epilogue.text = text
+    def set_epilogue_text_align(self, align='left'):
         self.__epilogue.text_align = align
         return self
 
@@ -187,17 +171,41 @@ class MenuFormatBuilder(object):
     # Menu generation
     # ============================================================
 
-    def format(self):
+    def clear_data(self):
+        """
+        Clear menu data from previous menu generation.
+        """
+        self.__header.title = None
+        self.__header.subtitle = None
+        self.__prologue.text = None
+        self.__epilogue.text = None
+        self.__items_section.items = None
+
+
+    def format(self, title=None, subtitle=None, prologue_text=None, epilogue_text=None, items=None):
         """
         Format the menu and return as a string.
         :return:  a string representation of the formatted menu.
         """
+        self.clear_data()
         content = ''
+        # Header Section
+        if title is not None:
+            self.__header.title = title
+        if subtitle is not None:
+            self.__header.subtitle = subtitle
         sections = [self.__header]
-        if self.__prologue.text is not None:
+        # Prologue Section
+        if prologue_text is not None:
+            self.__prologue.text = prologue_text
             sections.append(self.__prologue)
-        sections.append(self.__items_section)
-        if self.__epilogue.text is not None:
+        # Items Section
+        if items is not None:
+            self.__items_section.items = items
+            sections.append(self.__items_section)
+        # Epilogue Section
+        if epilogue_text is not None:
+            self.__epilogue.text = epilogue_text
             sections.append(self.__epilogue)
         sections.append(self.__footer)
         sections.append(self.__prompt)
