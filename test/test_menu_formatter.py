@@ -38,7 +38,8 @@ class TestMenuFormatBuilder(BaseTestCase):
         items = [MenuItem("This is Item 1"),
                  MenuItem("This is Item 2"),
                  MenuItem("This is Item 3")]
-        prologue_text = 'This a very long prologue, which can be used to explain how to use this menu, for people that might not understand it.'
+        prologue_text = 'This a very long prologue, which can be used to explain how to use this menu, \
+for people that might not understand it.'
         Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
                                       items=items, prologue_text=prologue_text))
 

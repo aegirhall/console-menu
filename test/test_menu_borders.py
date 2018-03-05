@@ -8,16 +8,16 @@ class TestAsciiMenuBorder(BaseTestCase):
 
     def test(self):
         border = AsciiBorderStyle()
-        print(border.bottom_left_corner)
-        print(border.bottom_right_corner)
-        print(border.top_left_corner)
-        print(border.top_right_corner)
-        print(border.outer_horizontal)
-        print(border.outer_horizontal_inner_down)
-        print(border.outer_horizontal_inner_up)
-        print(border.outer_vertical)
-        print(border.outer_vertical_inner_left)
-        print(border.outer_vertical_inner_right)
+        # print(border.bottom_left_corner)
+        # print(border.bottom_right_corner)
+        # print(border.top_left_corner)
+        # print(border.top_right_corner)
+        # print(border.outer_horizontal)
+        # print(border.outer_horizontal_inner_down)
+        # print(border.outer_horizontal_inner_up)
+        # print(border.outer_vertical)
+        # print(border.outer_vertical_inner_left)
+        # print(border.outer_vertical_inner_right)
 
         self.assertEquals('+', border.bottom_left_corner)
         self.assertEquals('+', border.bottom_right_corner)
@@ -35,16 +35,16 @@ class TestUnicodeLightMenuBorder(BaseTestCase):
 
     def test(self):
         border = UnicodeLightBorderStyle()
-        #print border.bottom_left_corner
-        #print border.bottom_right_corner
-        #print border.top_left_corner
-        #print border.top_right_corner
-        #print border.outer_horizontal
-        #print border.outer_horizontal_inner_down
-        #print border.outer_horizontal_inner_up
-        #print border.outer_vertical
-        #print border.outer_vertical_inner_left
-        #print border.outer_vertical_inner_right
+        # print border.bottom_left_corner
+        # print border.bottom_right_corner
+        # print border.top_left_corner
+        # print border.top_right_corner
+        # print border.outer_horizontal
+        # print border.outer_horizontal_inner_down
+        # print border.outer_horizontal_inner_up
+        # print border.outer_vertical
+        # print border.outer_vertical_inner_left
+        # print border.outer_vertical_inner_right
 
         self.assertEquals(u'\u2514', border.bottom_left_corner)
         self.assertEquals(u'\u2518', border.bottom_right_corner)

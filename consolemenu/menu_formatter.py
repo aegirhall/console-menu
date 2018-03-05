@@ -181,7 +181,6 @@ class MenuFormatBuilder(object):
         self.__epilogue.text = None
         self.__items_section.items = None
 
-
     def format(self, title=None, subtitle=None, prologue_text=None, epilogue_text=None, items=None):
         """
         Format the menu and return as a string.
