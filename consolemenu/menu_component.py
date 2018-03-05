@@ -184,6 +184,8 @@ class MenuItemsSection(MenuComponent):
         super(MenuItemsSection, self).__init__(menu_style, max_dimension)
         if items is not None:
             self.__items = items
+        else:
+            self.__items = list()
         self.items_align = items_align
 
     @property
