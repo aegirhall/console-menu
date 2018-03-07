@@ -1,7 +1,10 @@
+from __future__ import print_function
+
 import os
 import platform
 import sys
 import textwrap
+
 
 
 class Screen(object):
@@ -27,7 +30,10 @@ class Screen(object):
             os.system('clear')
 
     def input(self, prompt=''):
-        return raw_input(prompt)
+        if sys.version[0] == '2':
+            return raw_input(prompt)
+        else:
+            return input(prompt)
 
     def printf(self, *args):
         sys.stdout.write(' '.join(args))
