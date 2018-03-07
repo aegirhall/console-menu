@@ -1,3 +1,7 @@
+import logging
+import sys
+
+
 class MenuBorderStyle(object):
     """
     Base class for console menu border. Each propery should be overridden by a subclass.
@@ -172,7 +176,6 @@ class HeavyBorderStyle(MenuBorderStyle):
     def top_right_corner(self): return u'\u2513'
 
 
-
 class DoubleLineBorderStyle(MenuBorderStyle):
     """
     MenuBorderStyle class using "double-line" box drawing characters.
@@ -216,3 +219,87 @@ class DoubleLineBorderStyle(MenuBorderStyle):
     @property
     def top_right_corner(self): return u'\u2557'
 
+
+class MenuBorderStyleType(object):
+    """
+    Defines the various menu border styles, as expected by the border factory.
+    """
+    ASCII_BORDER = 0
+    """ Menu Border using pure ASCII characters. Usable on all platforms. """
+
+    LIGHT_BORDER = 1
+    """ Menu Border using the "light" box drawing characters. Should be usable on all platforms. """
+
+    HEAVY_BORDER = 2
+    """ Menu Border using the "heavy" box drawing characters.  NOTE: On Windows, this border style will work
+        ONLY on Python 3.6.  It will raise a UnicodeEncodeError exception on earlier Python versions.
+        If requesting this border style via the MenuBorderStyleFactory when on Windows/Python 3.5 or earlier, this
+        border style will be substituted by the `DOUBLE_LINE_BORDER`. """
+
+    DOUBLE_LINE_BORDER = 3
+    """ Menu Border using "double-line" box drawing characters. """
+
+
+class MenuBorderStyleFactory(object):
+    """
+    Factory class for creating  MenuBorderStyle instances.
+    """
+    def __init__(self):
+        self.logger = logging.getLogger(type(self).__name__)
+
+    def create_border(self, border_style_type):
+        """
+        Create a new MenuBorderStyle instance based on the given border style type.
+        :param border_style_type: an integer value from MenuBorderStyleType.
+        :return: a new MenuBorderStyle instance.
+        """
+        if border_style_type == MenuBorderStyleType.ASCII_BORDER:
+            return self.create_ascii_border()
+        elif border_style_type == MenuBorderStyleType.LIGHT_BORDER:
+            return self.create_light_border()
+        elif border_style_type == MenuBorderStyleType.HEAVY_BORDER:
+            return self.create_heavy_border()
+        elif border_style_type == MenuBorderStyleType.DOUBLE_LINE_BORDER:
+            return self.create_doubleline_border()
+        else:
+            # Use ASCII if we don't recognize the type
+            self.logger.info('Unrecognized border style type: {}. Defaulting to ASCII.'.format(border_style_type))
+            return self.create_ascii_border()
+
+    def create_ascii_border(self):
+        """
+        Create an ASCII border style.
+        :return: a new instance of AsciiBorderStyle.
+        """
+        return AsciiBorderStyle()
+
+    def create_light_border(self):
+        """
+        Create a border style using "light" box drawing characters.
+        :return: a new instance of LightBorderStyle
+        """
+        return LightBorderStyle()
+
+    def create_heavy_border(self):
+        """
+        Create a border style using "heavy" box drawing characters.
+        NOTE: The Heavy border style will work on Windows ONLY when using Python 3.6. If on Windows and
+        using an earlier version of Python, the heavy border will be substituted with the DOUBLE_LINE_BORDER.
+        :return: a new instance of HeavyBorderStyle, unless on Windows and pre-Python 3.5 in which case a 
+                 new instance of DoubleLineBorderStyle will be returned.
+        """
+        # Special case for Windows...
+        if sys.platform.startswith('win'):
+            if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
+                return HeavyBorderStyle()
+            else:
+                return DoubleLineBorderStyle()
+        # All other platforms...
+        return HeavyBorderStyle()
+
+    def create_doubleline_border(self):
+        """
+        Create a border style using "double-line" box drawing characters.
+        :return: a new instance of DoubleLineBorderStyle.
+        """
+        return DoubleLineBorderStyle()
