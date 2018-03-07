@@ -222,7 +222,7 @@ class MenuPrompt(MenuComponent):
     """
     A string representing the menu prompt for user input.
     """
-    def __init__(self, menu_style, max_dimension=None, prompt_string=">"):
+    def __init__(self, menu_style, max_dimension=None, prompt_string=">>"):
         super(MenuPrompt, self).__init__(menu_style, max_dimension)
         self.__prompt = prompt_string
 
