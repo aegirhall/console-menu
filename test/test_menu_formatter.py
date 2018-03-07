@@ -5,7 +5,7 @@ from consolemenu import ConsoleMenu, MenuFormatBuilder
 from consolemenu.format.menu_style import (
     MenuStyle
 )
-from consolemenu.format.menu_borders import UnicodeLightBorderStyle
+from consolemenu.format.menu_borders import LightBorderStyle
 from consolemenu.format.menu_padding import MenuPadding
 from consolemenu.format.menu_margins import MenuMargins
 from consolemenu.items import MenuItem

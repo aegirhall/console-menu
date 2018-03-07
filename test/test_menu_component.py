@@ -5,7 +5,7 @@ from consolemenu import ConsoleMenu
 from consolemenu.format.menu_style import (
     MenuStyle
 )
-from consolemenu.format.menu_borders import UnicodeLightBorderStyle
+from consolemenu.format.menu_borders import LightBorderStyle
 from consolemenu.format.menu_padding import MenuPadding
 from consolemenu.format.menu_margins import MenuMargins
 from consolemenu.items import MenuItem
@@ -52,20 +52,20 @@ class TestMenuHeader(BaseTestCase):
 
     def test_menu_header_unicodelight_no_titles(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(border_style=UnicodeLightBorderStyle()))
+        header = MenuHeader(MenuStyle(border_style=LightBorderStyle()))
         for line in header.generate():
             print(line)
 
     def test_menu_header_unicodelight_no_subtitle(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(border_style=UnicodeLightBorderStyle()), title="My Title")
+        header = MenuHeader(MenuStyle(border_style=LightBorderStyle()), title="My Title")
         for line in header.generate():
             print(line)
 
     def test_menu_header_unicodelight_margins_t1_l4_b0_r4(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(margins=MenuMargins(1, 4, 0, 4),
-                                      border_style=UnicodeLightBorderStyle()),
+                                      border_style=LightBorderStyle()),
                             title="My Title")
         for line in header.generate():
             print(line)
@@ -73,7 +73,7 @@ class TestMenuHeader(BaseTestCase):
     def test_menu_header_unicodelight_padding_t3_l4_b3_r4(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(padding=MenuPadding(3, 4, 3, 4),
-                                      border_style=UnicodeLightBorderStyle()),
+                                      border_style=LightBorderStyle()),
                             title="My Title")
         for line in header.generate():
             print(line)
@@ -119,19 +119,19 @@ class TestMenuTextBlock(BaseTestCase):
 
     def test_menu_prologue_unicodelight(self):
         print_screen_edge()
-        pro = MenuTextSection(MenuStyle(border_style=UnicodeLightBorderStyle()))
+        pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()))
         for line in pro.generate():
             print(line)
 
     def test_menu_prologue_unicodelight_with_top_border(self):
         print_screen_edge()
-        pro = MenuTextSection(MenuStyle(border_style=UnicodeLightBorderStyle()), show_top_border=True)
+        pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()), show_top_border=True)
         for line in pro.generate():
             print(line)
 
     def test_menu_prologue_unicodelight_centered(self):
         print_screen_edge()
-        pro = MenuTextSection(MenuStyle(border_style=UnicodeLightBorderStyle()),
+        pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()),
                               text="My centered prologue.", text_align="center")
         for line in pro.generate():
             print(line)
@@ -200,7 +200,7 @@ class TestMenuItemsSection(BaseTestCase):
 
     def test_menu_items_unicodelight(self):
         print_screen_edge()
-        sect = MenuItemsSection(MenuStyle(border_style=UnicodeLightBorderStyle()), items=self.small_list)
+        sect = MenuItemsSection(MenuStyle(border_style=LightBorderStyle()), items=self.small_list)
         for line in sect.generate():
             print(line)
 
@@ -247,7 +247,7 @@ class TestMenuPrompt(BaseTestCase):
 
     def test_unicode_prompt_no_top_margin(self):
         # Set top padding to 0 so prompt is touching bottom of menu.
-        style = MenuStyle(padding=MenuPadding(0, 2, 0, 2), border_style=UnicodeLightBorderStyle())
+        style = MenuStyle(padding=MenuPadding(0, 2, 0, 2), border_style=LightBorderStyle())
         footer = MenuFooter(style)
         mp = MenuPrompt(style, prompt_string=u"\u27EB")
         for line in footer.generate():
