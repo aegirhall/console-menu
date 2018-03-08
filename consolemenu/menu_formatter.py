@@ -1,14 +1,18 @@
 from consolemenu.format.menu_style import MenuStyle
-from consolemenu.format.menu_borders import MenuBorderStyle
+from consolemenu.format.menu_borders import MenuBorderStyle, MenuBorderStyleFactory
 from consolemenu.menu_component import Dimension, MenuHeader, MenuTextSection, MenuItemsSection, MenuFooter, MenuPrompt
 
 
 class MenuFormatBuilder(object):
+    """
+    Builder class for generating the menu format.
+    """
 
     def __init__(self, max_dimension=None):
         if max_dimension is None:
             max_dimension = Dimension(width=80, height=40)
         self.__max_dimension = max_dimension
+        self.__border_style_factory = MenuBorderStyleFactory()
         self.__header = MenuHeader(menu_style=MenuStyle(), max_dimension=max_dimension)
         self.__prologue = MenuTextSection(menu_style=MenuStyle(), max_dimension=max_dimension)
         self.__items_section = MenuItemsSection(menu_style=MenuStyle(), max_dimension=max_dimension)
@@ -25,6 +29,10 @@ class MenuFormatBuilder(object):
     # ============================================================
 
     def set_border_style(self, border_style):
+        """
+        Set the border style using the specified MenuBorderStyle instance.
+        :param border_style: the instance of MenuBorderStyle to use for border style formatting.
+        """
         if not isinstance(border_style, MenuBorderStyle):
             raise TypeError('border_style must be type MenuBorderStyle')
         self.__header.style.border_style = border_style
@@ -35,27 +43,73 @@ class MenuFormatBuilder(object):
         self.__prompt.style.border_style = border_style
         return self
 
+    def set_border_style_type(self, border_style_type):
+        """
+        Set the border style using the specified border style type. The border style type should be an
+        integer value recognized by the border style factory for this formatter instance.
+        The built-in border style types are provided by the `MenuBorderStyleType` class, or custom
+        border style types can be provided if using a custom border style factory.
+        :param border_style_type: an integer value representing the border style type.
+        """
+        style = self.__border_style_factory.create_border(border_style_type)
+        self.set_border_style(style)
+        return self
+
+    def set_border_style_factory(self, border_style_factory):
+        """
+        Set the instance of MenuBorderStyleFactory to use for generating border styles.
+        Typically, this method will never need to be used, unless the default MenuBorderStyleFactory
+        has been subclasses to provide custom border styles.
+        :param border_style_factory: an instance of MenuBorderStyleFactory.
+        """
+        if not isinstance(border_style_factory, MenuBorderStyleFactory):
+            raise TypeError('border_style_factory must be type MenuBorderStyleFactory')
+        self.__border_style_factory = border_style_factory
+        return self
+
     def set_bottom_margin(self, bottom_margin):
+        """
+        Set the bottom margin of the menu. This will determine the number of console lines appear between the
+        bottom of the menu border and the menu input prompt.
+        :param bottom_margin: an integer value
+        """
         self.__footer.style.margins.bottom = bottom_margin
         return self
 
     def set_left_margin(self, left_margin):
+        """
+        Set the left margin of the menu.  This will determine the number of spaces between the left edge of the
+        screen and the left menu border.
+        :param left_margin: an integer value
+        """
         self.__header.style.margins.left = left_margin
         self.__prologue.style.margins.left = left_margin
         self.__items_section.style.margins.left = left_margin
         self.__epilogue.style.margins.left = left_margin
+        self.__footer.style.margins.left = left_margin
         self.__prompt.style.margins.left = left_margin
         return self
 
     def set_right_margin(self, right_margin):
+        """
+        Set the right margin of the menu.  This will determine the number of spaces between the right edge of the
+        screen and the right menu border.
+        :param right_margin: an integer value
+        """
         self.__header.style.margins.right = right_margin
         self.__prologue.style.margins.right = right_margin
         self.__items_section.style.margins.right = right_margin
         self.__epilogue.style.margins.right = right_margin
+        self.__footer.style.margins.right = right_margin
         self.__prompt.style.margins.right = right_margin
         return self
 
     def set_top_margin(self, top_margin):
+        """
+        Set the top margin of the menu.  This will determine the number of console lines between the top edge
+        of the screen and the top menu border.
+        :param top_margin: an integer value
+        """
         self.__header.style.margins.top = top_margin
         return self
 
