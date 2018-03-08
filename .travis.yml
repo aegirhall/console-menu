@@ -11,7 +11,7 @@ python:
   - "3.6"
 
 install:
-  - pip install -rv requirements.txt
+  - pip install -r requirements.txt
   - pip install -v pep8
   - pip install -v pytest
 
