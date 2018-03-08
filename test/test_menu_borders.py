@@ -84,8 +84,8 @@ class TestHeavyBorderStyle(TestCase):
         self.assertEqual(u'\u2533', border.outer_horizontal_inner_down)
         self.assertEqual(u'\u253B', border.outer_horizontal_inner_up)
         self.assertEqual(u'\u2503', border.outer_vertical)
-        self.assertEqual(u'\u2520', border.outer_vertical_inner_left)
-        self.assertEqual(u'\u252B', border.outer_vertical_inner_right)
+        self.assertEqual(u'\u252B', border.outer_vertical_inner_left)
+        self.assertEqual(u'\u2523', border.outer_vertical_inner_right)
         self.assertEqual(u'\u250F', border.top_left_corner)
         self.assertEqual(u'\u2513', border.top_right_corner)
 
