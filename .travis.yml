@@ -12,14 +12,14 @@ python:
 
 install:
   - pip install -r requirements.txt
-  - pip install -v pep8
+  - pip install -v pycodestyle
   - pip install -v pytest
   - pip install -v .
 
 script:
   #  - 'python setup.py test --tox-args="-e$TOX_ENV"'
   - 'py.test'
-  - 'pep8 --max-line-length=120'
+  - 'pep8'
 
 #env:
 #  #- TOX_ENV=py27
