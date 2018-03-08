@@ -5,7 +5,7 @@ from consolemenu import ConsoleMenu
 from consolemenu.format.menu_style import (
     MenuStyle
 )
-from consolemenu.format.menu_borders import LightBorderStyle
+from consolemenu.format.menu_borders import *
 from consolemenu.format.menu_padding import MenuPadding
 from consolemenu.format.menu_margins import MenuMargins
 from consolemenu.items import MenuItem
@@ -21,48 +21,59 @@ class TestMenuHeader(BaseTestCase):
 
     def test_menu_header_ascii_no_titles(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle())
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER))
         for line in header.generate():
             print(line)
 
     def test_menu_header_ascii_no_subtitle(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(), title="My Title")
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER), title="My Title")
         for line in header.generate():
             print(line)
 
     def test_menu_header_ascii(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(), title="My Title", subtitle="My Subtitle")
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER),
+                            title="My Title", subtitle="My Subtitle")
         for line in header.generate():
             print(line)
 
     def test_menu_header_ascii_title_centered(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(), title="My Centered Title", title_align='center')
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER),
+                            title="My Centered Title", title_align='center')
         for line in header.generate():
             print(line)
 
     def test_menu_header_ascii_titles_centered(self):
         print_screen_edge()
-        header = MenuHeader(MenuStyle(), title="My Centered Title", title_align='center',
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER),
+                            title="My Centered Title", title_align='center',
                             subtitle="My Centered Subtitle", subtitle_align='center')
         for line in header.generate():
             print(line)
 
-    def test_menu_header_unicodelight_no_titles(self):
+    def test_menu_header_ascii_with_bottom_border(self):
+        print_screen_edge()
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.ASCII_BORDER),
+                            title="My Title", subtitle="I Should Have a Bottom Border",
+                            show_bottom_border=True)
+        for line in header.generate():
+            print(line)
+
+    def test_menu_header_light_no_titles(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(border_style=LightBorderStyle()))
         for line in header.generate():
             print(line)
 
-    def test_menu_header_unicodelight_no_subtitle(self):
+    def test_menu_header_light_no_subtitle(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(border_style=LightBorderStyle()), title="My Title")
         for line in header.generate():
             print(line)
 
-    def test_menu_header_unicodelight_margins_t1_l4_b0_r4(self):
+    def test_menu_header_light_margins_t1_l4_b0_r4(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(margins=MenuMargins(1, 4, 0, 4),
                                       border_style=LightBorderStyle()),
@@ -70,11 +81,19 @@ class TestMenuHeader(BaseTestCase):
         for line in header.generate():
             print(line)
 
-    def test_menu_header_unicodelight_padding_t3_l4_b3_r4(self):
+    def test_menu_header_light_padding_t3_l4_b3_r4(self):
         print_screen_edge()
         header = MenuHeader(MenuStyle(padding=MenuPadding(3, 4, 3, 4),
                                       border_style=LightBorderStyle()),
                             title="My Title")
+        for line in header.generate():
+            print(line)
+
+    def test_menu_header_light_with_bottom_border(self):
+        print_screen_edge()
+        header = MenuHeader(MenuStyle(border_style_type=MenuBorderStyleType.LIGHT_BORDER),
+                            title="My Title", subtitle="I Should Have a Bottom Border",
+                            show_bottom_border=True)
         for line in header.generate():
             print(line)
 

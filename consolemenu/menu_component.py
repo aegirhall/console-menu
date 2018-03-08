@@ -123,16 +123,17 @@ class MenuComponent(object):
 class MenuHeader(MenuComponent):
     """
     The menu header section.
-    The menu header contains the top margin, menu top, title/subtitle verticals, and
-    bottom padding verticals.
+    The menu header contains the top margin, menu top, title/subtitle verticals, bottom padding verticals,
+    and optionally a bottom border to separate the header from the next section.
     """
     def __init__(self, menu_style, max_dimension=None, title=None, title_align='left',
-                 subtitle=None, subtitle_align='left'):
+                 subtitle=None, subtitle_align='left', show_bottom_border=False):
         super(MenuHeader, self).__init__(menu_style, max_dimension)
         self.title = title
         self.title_align = title_align
         self.subtitle = subtitle
         self.subtitle_align = subtitle_align
+        self.show_bottom_border = show_bottom_border
 
     def generate(self):
         for x in range(0, self.margins.top):
@@ -147,6 +148,8 @@ class MenuHeader(MenuComponent):
             yield self.row(content=self.subtitle, align=self.subtitle_align)
         for x in range(0, self.padding.bottom):
             yield self.row()
+        if self.show_bottom_border:
+            yield self.inner_horizontal_border()
 
 
 class MenuTextSection(MenuComponent):

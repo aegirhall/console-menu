@@ -141,6 +141,10 @@ class MenuFormatBuilder(object):
         self.__header.style.padding.top = x
         return self
 
+    def show_header_bottom_border(self, flag):
+        self.__header.show_bottom_border = flag
+        return self
+
     # ============================================================
     # Footer Settings
     # ============================================================
