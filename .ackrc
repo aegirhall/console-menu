@@ -1,2 +1,2 @@
 --ignore-dir=.tox
---ignore-dir=curses_menu.egg-info
+--ignore-dir=console_menu.egg-info

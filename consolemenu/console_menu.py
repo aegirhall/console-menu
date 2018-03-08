@@ -17,7 +17,8 @@ class ConsoleMenu(object):
     """
     currently_active_menu = None
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None):
+    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None,
+                 prologue_text=None, epilogue_text=None):
         """
         :ivar str title: The title of the menu
         :ivar str subtitle: The subtitle of the menu
@@ -35,6 +36,8 @@ class ConsoleMenu(object):
         :ivar returned_value: The value returned by the most recently selected item
         :ivar screen: the screen object associated with this menu
         :ivar formatter: the MenuFormatBuilder instance used to format this menu.
+        :ivar prologue_text: Text to include in the "prologue" section of the menu.
+        :ivar epilogue_text: Text to include in the "epilogue" section of the menu.
         :ivar normal: the normal text color pair for this menu
         :ivar highlight: the highlight color pair associated with this window
         """
@@ -49,6 +52,8 @@ class ConsoleMenu(object):
 
         self.title = title
         self.subtitle = subtitle
+        self.prologue_text = prologue_text
+        self.epilogue_text = epilogue_text
 
         self.highlight = None
         self.normal = None
@@ -108,12 +113,6 @@ class ConsoleMenu(object):
         self.items.append(item)
         if did_remove:
             self.add_exit()
-        # XXX
-        #if self.screen:
-        #    max_row, max_cols = self.screen.getmaxyx()
-        #    if max_row < 6 + len(self.items):
-        #        self.screen.resize(6 + len(self.items), max_cols)
-        #    self.draw()
 
     def add_exit(self):
         """
@@ -150,8 +149,8 @@ class ConsoleMenu(object):
     def start(self, show_exit_option=None):
         """
         Start the menu in a new thread and allow the user to interact with it.
-        The thread is a daemon, so :meth:`join()<consolemenu.ConsoleMenu.join>` should be called if there's a possibility\
-        that the main thread will exit before the menu is done
+        The thread is a daemon, so :meth:`join()<consolemenu.ConsoleMenu.join>` should be called if there's a
+        possibility that the main thread will exit before the menu is done
 
         :param bool show_exit_option: Whether the exit item should be shown, defaults to\
         the value set in the constructor
@@ -202,7 +201,8 @@ class ConsoleMenu(object):
         """
         Refreshes the screen and redraws the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items))
+        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items,
+                                                 prologue_text=self.prologue_text, epilogue_text=self.epilogue_text))
 
     def is_running(self):
         """
@@ -240,7 +240,8 @@ class ConsoleMenu(object):
 
     def join(self, timeout=None):
         """
-        Should be called at some point after :meth:`start()<consolemenu.ConsoleMenu.start>` to block until the menu exits.
+        Should be called at some point after :meth:`start()<consolemenu.ConsoleMenu.start>` to block until
+        the menu exits.
         :param Number timeout: How long to wait before timing out
         """
         self._main_thread.join(timeout=timeout)
@@ -306,15 +307,11 @@ class ConsoleMenu(object):
         Select the current item and run it
         """
         self.selected_option = self.current_option
-        # print("DEBUG: inside select(): selected_option:", self.selected_option)
         self.selected_item.set_up()
         self.selected_item.action()
         self.selected_item.clean_up()
         self.returned_value = self.selected_item.get_return()
         self.should_exit = self.selected_item.should_exit
-
-        #if not self.should_exit:
-        #    self.draw()
 
     def exit(self):
         """
@@ -325,9 +322,9 @@ class ConsoleMenu(object):
 
     def _set_up_colors(self):
         # TODO add color support
-        #curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
-        #self.highlight = curses.color_pair(1)
-        #self.normal = curses.A_NORMAL
+        # curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        # self.highlight = curses.color_pair(1)
+        # self.normal = curses.A_NORMAL
         pass
 
     def clear_screen(self):

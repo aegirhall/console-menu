@@ -7,11 +7,13 @@ class SelectionMenu(ConsoleMenu):
     A menu that simplifies item creation, just give it a list of strings and it builds the menu for you
     """
 
-    def __init__(self, strings, title=None, subtitle=None, show_exit_option=True, formatter=None):
+    def __init__(self, strings, title=None, subtitle=None, show_exit_option=True, formatter=None,
+                 prologue_text=None, epilogue_text=None):
         """
         :ivar list[str] strings: The list of strings this menu should be built from
         """
-        super(SelectionMenu, self).__init__(title, subtitle, show_exit_option, formatter=formatter)
+        super(SelectionMenu, self).__init__(title, subtitle, show_exit_option, formatter=formatter,
+                                            prologue_text=prologue_text, epilogue_text=epilogue_text)
         for index, item in enumerate(strings):
             self.append_item(SelectionItem(item, index, self))
 

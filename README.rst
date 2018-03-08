@@ -1,7 +1,7 @@
 |Build Status|\ |Documentation Status|
 
 console-menu
-===========
+============
 
 A simple Python menu-based UI system for terminal applications.
 Perfect for those times when you need a menu-driven program, but don’t want the
@@ -13,11 +13,13 @@ http://console-menu.readthedocs.org/en/latest/
 
 .. image:: ./images/console-menu_screenshot1.png
 
+.. image:: ./images/console-menu_screenshot2.png
+
 
 Installation
 ~~~~~~~~~~~~
 
-Tested on Python 2.7, 3.3, 3.4, and 3.5, as well as pypy and pypy 3. Probably works on 2.6 as well.
+Tested on Python 2.7, 3.4, 3.5, and 3.6, as well as pypy and pypy 3.
 
 Installation can be performed by running pip
 
@@ -28,7 +30,7 @@ Installation can be performed by running pip
 Usage
 -----
 
-It’s designed to be pretty simple to use. Here’s an example
+It's designed to be pretty simple to use. Here's an example
 
 .. code:: python
 
@@ -66,7 +68,7 @@ It’s designed to be pretty simple to use. Here’s an example
     # Finally, we call show to show the menu and allow the user to interact
     menu.show()
 
-.. |Build Status| image:: https://travis-ci.org/pmbarrett314/console-menu.svg
-   :target: https://travis-ci.org/pmbarrett314/console-menu
+.. |Build Status| image:: https://travis-ci.org/aegirhall/console-menu.svg
+   :target: https://travis-ci.org/aegirhall/console-menu
 .. |Documentation Status| image:: https://readthedocs.org/projects/console-menu/badge/?version=latest
    :target: http://console-menu.readthedocs.org/en/latest/?badge=latest

@@ -1,3 +1,5 @@
+import textwrap
+
 from consolemenu.format import MenuStyle
 
 
@@ -45,10 +47,20 @@ class MenuComponent(object):
         Calculate the width of the menu border. This will be the width of the maximum allowable
         dimensions (usually the screen size), minus the left and right margins and the newline character.
         For example, given a maximum width of 80 characters, with left and right margins both
-        set to 1, the outer_horizontal size would be 77.
+        set to 1, the outer_horizontal size would be 77 (80 - 1 - 1 - 1 = 77).
         :return: an integer representing the menu border width.
         """
-        return (self.max_dimension.width - self.margins.left - self.margins.right - 1)  # 1=newline
+        return self.max_dimension.width - self.margins.left - self.margins.right - 1  # 1=newline
+
+    def calculate_content_width(self):
+        """
+        Calculate the width of inner content of the border.  This will be the width of the menu borders,
+        minus the left and right padding, and minus the two vertical border characters.
+        For example, given a border with of 77, with left and right margins each set to 2, the content
+        width would be 71 (77 - 2 - 2 - 2 = 71).
+        :return: an integer representing the inner content width.
+        """
+        return self.calculate_border_width() - self.padding.left - self.padding.right - 2
 
     def generate(self):
         """
@@ -123,16 +135,17 @@ class MenuComponent(object):
 class MenuHeader(MenuComponent):
     """
     The menu header section.
-    The menu header contains the top margin, menu top, title/subtitle verticals, and
-    bottom padding verticals.
+    The menu header contains the top margin, menu top, title/subtitle verticals, bottom padding verticals,
+    and optionally a bottom border to separate the header from the next section.
     """
     def __init__(self, menu_style, max_dimension=None, title=None, title_align='left',
-                 subtitle=None, subtitle_align='left'):
+                 subtitle=None, subtitle_align='left', show_bottom_border=False):
         super(MenuHeader, self).__init__(menu_style, max_dimension)
         self.title = title
         self.title_align = title_align
         self.subtitle = subtitle
         self.subtitle_align = subtitle_align
+        self.show_bottom_border = show_bottom_border
 
     def generate(self):
         for x in range(0, self.margins.top):
@@ -147,6 +160,8 @@ class MenuHeader(MenuComponent):
             yield self.row(content=self.subtitle, align=self.subtitle_align)
         for x in range(0, self.padding.bottom):
             yield self.row()
+        if self.show_bottom_border:
+            yield self.inner_horizontal_border()
 
 
 class MenuTextSection(MenuComponent):
@@ -168,8 +183,8 @@ class MenuTextSection(MenuComponent):
         for x in range(0, self.padding.top):
             yield self.row()
         if self.text is not None and self.text != '':
-            yield self.row(content=self.text, align=self.text_align)
-            # XXX yield self.row()
+            for line in textwrap.wrap(self.text, width=self.calculate_content_width()):
+                yield self.row(content=line, align=self.text_align)
         for x in range(0, self.padding.bottom):
             yield self.row()
         if self.show_bottom_border:
@@ -222,7 +237,7 @@ class MenuPrompt(MenuComponent):
     """
     A string representing the menu prompt for user input.
     """
-    def __init__(self, menu_style, max_dimension=None, prompt_string=">"):
+    def __init__(self, menu_style, max_dimension=None, prompt_string=">>"):
         super(MenuPrompt, self).__init__(menu_style, max_dimension)
         self.__prompt = prompt_string
 

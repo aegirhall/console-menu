@@ -1,5 +1,6 @@
 import sys
 from threading import Thread
+from consolemenu.screen import Screen
 
 if sys.version_info < (2, 7):
     import unittest2 as unittest
@@ -11,8 +12,6 @@ try:
 except ImportError:
     from mock import Mock, patch
 
-import consolemenu.console_menu
-from consolemenu.screen import Screen
 
 class ThreadedReturnGetter(Thread):
     def __init__(self, function, args=None, kwargs=None):
