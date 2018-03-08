@@ -68,7 +68,7 @@ It's designed to be pretty simple to use. Here's an example
     # Finally, we call show to show the menu and allow the user to interact
     menu.show()
 
-.. |Build Status| image:: https://travis-ci.org/pmbarrett314/console-menu.svg
-   :target: https://travis-ci.org/pmbarrett314/console-menu
+.. |Build Status| image:: https://travis-ci.org/aegirhall/console-menu.svg
+   :target: https://travis-ci.org/aegirhall/console-menu
 .. |Documentation Status| image:: https://readthedocs.org/projects/console-menu/badge/?version=latest
    :target: http://console-menu.readthedocs.org/en/latest/?badge=latest
