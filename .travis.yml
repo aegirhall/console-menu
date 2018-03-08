@@ -9,6 +9,7 @@ cache: pip
 
 python:
   - "3.6"
+  - "3.5"
   - "2.7"
 
 install:
@@ -16,17 +17,14 @@ install:
   - pip install -v .
 
 script:
-  #  - 'python setup.py test --tox-args="-e$TOX_ENV"'
   - 'py.test'
   - 'pycodestyle'
 
-#env:
-#  #- TOX_ENV=py27
-#  #- TOX_ENV=py34
-#  #- TOX_ENV=py35
-#  - TOX_ENV=py36
-#  #- TOX_ENV=pypy
-#  #- TOX_ENV=pypy3
-#  - TOX_ENV=docs
-#  - TOX_ENV=pep8
+matrix:
+  include:
+    - python: "nightly"
+  allow_failures:
+    - python: "nightly"
+  fast_finish: true
+
 
