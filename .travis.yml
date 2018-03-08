@@ -10,27 +10,32 @@ cache: pip
 python:
   - "3.6"
 
-script:
-  - 'python setup.py test --tox-args="-e$TOX_ENV"'
+install:
+  - pip install -r requirements.txt
+  - pip install pep8
 
-env:
-  #- TOX_ENV=py27
-  #- TOX_ENV=py34
-  #- TOX_ENV=py35
-  - TOX_ENV=py36
-  #- TOX_ENV=pypy
-  #- TOX_ENV=pypy3
-  - TOX_ENV=docs
-  - TOX_ENV=pep8
+script:
+  #  - 'python setup.py test --tox-args="-e$TOX_ENV"'
+  - 'pytest'
+  - 'pep8'
+
+#env:
+#  #- TOX_ENV=py27
+#  #- TOX_ENV=py34
+#  #- TOX_ENV=py35
+#  - TOX_ENV=py36
+#  #- TOX_ENV=pypy
+#  #- TOX_ENV=pypy3
+#  - TOX_ENV=docs
+#  - TOX_ENV=pep8
 
 matrix:
   include:
     - python: "nightly"
-      env: TOX_ENV=py36
+      #env: TOX_ENV=py36
   allow_failures:
     - python: "nightly"
-    - env: TOX_ENV=py26
-    - env: TOX_ENV=pep8
+    #- python: "2.6"
   fast_finish: true
 
 
