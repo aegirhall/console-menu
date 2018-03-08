@@ -100,6 +100,12 @@ class TestMenuHeader(BaseTestCase):
 
 class TestMenuTextBlock(BaseTestCase):
 
+    def setUp(self):
+        self.long_text = "This is my really long text. I can use this text area to place very long \
+paragraphs of text, to describe to the user what the menu is for, or even to describe each individual menu option, \
+if I think the user is not smart enough to figure all this out on his or her own. I hope this is paragraph \
+is long enough to display my multi-line capabilities."
+
     def test_menu_prologue_ascii(self):
         print_screen_edge()
         pro = MenuTextSection(MenuStyle())
@@ -155,6 +161,41 @@ class TestMenuTextBlock(BaseTestCase):
         for line in pro.generate():
             print(line)
 
+    def test_menu_prologue_unicodelight_long_text_default_margins_and_padding(self):
+        print_screen_edge()
+        pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()),
+                              text=self.long_text)
+        for line in pro.generate():
+            print(line)
+
+    def test_menu_prologue_unicodelight_long_text_big_margins(self):
+        print_screen_edge()
+        pro = MenuTextSection(MenuStyle(margins=MenuMargins(1, 8, 1, 8), border_style=LightBorderStyle()),
+                              text=self.long_text)
+        for line in pro.generate():
+            print(line)
+
+    def test_menu_prologue_unicodelight_long_text_big_padding(self):
+        print_screen_edge()
+        pro = MenuTextSection(MenuStyle(padding=MenuPadding(2, 8, 2, 8), border_style=LightBorderStyle()),
+                              text=self.long_text)
+        for line in pro.generate():
+            print(line)
+
+    def test_menu_prologue_unicodelight_long_text_big_margins_and_big_padding(self):
+        print_screen_edge()
+        pro = MenuTextSection(MenuStyle(margins=MenuMargins(1, 8, 1, 8), padding=MenuPadding(2, 8, 2, 8),
+                                        border_style=LightBorderStyle()),
+                              text=self.long_text)
+        for line in pro.generate():
+            print(line)
+
+    def test_menu_prologue_unicodelight_long_text_set_via_property(self):
+        print_screen_edge()
+        pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()))
+        pro.text=self.long_text
+        for line in pro.generate():
+            print(line)
 
 class TestMenuItemsSection(BaseTestCase):
 

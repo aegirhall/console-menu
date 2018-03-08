@@ -1,3 +1,5 @@
+import textwrap
+
 from consolemenu.format import MenuStyle
 
 
@@ -45,10 +47,20 @@ class MenuComponent(object):
         Calculate the width of the menu border. This will be the width of the maximum allowable
         dimensions (usually the screen size), minus the left and right margins and the newline character.
         For example, given a maximum width of 80 characters, with left and right margins both
-        set to 1, the outer_horizontal size would be 77.
+        set to 1, the outer_horizontal size would be 77 (80 - 1 - 1 - 1 = 77).
         :return: an integer representing the menu border width.
         """
-        return (self.max_dimension.width - self.margins.left - self.margins.right - 1)  # 1=newline
+        return self.max_dimension.width - self.margins.left - self.margins.right - 1  # 1=newline
+
+    def calculate_content_width(self):
+        """
+        Calculate the width of inner content of the border.  This will be the width of the menu borders,
+        minus the left and right padding, and minus the two vertical border characters.
+        For example, given a border with of 77, with left and right margins each set to 2, the content
+        width would be 71 (77 - 2 - 2 - 2 = 71).
+        :return: an integer representing the inner content width.
+        """
+        return self.calculate_border_width() - self.padding.left - self.padding.right - 2
 
     def generate(self):
         """
@@ -171,8 +183,8 @@ class MenuTextSection(MenuComponent):
         for x in range(0, self.padding.top):
             yield self.row()
         if self.text is not None and self.text != '':
-            yield self.row(content=self.text, align=self.text_align)
-            # XXX yield self.row()
+            for line in textwrap.wrap(self.text, width=self.calculate_content_width()):
+                yield self.row(content=line, align=self.text_align)
         for x in range(0, self.padding.bottom):
             yield self.row()
         if self.show_bottom_border:

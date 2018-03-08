@@ -43,6 +43,16 @@ for people that might not understand it.'
         Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
                                       items=items, prologue_text=prologue_text))
 
+    def test_format_with_header_bottom_border_and_prologue_top_border(self):
+            format = MenuFormatBuilder().show_header_bottom_border(True).show_prologue_top_border(True)
+            items = [MenuItem("This is Item 1"),
+                     MenuItem("This is Item 2"),
+                     MenuItem("This is Item 3")]
+            prologue_text = 'This a very long prologue, which can be used to explain how to use this menu, \
+    for people that might not understand it.'
+            Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                          items=items, prologue_text=prologue_text))
+
     def test_format_with_prologue_with_top_border(self):
         format = MenuFormatBuilder().show_prologue_top_border(True)
         items = [MenuItem("This is Item 1"),
@@ -58,5 +68,16 @@ for people that might not understand it.'
                  MenuItem("This is Item 2"),
                  MenuItem("This is Item 3")]
         prologue_text = "This is my prologue. Follow these instructions."
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=items, prologue_text=prologue_text))
+
+    def test_format_with_long_prologue_with_both_borders(self):
+        format = MenuFormatBuilder().show_prologue_top_border(True).show_prologue_bottom_border(True)
+        items = [MenuItem("This is Item 1"),
+                 MenuItem("This is Item 2"),
+                 MenuItem("This is Item 3")]
+        prologue_text = 'This a very long prologue, which can be used to explain how to use this menu, \
+for people that might not understand it. But if they read this description it can help them. Also, I have both \
+my top and bottom borders enabled, so you should see them.'
         Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
                                       items=items, prologue_text=prologue_text))

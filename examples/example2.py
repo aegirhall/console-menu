@@ -52,9 +52,14 @@ def main():
 
     # Create a third submenu which uses double-line border
     submenu_3 = ConsoleMenu("Third Submenu", "This Time with Double-Line Borders.",
-                            prologue_text="This is my prologue. I am showing my top and bottom borders.",
+                            prologue_text="This is my prologue. I am currently showing my top and bottom borders, but \
+they are hidden by default. Also notice that my text is really long, so it extends beyond a single line, and should \
+wrap properly within the menu borders. This is a useful place to put instructions to the user about how to use \
+the menu.",
                             epilogue_text="This is my epilogue. My borders are currently hidden.",
                             formatter=MenuFormatBuilder()\
+                                .set_title_align('center')\
+                                .set_subtitle_align('center')\
                                 .set_border_style_type(MenuBorderStyleType.DOUBLE_LINE_BORDER)\
                                 .show_prologue_top_border(True)\
                                 .show_prologue_bottom_border(True))
