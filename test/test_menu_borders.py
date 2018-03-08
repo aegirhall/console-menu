@@ -2,7 +2,6 @@ from __future__ import print_function
 
 from unittest import TestCase
 
-from consolemenu.format import AsciiBorderStyle, LightBorderStyle, HeavyBorderStyle, DoubleLineBorderStyle
 from consolemenu.format.menu_borders import *
 
 

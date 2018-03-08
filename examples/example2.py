@@ -57,12 +57,12 @@ they are hidden by default. Also notice that my text is really long, so it exten
 wrap properly within the menu borders. This is a useful place to put instructions to the user about how to use \
 the menu.",
                             epilogue_text="This is my epilogue. My borders are currently hidden.",
-                            formatter=MenuFormatBuilder()\
-                                .set_title_align('center')\
-                                .set_subtitle_align('center')\
-                                .set_border_style_type(MenuBorderStyleType.DOUBLE_LINE_BORDER)\
-                                .show_prologue_top_border(True)\
-                                .show_prologue_bottom_border(True))
+                            formatter=MenuFormatBuilder()
+                            .set_title_align('center')
+                            .set_subtitle_align('center')
+                            .set_border_style_type(MenuBorderStyleType.DOUBLE_LINE_BORDER)
+                            .show_prologue_top_border(True)
+                            .show_prologue_bottom_border(True))
     submenu_3.append_item(function_item_2)
     submenu_3.append_item(MenuItem("Third Item. Does Nothing."))
     # Menu item for opening submenu 3

@@ -6,7 +6,6 @@ import sys
 import textwrap
 
 
-
 class Screen(object):
     """
     Class representing a console screen.

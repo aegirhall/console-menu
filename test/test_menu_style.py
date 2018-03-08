@@ -37,7 +37,7 @@ class TestMenuStyle(BaseTestCase):
         self.assertEqual(2, ms.padding.right)
 
     def test_constructor_margins_and_padding(self):
-        ms = MenuStyle(margins=MenuMargins(8,7,6,5), padding=MenuPadding(12,11,10,9))
+        ms = MenuStyle(margins=MenuMargins(8, 7, 6, 5), padding=MenuPadding(12, 11, 10, 9))
         # Default Border Factory should be MenuBorderStyleFactory
         self.assertTrue(isinstance(ms.border_style_factory, MenuBorderStyleFactory))
         # Default Border style should be LightBorderStyle

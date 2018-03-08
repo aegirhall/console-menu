@@ -285,7 +285,7 @@ class MenuBorderStyleFactory(object):
         Create a border style using "heavy" box drawing characters.
         NOTE: The Heavy border style will work on Windows ONLY when using Python 3.6. If on Windows and
         using an earlier version of Python, the heavy border will be substituted with the DOUBLE_LINE_BORDER.
-        :return: a new instance of HeavyBorderStyle, unless on Windows and pre-Python 3.5 in which case a 
+        :return: a new instance of HeavyBorderStyle, unless on Windows and pre-Python 3.5 in which case a
                  new instance of DoubleLineBorderStyle will be returned.
         """
         # Special case for Windows...

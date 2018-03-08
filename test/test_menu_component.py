@@ -193,9 +193,10 @@ is long enough to display my multi-line capabilities."
     def test_menu_prologue_unicodelight_long_text_set_via_property(self):
         print_screen_edge()
         pro = MenuTextSection(MenuStyle(border_style=LightBorderStyle()))
-        pro.text=self.long_text
+        pro.text = self.long_text
         for line in pro.generate():
             print(line)
+
 
 class TestMenuItemsSection(BaseTestCase):
 

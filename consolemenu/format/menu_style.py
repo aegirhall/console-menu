@@ -71,5 +71,3 @@ class MenuStyle(object):
         if not isinstance(border_style_factory, MenuBorderStyleFactory):
             raise TypeError('border_style_factory must be of type MenuBorderStyleFactory')
         self.__border_style_factory = border_style_factory
-
-
