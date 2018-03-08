@@ -17,7 +17,8 @@ class ConsoleMenu(object):
     """
     currently_active_menu = None
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None):
+    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None,
+                 prologue_text=None, epilogue_text=None):
         """
         :ivar str title: The title of the menu
         :ivar str subtitle: The subtitle of the menu
@@ -35,6 +36,8 @@ class ConsoleMenu(object):
         :ivar returned_value: The value returned by the most recently selected item
         :ivar screen: the screen object associated with this menu
         :ivar formatter: the MenuFormatBuilder instance used to format this menu.
+        :ivar prologue_text: Text to include in the "prologue" section of the menu.
+        :ivar epilogue_text: Text to include in the "epilogue" section of the menu.
         :ivar normal: the normal text color pair for this menu
         :ivar highlight: the highlight color pair associated with this window
         """
@@ -49,6 +52,8 @@ class ConsoleMenu(object):
 
         self.title = title
         self.subtitle = subtitle
+        self.prologue_text = prologue_text
+        self.epilogue_text = epilogue_text
 
         self.highlight = None
         self.normal = None
@@ -196,7 +201,8 @@ class ConsoleMenu(object):
         """
         Refreshes the screen and redraws the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items))
+        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items,
+                                                 prologue_text=self.prologue_text, epilogue_text=self.epilogue_text))
 
     def is_running(self):
         """
