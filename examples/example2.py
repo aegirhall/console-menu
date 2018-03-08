@@ -12,7 +12,8 @@ def main():
         .set_title_align('center')\
         .set_subtitle_align('center')\
         .set_left_margin(4)\
-        .set_right_margin(4)
+        .set_right_margin(4)\
+        .show_header_bottom_border(True)
 
     menu = ConsoleMenu("Root Menu", "This is the Root Menu Subtitle", formatter=menu_format)
     item1 = MenuItem("Item 1", menu)
@@ -45,8 +46,23 @@ def main():
     item2 = MenuItem("Another Item")
     submenu_2.append_item(function_item_2)
     submenu_2.append_item(item2)
+    # Menu item for opening submenu 2
     submenu_item_2 = SubmenuItem("Another submenu", submenu=submenu_2)
     submenu_item_2.set_menu(menu)
+
+    # Create a third submenu which uses double-line border
+    submenu_3 = ConsoleMenu("Third Submenu", "This Time with Double-Line Borders.",
+                            prologue_text="This is my prologue. I am showing my top and bottom borders.",
+                            epilogue_text="This is my epilogue. My borders are currently hidden.",
+                            formatter=MenuFormatBuilder()\
+                                .set_border_style_type(MenuBorderStyleType.DOUBLE_LINE_BORDER)\
+                                .show_prologue_top_border(True)\
+                                .show_prologue_bottom_border(True))
+    submenu_3.append_item(function_item_2)
+    submenu_3.append_item(MenuItem("Third Item. Does Nothing."))
+    # Menu item for opening submenu 3
+    submenu_item_3 = SubmenuItem("Third Submenu", submenu=submenu_3)
+    submenu_item_3.set_menu(menu)
 
     # Add all the items to the root menu
     menu.append_item(item1)
@@ -54,6 +70,7 @@ def main():
     menu.append_item(command_item)
     menu.append_item(submenu_item)
     menu.append_item(submenu_item_2)
+    menu.append_item(submenu_item_3)
 
     # Show the menu
     menu.start()
