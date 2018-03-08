@@ -6,10 +6,15 @@ from consolemenu.items import *
 
 
 def main():
+    # Change some menu formatting
+    menu_format = MenuFormatBuilder().set_border_style_type(MenuBorderStyleType.HEAVY_BORDER)\
+        .set_prompt("SELECT>")\
+        .set_title_align('center')\
+        .set_subtitle_align('center')\
+        .set_left_margin(4)\
+        .set_right_margin(4)
 
-    # Create the root menu
-    menu = ConsoleMenu("Root Menu", "This is the Root Menu Subtitle")
-
+    menu = ConsoleMenu("Root Menu", "This is the Root Menu Subtitle", formatter=menu_format)
     item1 = MenuItem("Item 1", menu)
 
     # Create a menu item that calls a function
@@ -21,16 +26,21 @@ def main():
     else:
         command_item = CommandItem("Command", 'sh -c \'echo "this is a shell. Press enter to continue."; read\'')
 
-    # Create a submenu using a Selection Menu, which takes a list of strings to create the menu items.
+    # Create a submenu using a Selection Menu, which takes a list of strings to create the menu items. This
+    # submenu is passed the same formatter object, to keep its formatting consistent.
     submenu = SelectionMenu(["item1", "item2", "item3"], title="Selection Menu",
-                            subtitle="These menu items return to the previous menu")
-
+                            subtitle="These menu items return to the previous menu",
+                            formatter=menu_format)
     # Create the menu item that opens the Selection submenu
     submenu_item = SubmenuItem("Submenu item", submenu=submenu)
     submenu_item.set_menu(menu)
 
-    # Create a second submenu, but this time use a standard ConsoleMenu instance
-    submenu_2 = ConsoleMenu("Another Submenu Title", "Submenu subtitle.")
+    # Create a different formatter for another submenu, so it has a different look
+    submenu_formatter = MenuFormatBuilder().set_border_style_type(MenuBorderStyleType.ASCII_BORDER)
+
+    # Create a second submenu, but this time use a standard ConsoleMenu instance, and use the submenu_formatter.
+    submenu_2 = ConsoleMenu("Another Submenu Title", "Submenu subtitle. Notice this menu is ASCII.",
+                            formatter=submenu_formatter)
     function_item_2 = FunctionItem("Fun item", Screen().input, ["Enter an input: "])
     item2 = MenuItem("Another Item")
     submenu_2.append_item(function_item_2)
