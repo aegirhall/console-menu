@@ -19,7 +19,7 @@ install:
 script:
   #  - 'python setup.py test --tox-args="-e$TOX_ENV"'
   - 'py.test'
-  - 'pep8'
+  - 'pycodestyle'
 
 #env:
 #  #- TOX_ENV=py27
