@@ -164,10 +164,10 @@ class HeavyBorderStyle(MenuBorderStyle):
     def outer_vertical(self): return u'\u2503'
 
     @property
-    def outer_vertical_inner_left(self): return u'\u2520'
+    def outer_vertical_inner_left(self): return u'\u252B'
 
     @property
-    def outer_vertical_inner_right(self): return u'\u252B'
+    def outer_vertical_inner_right(self): return u'\u2523'
 
     @property
     def top_left_corner(self): return u'\u250F'
