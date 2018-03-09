@@ -358,11 +358,8 @@ class MenuBorderStyleFactory(object):
                  new instance of DoubleLineBorderStyle will be returned.
         """
         # Special case for Windows...
-        if sys.platform.startswith('win'):
-            if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
-                return HeavyBorderStyle()
-            else:
-                return DoubleLineBorderStyle()
+        if self.is_win_python35_or_earlier():
+            return DoubleLineBorderStyle()
         # All other platforms...
         return HeavyBorderStyle()
 
@@ -376,11 +373,8 @@ class MenuBorderStyleFactory(object):
                  new instance of DoubleLineBorderStyle will be returned.
         """
         # Special case for Windows...
-        if sys.platform.startswith('win'):
-            if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
-                return HeavyOuterLightInnerBorderStyle()
-            else:
-                return DoubleLineOuterLightInnerBorderStyle()
+        if self.is_win_python35_or_earlier():
+            return DoubleLineOuterLightInnerBorderStyle()
         # All other platforms...
         return HeavyOuterLightInnerBorderStyle()
 
@@ -398,3 +392,9 @@ class MenuBorderStyleFactory(object):
         :return: a new instance of DoubleLineOuterLightInnerBorderStyle
         """
         return DoubleLineOuterLightInnerBorderStyle()
+
+    @staticmethod
+    def is_win_python35_or_earlier():
+        """ Convenience method to determine if the current platform is Windows and Python version 3.5 or earlier. """
+        return sys.platform.startswith("win") and sys.version_info.major < 3 or \
+            (sys.version_info.major == 3 and sys.version_info.minor < 6)

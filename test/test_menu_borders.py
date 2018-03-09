@@ -93,16 +93,16 @@ class TestHeavyOuterLightInnerBorderStyle(TestCase):
 
     def test(self):
         border = HeavyOuterLightInnerBorderStyle()
-        print(border.bottom_left_corner)
-        print(border.bottom_right_corner)
-        print(border.top_left_corner)
-        print(border.top_right_corner)
-        print(border.outer_horizontal)
-        print(border.outer_horizontal_inner_down)
-        print(border.outer_horizontal_inner_up)
-        print(border.outer_vertical)
-        print(border.outer_vertical_inner_left)
-        print(border.outer_vertical_inner_right)
+        # print(border.bottom_left_corner)
+        # print(border.bottom_right_corner)
+        # print(border.top_left_corner)
+        # print(border.top_right_corner)
+        # print(border.outer_horizontal)
+        # print(border.outer_horizontal_inner_down)
+        # print(border.outer_horizontal_inner_up)
+        # print(border.outer_vertical)
+        # print(border.outer_vertical_inner_left)
+        # print(border.outer_vertical_inner_right)
 
         self.assertEqual(u'\u2517', border.bottom_left_corner)
         self.assertEqual(u'\u251B', border.bottom_right_corner)
@@ -153,16 +153,16 @@ class TestDoubleLineOuterLightInnerBorderStyle(TestCase):
 
     def test(self):
         border = DoubleLineOuterLightInnerBorderStyle()
-        print(border.bottom_left_corner)
-        print(border.bottom_right_corner)
-        print(border.top_left_corner)
-        print(border.top_right_corner)
-        print(border.outer_horizontal)
-        print(border.outer_horizontal_inner_down)
-        print(border.outer_horizontal_inner_up)
-        print(border.outer_vertical)
-        print(border.outer_vertical_inner_left)
-        print(border.outer_vertical_inner_right)
+        # print(border.bottom_left_corner)
+        # print(border.bottom_right_corner)
+        # print(border.top_left_corner)
+        # print(border.top_right_corner)
+        # print(border.outer_horizontal)
+        # print(border.outer_horizontal_inner_down)
+        # print(border.outer_horizontal_inner_up)
+        # print(border.outer_vertical)
+        # print(border.outer_vertical_inner_left)
+        # print(border.outer_vertical_inner_right)
 
         self.assertEqual(u'\u255A', border.bottom_left_corner)
         self.assertEqual(u'\u255D', border.bottom_right_corner)
@@ -192,6 +192,11 @@ class TestMenuBorderStyleType(TestCase):
 
 class TestMenuBorderFactory(TestCase):
 
+    @staticmethod
+    def _is_win_python35_or_earlier():
+        return sys.platform.startswith("win") and sys.version_info.major < 3 or \
+                (sys.version_info.major == 3 and sys.version_info.minor < 6)
+
     def test_create_ascii_border(self):
         style = MenuBorderStyleFactory().create_ascii_border()
         self.assertTrue(isinstance(style, AsciiBorderStyle))
@@ -202,11 +207,19 @@ class TestMenuBorderFactory(TestCase):
 
     def test_create_heavy_border(self):
         style = MenuBorderStyleFactory().create_heavy_border()
-        self.assertTrue(isinstance(style, HeavyBorderStyle))
+        # On Windows/Python prior to 3.5, this will create a double-line border.
+        if self._is_win_python35_or_earlier():
+            self.assertTrue(isinstance(style, DoubleLineBorderStyle))
+        else:
+            self.assertTrue(isinstance(style, HeavyBorderStyle))
 
     def test_create_heavy_outer_light_inner_border(self):
         style = MenuBorderStyleFactory().create_heavy_outer_light_inner_border()
-        self.assertTrue(isinstance(style, HeavyOuterLightInnerBorderStyle))
+        # On Windows/Python prior to 3.5, this will create a double-line outer light inner.
+        if self._is_win_python35_or_earlier():
+            self.assertTrue(isinstance(style, DoubleLineOuterLightInnerBorderStyle))
+        else:
+            self.assertTrue(isinstance(style, HeavyOuterLightInnerBorderStyle))
 
     def test_create_doubleline_border(self):
         style = MenuBorderStyleFactory().create_doubleline_border()
@@ -224,10 +237,18 @@ class TestMenuBorderFactory(TestCase):
         self.assertTrue(isinstance(style, LightBorderStyle))
 
         style = MenuBorderStyleFactory().create_border(MenuBorderStyleType.HEAVY_BORDER)
-        self.assertTrue(isinstance(style, HeavyBorderStyle))
+        # On Windows/Python prior to 3.5, this will create a double-line outer light inner.
+        if self._is_win_python35_or_earlier():
+            self.assertTrue(isinstance(style, DoubleLineBorderStyle))
+        else:
+            self.assertTrue(isinstance(style, HeavyBorderStyle))
 
         style = MenuBorderStyleFactory().create_border(MenuBorderStyleType.HEAVY_OUTER_LIGHT_INNER_BORDER)
-        self.assertTrue(isinstance(style, HeavyOuterLightInnerBorderStyle))
+        # On Windows/Python prior to 3.5, this will create a double-line outer light inner.
+        if self._is_win_python35_or_earlier():
+            self.assertTrue(isinstance(style, DoubleLineOuterLightInnerBorderStyle))
+        else:
+            self.assertTrue(isinstance(style, HeavyOuterLightInnerBorderStyle))
 
         style = MenuBorderStyleFactory().create_border(MenuBorderStyleType.DOUBLE_LINE_BORDER)
         self.assertTrue(isinstance(style, DoubleLineBorderStyle))
