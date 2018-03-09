@@ -140,6 +140,15 @@ class ConsoleMenu(object):
                 return True
         return False
 
+    def is_selected_item_exit(self):
+        """
+        Checks to determine if the currently selected item is the Exit Menu item.
+
+        :return: True if the currently selected item is the Exit Menu item; False otherwise.
+        :rtype: bool
+        """
+        return self.selected_item and self.selected_item is self.exit_item
+
     def _wrap_start(self):
         self._main_loop()
         ConsoleMenu.currently_active_menu = None
