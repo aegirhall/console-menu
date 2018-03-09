@@ -185,6 +185,14 @@ class MenuFormatBuilder(object):
         self.__items_section.style.padding.top = x
         return self
 
+    def show_bottom_border_for_item(self, text):
+        self.__items_section.show_bottom_border_for_item(text)
+        return self
+
+    def show_top_border_for_item(self, text):
+        self.__items_section.show_top_border_for_item(text)
+        return self
+
     # ============================================================
     # Prologue Section Settings
     # ============================================================
