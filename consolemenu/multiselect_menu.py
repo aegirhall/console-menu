@@ -1,7 +1,7 @@
 import itertools
 
-from .console_menu import ConsoleMenu
-from items import SubmenuItem
+from consolemenu import ConsoleMenu
+from consolemenu.items import SubmenuItem
 
 
 class MultiSelectMenu(ConsoleMenu):
