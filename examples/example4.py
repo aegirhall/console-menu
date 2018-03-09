@@ -17,7 +17,6 @@ def main():
     menu_format = MenuFormatBuilder(max_dimension=thin)
 
     # Set the border style to use heavy outer borders and light inner borders
-    #menu_format.set_border_style_type(MenuBorderStyleType.HEAVY_OUTER_LIGHT_INNER_BORDER)
     menu_format.set_border_style_type(MenuBorderStyleType.DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER)
 
     menu_format.set_title_align('center')                   # Center the menu title (by default it's left-aligned)
