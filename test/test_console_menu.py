@@ -73,6 +73,7 @@ class TestSampleMenu(BaseTestCase):
 class TestConsoleMenu(BaseTestCase):
 
     def setUp(self):
+        super(TestConsoleMenu, self).setUp()
         ConsoleMenu.currently_active_menu = None
 
     def test_init(self):
@@ -90,8 +91,9 @@ class TestConsoleMenu(BaseTestCase):
         self.assertFalse(menu3.show_exit_option)
 
     def test_currently_active_menu(self):
-        menu1 = ConsoleMenu("menu1", "test_currently_active_menu")
-        menu2 = ConsoleMenu("menu2", "test_currently_active_menu")
+        menu1 = ConsoleMenu("menu1", "test_currently_active_menu_1")
+        menu2 = ConsoleMenu("menu2", "test_currently_active_menu_2")
+        menu3 = ConsoleMenu("menu3", "test_currently_active_menu_3")
         self.assertIsNone(ConsoleMenu.currently_active_menu)
         menu1.start()
         menu1.wait_for_start(10)
@@ -99,5 +101,9 @@ class TestConsoleMenu(BaseTestCase):
         menu2.start()
         menu2.wait_for_start(10)
         self.assertIs(ConsoleMenu.currently_active_menu, menu2)
-        menu2.join(timeout=10)
-        menu1.join(timeout=10)
+        menu3.start()
+        menu3.wait_for_start(10)
+        self.assertIs(ConsoleMenu.currently_active_menu, menu3)
+        menu3.join(timeout=5)
+        menu2.join(timeout=5)
+        menu1.join(timeout=5)

@@ -14,6 +14,7 @@ except ImportError:
 
 
 class ThreadedReturnGetter(Thread):
+
     def __init__(self, function, args=None, kwargs=None):
         if args is None:
             args = []
@@ -33,8 +34,8 @@ class ThreadedReturnGetter(Thread):
 
 
 class BaseTestCase(unittest.TestCase):
+
     def setUp(self):
-        pass
         self.mock_screen = Mock(spec=Screen())
         self.mock_screen.input.return_value = 4
 
