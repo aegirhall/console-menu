@@ -265,6 +265,36 @@ class TestMenuItemsSection(BaseTestCase):
         for line in sect.generate():
             print(line)
 
+    def test_show_bottom_border_for_items(self):
+        print_screen_edge()
+        sect = MenuItemsSection(MenuStyle(border_style=LightBorderStyle()), items=self.large_list)
+        sect.show_bottom_border_for_item('menu_item_4')
+        sect.show_bottom_border_for_item('menu_item_8')
+        sect.show_bottom_border_for_item('menu_item_12')
+        for line in sect.generate():
+            print(line)
+
+    def test_show_top_border_for_items(self):
+        print_screen_edge()
+        sect = MenuItemsSection(MenuStyle(border_style=LightBorderStyle()), items=self.large_list)
+        sect.show_top_border_for_item('menu_item_4')
+        sect.show_top_border_for_item('menu_item_8')
+        sect.show_top_border_for_item('menu_item_12')
+        for line in sect.generate():
+            print(line)
+
+    def test_show_top_and_bottom_borders_for_items(self):
+        print_screen_edge()
+        sect = MenuItemsSection(MenuStyle(border_style=LightBorderStyle()), items=self.large_list)
+        sect.show_top_border_for_item('menu_item_4')
+        sect.show_bottom_border_for_item('menu_item_4')
+        sect.show_top_border_for_item('menu_item_8')
+        sect.show_bottom_border_for_item('menu_item_8')
+        sect.show_top_border_for_item('menu_item_12')
+        sect.show_bottom_border_for_item('menu_item_12')
+        for line in sect.generate():
+            print(line)
+
 
 class TestMenuFooter(BaseTestCase):
 

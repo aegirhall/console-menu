@@ -202,6 +202,8 @@ class MenuItemsSection(MenuComponent):
         else:
             self.__items = list()
         self.items_align = items_align
+        self.__top_border_dict = dict()
+        self.__bottom_border_dict = dict()
 
     @property
     def items(self): return self.__items
@@ -210,11 +212,45 @@ class MenuItemsSection(MenuComponent):
     def items(self, items):
         self.__items = items
 
+    @property
+    def show_bottom_border_for_items(self):
+        """
+        Return a list of the names (the item text property) of all items that should show a bottom border.
+        :return: a list of item names that should show a bottom border.
+        """
+        return self.__bottom_border_dict.keys()
+
+    def show_bottom_border_for_item(self, item_text):
+        """
+        Sets a flag that will show a bottom border for an item with the specified text.
+        :param item_text: the text property of the item
+        """
+        self.__bottom_border_dict[item_text] = True
+
+    @property
+    def show_top_border_for_items(self):
+        """
+        Return a list of the names (the item text property) of all items that should show a top border.
+        :return: a list of item names that should show a top border.
+        """
+        return self.__top_border_dict.keys()
+
+    def show_top_border_for_item(self, item_text):
+        """
+        Sets a flag that will show a top border for an item with the specified text.
+        :param item_text: the text property of the item
+        """
+        self.__top_border_dict[item_text] = True
+
     def generate(self):
         for x in range(0, self.padding.top):
             yield self.row()
         for index, item in enumerate(self.items):
+            if item.text in self.show_top_border_for_items:
+                yield self.inner_horizontal_border()
             yield self.row(content=item.show(index), align=self.items_align)
+            if item.text in self.show_bottom_border_for_items:
+                yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
             yield self.row()
 

@@ -176,6 +176,33 @@ class HeavyBorderStyle(MenuBorderStyle):
     def top_right_corner(self): return u'\u2513'
 
 
+class HeavyOuterLightInnerBorderStyle(HeavyBorderStyle):
+    """
+    MenuBorderStyle class using Unicode "heavy" box drawing characters for the outer borders, and
+    "light" box drawing characters for the inner borders.
+    """
+    @property
+    def inner_horizontal(self): return u'\u2500'
+
+    @property
+    def inner_vertical(self): return u'\u2502'
+
+    @property
+    def intersection(self): return u'\u253C'
+
+    @property
+    def outer_horizontal_inner_down(self): return u'\u252F'
+
+    @property
+    def outer_horizontal_inner_up(self): return u'\u2537'
+
+    @property
+    def outer_vertical_inner_left(self): return u'\u2528'
+
+    @property
+    def outer_vertical_inner_right(self): return u'\u2520'
+
+
 class DoubleLineBorderStyle(MenuBorderStyle):
     """
     MenuBorderStyle class using "double-line" box drawing characters.
@@ -220,6 +247,33 @@ class DoubleLineBorderStyle(MenuBorderStyle):
     def top_right_corner(self): return u'\u2557'
 
 
+class DoubleLineOuterLightInnerBorderStyle(DoubleLineBorderStyle):
+    """
+    MenuBorderStyle class using Unicode "double-line" box drawing characters for the outer borders, and
+    "light" box drawing characters for the inner borders.
+    """
+    @property
+    def inner_horizontal(self): return u'\u2500'
+
+    @property
+    def inner_vertical(self): return u'\u2502'
+
+    @property
+    def intersection(self): return u'\u253C'
+
+    @property
+    def outer_horizontal_inner_down(self): return u'\u2564'
+
+    @property
+    def outer_horizontal_inner_up(self): return u'\u2567'
+
+    @property
+    def outer_vertical_inner_left(self): return u'\u2562'
+
+    @property
+    def outer_vertical_inner_right(self): return u'\u255F'
+
+
 class MenuBorderStyleType(object):
     """
     Defines the various menu border styles, as expected by the border factory.
@@ -238,6 +292,17 @@ class MenuBorderStyleType(object):
 
     DOUBLE_LINE_BORDER = 3
     """ Menu Border using "double-line" box drawing characters. """
+
+    HEAVY_OUTER_LIGHT_INNER_BORDER = 4
+    """ Menu Border using the "heavy" box drawing characters for the outer border elements, and "light" box-drawing
+        characters for the inner border elements.
+        NOTE: On Windows, this border style will work ONLY on Python 3.6.  It will raise a UnicodeEncodeError
+        exception on earlier Python versions. If requesting this border style via the MenuBorderStyleFactory when
+        on Windows/Python 3.5 or earlier, this border style will be substituted by the `DOUBLE_LINE_BORDER`. """
+
+    DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER = 5
+    """ Menu Border using the "double-line" box drawing characters for the outer border elements, and "light"
+        box-drawing characters for the inner border elements."""
 
 
 class MenuBorderStyleFactory(object):
@@ -261,6 +326,10 @@ class MenuBorderStyleFactory(object):
             return self.create_heavy_border()
         elif border_style_type == MenuBorderStyleType.DOUBLE_LINE_BORDER:
             return self.create_doubleline_border()
+        elif border_style_type == MenuBorderStyleType.HEAVY_OUTER_LIGHT_INNER_BORDER:
+            return self.create_heavy_outer_light_inner_border()
+        elif border_style_type == MenuBorderStyleType.DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER:
+            return self.create_doubleline_outer_light_inner_border()
         else:
             # Use ASCII if we don't recognize the type
             self.logger.info('Unrecognized border style type: {}. Defaulting to ASCII.'.format(border_style_type))
@@ -289,13 +358,25 @@ class MenuBorderStyleFactory(object):
                  new instance of DoubleLineBorderStyle will be returned.
         """
         # Special case for Windows...
-        if sys.platform.startswith('win'):
-            if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
-                return HeavyBorderStyle()
-            else:
-                return DoubleLineBorderStyle()
+        if self.is_win_python35_or_earlier():
+            return DoubleLineBorderStyle()
         # All other platforms...
         return HeavyBorderStyle()
+
+    def create_heavy_outer_light_inner_border(self):
+        """
+        Create a border style using "heavy" box drawing characters for outer border elements, and "light"
+        box drawing characters for inner border elements.
+        NOTE: The Heavy border style will work on Windows ONLY when using Python 3.6. If on Windows and
+        using an earlier version of Python, the heavy border will be substituted with the DOUBLE_LINE_BORDER.
+        :return: a new instance of HeavyBorderStyle, unless on Windows and pre-Python 3.5 in which case a
+                 new instance of DoubleLineBorderStyle will be returned.
+        """
+        # Special case for Windows...
+        if self.is_win_python35_or_earlier():
+            return DoubleLineOuterLightInnerBorderStyle()
+        # All other platforms...
+        return HeavyOuterLightInnerBorderStyle()
 
     def create_doubleline_border(self):
         """
@@ -303,3 +384,17 @@ class MenuBorderStyleFactory(object):
         :return: a new instance of DoubleLineBorderStyle.
         """
         return DoubleLineBorderStyle()
+
+    def create_doubleline_outer_light_inner_border(self):
+        """
+        Create a border style using "double-line" box drawing characters for outer border elements, and "light"
+        box drawing characters for inner border elements.
+        :return: a new instance of DoubleLineOuterLightInnerBorderStyle
+        """
+        return DoubleLineOuterLightInnerBorderStyle()
+
+    @staticmethod
+    def is_win_python35_or_earlier():
+        """ Convenience method to determine if the current platform is Windows and Python version 3.5 or earlier. """
+        return sys.platform.startswith("win") and sys.version_info.major < 3 or \
+            (sys.version_info.major == 3 and sys.version_info.minor < 6)
