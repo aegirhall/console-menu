@@ -317,6 +317,7 @@ class TestMenuItemsSection(BaseTestCase):
         for line in sect.generate():
             print(line)
 
+
 class TestMenuFooter(BaseTestCase):
 
     def test_menu_footer_ascii(self):
