@@ -81,3 +81,20 @@ for people that might not understand it. But if they read this description it ca
 my top and bottom borders enabled, so you should see them.'
         Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
                                       items=items, prologue_text=prologue_text))
+
+    def test_format_with_item_borders(self):
+        format = MenuFormatBuilder()
+        item1 = MenuItem("This is Item 1")
+        item2 = MenuItem("This is Item 2")
+        item3 = MenuItem("This is Item 3")
+        format.show_item_top_border(item2, True)
+        format.show_item_bottom_border(item2, True)
+        print("This should show both top and bottom borders on item 2...")
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=[item1, item2, item3]))
+        # Now turn off the borders
+        format.show_item_top_border(item2, False)
+        format.show_item_bottom_border(item2, False)
+        print("This should NOT show any borders on item 2...")
+        Screen().printf(format.format(title="This is My Title", subtitle="This is My Subtitle",
+                                      items=[item1, item2, item3]))

@@ -185,12 +185,18 @@ class MenuFormatBuilder(object):
         self.__items_section.style.padding.top = x
         return self
 
-    def show_bottom_border_for_item(self, text):
-        self.__items_section.show_bottom_border_for_item(text)
+    def show_item_bottom_border(self, item_text, flag):
+        # Allow a menu item to be passed in instead of text.
+        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
+            item_text = item_text.text
+        self.__items_section.show_item_bottom_border(item_text, flag)
         return self
 
-    def show_top_border_for_item(self, text):
-        self.__items_section.show_top_border_for_item(text)
+    def show_item_top_border(self, item_text, flag):
+        # Allow a menu item to be passed in instead of text.
+        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
+            item_text = item_text.text
+        self.__items_section.show_item_top_border(item_text, flag)
         return self
 
     # ============================================================
