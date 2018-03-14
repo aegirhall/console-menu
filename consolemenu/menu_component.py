@@ -213,43 +213,51 @@ class MenuItemsSection(MenuComponent):
         self.__items = items
 
     @property
-    def show_bottom_border_for_items(self):
+    def items_with_bottom_border(self):
         """
         Return a list of the names (the item text property) of all items that should show a bottom border.
         :return: a list of item names that should show a bottom border.
         """
         return self.__bottom_border_dict.keys()
 
-    def show_bottom_border_for_item(self, item_text):
-        """
-        Sets a flag that will show a bottom border for an item with the specified text.
-        :param item_text: the text property of the item
-        """
-        self.__bottom_border_dict[item_text] = True
-
     @property
-    def show_top_border_for_items(self):
+    def items_with_top_border(self):
         """
         Return a list of the names (the item text property) of all items that should show a top border.
         :return: a list of item names that should show a top border.
         """
         return self.__top_border_dict.keys()
 
-    def show_top_border_for_item(self, item_text):
+    def show_item_bottom_border(self, item_text, flag):
+        """
+        Sets a flag that will show a bottom border for an item with the specified text.
+        :param item_text: the text property of the item
+        :param flag: boolean specifying if the border should be shown.
+        """
+        if flag:
+            self.__bottom_border_dict[item_text] = True
+        else:
+            self.__bottom_border_dict.pop(item_text, None)
+
+    def show_item_top_border(self, item_text, flag):
         """
         Sets a flag that will show a top border for an item with the specified text.
         :param item_text: the text property of the item
+        :param flag: boolean specifying if the border should be shown.
         """
-        self.__top_border_dict[item_text] = True
+        if flag:
+            self.__top_border_dict[item_text] = True
+        else:
+            self.__top_border_dict.pop(item_text, None)
 
     def generate(self):
         for x in range(0, self.padding.top):
             yield self.row()
         for index, item in enumerate(self.items):
-            if item.text in self.show_top_border_for_items:
+            if item.text in self.items_with_top_border:
                 yield self.inner_horizontal_border()
             yield self.row(content=item.show(index), align=self.items_align)
-            if item.text in self.show_bottom_border_for_items:
+            if item.text in self.items_with_bottom_border:
                 yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
             yield self.row()

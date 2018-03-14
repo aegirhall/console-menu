@@ -94,6 +94,20 @@ class PromptUtils(object):
             self.__screen.println('Warning: Unable to mask input; characters will be echoed to console')
             return self.input(message)
 
+    def printf(self, *args):
+        """
+        Prints the specified arguments to the screen.
+        :param args: object or list of objects to be printed.
+        """
+        self.__screen.printf(*args)
+
+    def println(self, *args):
+        """
+        Prints the specified arguments to the screen, followed by a newline character.
+        :param args: object or list of objects to be printed.
+        """
+        self.__screen.println(*args)
+
     def prompt_and_confirm_password(self, message):
         """
         Method to prompt for a password using the given message, then prompt for a confirmation

@@ -35,8 +35,7 @@ class Screen(object):
             return input(prompt)
 
     def printf(self, *args):
-        sys.stdout.write(' '.join(args))
-        sys.stdout.flush()
+        print(*args, end='')
 
     def println(self, *args):
-        print(' '.join(args))
+        print(*args)

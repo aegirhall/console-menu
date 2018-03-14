@@ -416,7 +416,10 @@ class ExitItem(MenuItem):
         This class overrides this method
         """
         if self.menu and self.menu.parent:
-            self.text = "Return to %s menu" % self.menu.parent.title
+            self.text = "Return to %s" % self.menu.parent.title
+            # Check if menu title ends with menu. (Some menus will include Menu in the name).
+            if not self.text.strip().lower().endswith("menu"):
+                self.text += " menu"
         else:
             self.text = "Exit"
         return super(ExitItem, self).show(index)
