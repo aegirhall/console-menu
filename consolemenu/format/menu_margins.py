@@ -3,6 +3,7 @@ class MenuMargins(object):
     Class for menu margins. A margin is the area between the maximum specified dimensions (which is usually
     the width and height of the screen) and the menu border.
     """
+
     def __init__(self, top=1, left=2, bottom=0, right=2):
         self.__left = left
         self.__right = right
