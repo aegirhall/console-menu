@@ -1,6 +1,13 @@
 import logging
+
 from abc import ABCMeta, abstractmethod
 
+
+class InvalidValidator(Exception):
+    """
+    Raised when expected a valid validator but something else given
+    """
+    pass
 
 class BaseValidator(object):
     """
@@ -8,21 +15,17 @@ class BaseValidator(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, input_string):
+    def __init__(self):
         logging.basicConfig()
         self.log = logging.getLogger(type(self).__name__)
-        self.__input_string = input_string
-
-    @property
-    def input_string(self):
-        return self.__input_string
 
     @abstractmethod
-    def validate(self):
+    def validate(self, input_string):
         """
 
         This function should be implemented in the validators
 
+        :param input_string: Input string from command line (provided by the user)
         :return: True in case validation success / False otherwise
         """
         pass

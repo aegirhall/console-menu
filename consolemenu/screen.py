@@ -1,11 +1,15 @@
 from __future__ import print_function
 
-import os
 import platform
 import sys
 import textwrap
+from collections import namedtuple
 
-from consolemenu.validators.base import BaseValidator
+import os
+
+from consolemenu.validators.base import BaseValidator, InvalidValidator
+
+InputResult = namedtuple("InputResult", "input_string validation_result")
 
 
 class Screen(object):
@@ -34,19 +38,27 @@ class Screen(object):
             os.system('clear')
 
     def input(self, prompt='', validators=None):
-        input_value = self.__get_input(prompt=prompt)
-        validation_results = []
+        input_string = self._get_input(prompt=prompt)
+        validation_result = True
 
-        if validators is None:
-            validators = []
+        if isinstance(validators, BaseValidator):
+            validators = [validators]
 
         if isinstance(validators, list):
+            validation_results = []
             for validator in validators:
-                validation_results.append(validator.validate())
-        elif isinstance(validators, BaseValidator):
-            return validators.validate()
+                if isinstance(validator, BaseValidator):
+                    validation_results.append(validator.validate(input_string=input_string))
+                else:
+                    raise InvalidValidator("Validator {} is not a valid validator".format(validator))
 
-    def __get_input(self, prompt):
+            validation_result = all(validation_results)
+        else:
+            raise InvalidValidator("Validator {} is not a valid validator".format(validators))
+
+        return InputResult(input_string=input_string, validation_result=validation_result)
+
+    def _get_input(self, prompt):
         if sys.version[0] == '2':
             return raw_input(prompt)
         else:

@@ -10,23 +10,17 @@ from consolemenu.validators.base import BaseValidator
 
 class UrlValidator(BaseValidator):
 
-    def __init__(self, url):
+    def __init__(self):
         """
         URL Validator class
-
-        :param url: URL String to check if is a valid url
         """
-        super(UrlValidator, self).__init__(input_string=url)
+        super(UrlValidator, self).__init__()
 
-    @property
-    def url(self):
-        return self.input_string
-
-    def validate(self):
+    def validate(self, input_string):
         """
         Validate url
 
         :return: True if match / False otherwise
         """
-        parsed_url = urlparse(url=self.url)
-        return parsed_url.scheme and parsed_url.netloc
+        parsed_url = urlparse(url=input_string)
+        return bool(parsed_url.scheme and parsed_url.netloc)

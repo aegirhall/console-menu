@@ -10,13 +10,13 @@ class RegexValidatorTestCase(TestCase):
         self.assertTrue(issubclass(RegexValidator, BaseValidator))
 
     def test_validate_match(self):
-        regex_validator = RegexValidator(input_string="Cats are smarter than dogs", pattern=r'Cats')
-        self.assertTrue(regex_validator.validate())
+        regex_validator = RegexValidator(pattern=r'Cats')
+        self.assertTrue(regex_validator.validate(input_string="Cats are smarter than dogs"))
 
     def test_validate_do_not_match(self):
-        regex_validator = RegexValidator(input_string="Cats are smarter than dogs", pattern=r'Rats')
-        self.assertFalse(regex_validator.validate())
+        regex_validator = RegexValidator(pattern=r'Rats')
+        self.assertFalse(regex_validator.validate(input_string="Cats are smarter than dogs"))
 
     def test_validate_invalid_pattern(self):
-        regex_validator = RegexValidator(input_string="Cats are smarter than dogs", pattern=None)
-        self.assertFalse(regex_validator.validate())
+        regex_validator = RegexValidator(pattern=None)
+        self.assertFalse(regex_validator.validate(input_string="Cats are smarter than dogs", ))
