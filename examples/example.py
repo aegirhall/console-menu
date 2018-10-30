@@ -1,12 +1,10 @@
 import sys
 
 from consolemenu import *
-from consolemenu.format import *
 from consolemenu.items import *
 
 
 def main():
-
     # Create the root menu
     menu = ConsoleMenu("Root Menu", "This is the Root Menu Subtitle")
 

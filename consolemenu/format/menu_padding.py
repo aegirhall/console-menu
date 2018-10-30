@@ -2,6 +2,7 @@ class MenuPadding(object):
     """
     Class for menu padding. Padding is the area between the menu border and the content.
     """
+
     def __init__(self, top=1, left=2, bottom=1, right=2):
         self.__left = left
         self.__right = right

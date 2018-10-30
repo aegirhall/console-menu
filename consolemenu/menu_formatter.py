@@ -1,5 +1,5 @@
-from consolemenu.format.menu_style import MenuStyle
 from consolemenu.format.menu_borders import MenuBorderStyle, MenuBorderStyleFactory
+from consolemenu.format.menu_style import MenuStyle
 from consolemenu.menu_component import Dimension, MenuHeader, MenuTextSection, MenuItemsSection, MenuFooter, MenuPrompt
 
 

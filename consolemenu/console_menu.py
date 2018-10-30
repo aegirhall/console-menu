@@ -4,8 +4,8 @@ import os
 import platform
 import threading
 
-from consolemenu.screen import Screen
 from consolemenu.menu_formatter import MenuFormatBuilder
+from consolemenu.screen import Screen
 
 
 class ConsoleMenu(object):

@@ -7,6 +7,7 @@ class MenuStyle(object):
     """
     Class for specifying menu styling, such as margins, padding, and border style.
     """
+
     def __init__(self, margins=None, padding=None, border_style=None, border_style_type=None,
                  border_style_factory=None):
         self.__margins = None
@@ -37,7 +38,8 @@ class MenuStyle(object):
             self.border_style = self.border_style_factory.create_light_border()
 
     @property
-    def margins(self): return self.__margins
+    def margins(self):
+        return self.__margins
 
     @margins.setter
     def margins(self, margins):
@@ -46,7 +48,8 @@ class MenuStyle(object):
         self.__margins = margins
 
     @property
-    def padding(self): return self.__padding
+    def padding(self):
+        return self.__padding
 
     @padding.setter
     def padding(self, padding):
@@ -55,7 +58,8 @@ class MenuStyle(object):
         self.__padding = padding
 
     @property
-    def border_style(self): return self.__border_style
+    def border_style(self):
+        return self.__border_style
 
     @border_style.setter
     def border_style(self, border_style):
@@ -64,7 +68,8 @@ class MenuStyle(object):
         self.__border_style = border_style
 
     @property
-    def border_style_factory(self): return self.__border_style_factory
+    def border_style_factory(self):
+        return self.__border_style_factory
 
     @border_style_factory.setter
     def border_style_factory(self, border_style_factory):

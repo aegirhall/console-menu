@@ -6,6 +6,7 @@ class MenuBorderStyle(object):
     """
     Base class for console menu border. Each propery should be overridden by a subclass.
     """
+
     @property
     def bottom_left_corner(self): raise NotImplementedError()
 
@@ -92,6 +93,7 @@ class LightBorderStyle(MenuBorderStyle):
     """
     MenuBorderStyle class using Unicode "light" box drawing characters.
     """
+
     @property
     def bottom_left_corner(self): return u'\u2514'
 
@@ -136,6 +138,7 @@ class HeavyBorderStyle(MenuBorderStyle):
     """
     MenuBorderStyle class using Unicode "heavy" box drawing characters.
     """
+
     @property
     def bottom_left_corner(self): return u'\u2517'
 
@@ -181,6 +184,7 @@ class HeavyOuterLightInnerBorderStyle(HeavyBorderStyle):
     MenuBorderStyle class using Unicode "heavy" box drawing characters for the outer borders, and
     "light" box drawing characters for the inner borders.
     """
+
     @property
     def inner_horizontal(self): return u'\u2500'
 
@@ -207,6 +211,7 @@ class DoubleLineBorderStyle(MenuBorderStyle):
     """
     MenuBorderStyle class using "double-line" box drawing characters.
     """
+
     @property
     def bottom_left_corner(self): return u'\u255A'
 
@@ -252,6 +257,7 @@ class DoubleLineOuterLightInnerBorderStyle(DoubleLineBorderStyle):
     MenuBorderStyle class using Unicode "double-line" box drawing characters for the outer borders, and
     "light" box drawing characters for the inner borders.
     """
+
     @property
     def inner_horizontal(self): return u'\u2500'
 
@@ -309,6 +315,7 @@ class MenuBorderStyleFactory(object):
     """
     Factory class for creating  MenuBorderStyle instances.
     """
+
     def __init__(self):
         self.logger = logging.getLogger(type(self).__name__)
 
@@ -397,4 +404,4 @@ class MenuBorderStyleFactory(object):
     def is_win_python35_or_earlier():
         """ Convenience method to determine if the current platform is Windows and Python version 3.5 or earlier. """
         return sys.platform.startswith("win") and sys.version_info.major < 3 or \
-            (sys.version_info.major == 3 and sys.version_info.minor < 6)
+               (sys.version_info.major == 3 and sys.version_info.minor < 6)
