@@ -75,3 +75,10 @@ class TestScreen(unittest.TestCase):
     def test_screen_input_validation_invalid_validation(self, get_input_mock):
         with self.assertRaises(InvalidValidator):
             Screen().input(prompt='This is my message', validators=[None])
+
+    @patch('consolemenu.screen.Screen._get_input', return_value='https://asdasd')
+    def test_screen_input_validators_None(self, get_input_mock):
+        input_result = Screen().input(prompt='This is my message', validators=None)
+
+        self.assertTrue(input_result.validation_result)
+        self.assertEquals(input_result.input_string, 'https://asdasd')

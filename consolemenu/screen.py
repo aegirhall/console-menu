@@ -43,6 +43,8 @@ class Screen(object):
 
         if isinstance(validators, BaseValidator):
             validators = [validators]
+        elif validators is None:
+            validators = []
 
         if isinstance(validators, list):
             validation_results = []
