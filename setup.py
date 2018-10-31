@@ -33,6 +33,7 @@ setup(
     description='A simple console menu system',
     long_description=read("README.rst", "CHANGELOG.rst"),
     packages=find_packages(),
+    install_requires=['six'],
     # setup_requires=['pytest-runner'],
     # tests_require=['tox'],
     # cmdclass={'test': Tox},
