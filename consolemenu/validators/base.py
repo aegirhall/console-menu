@@ -1,5 +1,6 @@
 import logging
 
+import six
 from abc import ABCMeta, abstractmethod
 
 
@@ -10,11 +11,11 @@ class InvalidValidator(Exception):
     pass
 
 
+@six.add_metaclass(ABCMeta)
 class BaseValidator(object):
     """
     Validator Base class, each validator should inherit from this one
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self):
         logging.basicConfig()
