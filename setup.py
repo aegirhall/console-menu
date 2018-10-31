@@ -1,6 +1,7 @@
-from setuptools import setup, find_packages
-import re
 import io
+
+import re
+from setuptools import setup, find_packages
 
 
 def read(*filenames, **kwargs):
