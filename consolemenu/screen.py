@@ -1,6 +1,8 @@
 from __future__ import print_function
 
 import platform
+# noinspection PyUnresolvedReferences
+import readline
 import sys
 import textwrap
 from collections import namedtuple
@@ -10,6 +12,10 @@ import os
 from consolemenu.validators.base import BaseValidator, InvalidValidator
 
 InputResult = namedtuple("InputResult", "input_string validation_result")
+
+
+class UserQuit(Exception):
+    pass
 
 
 class Screen(object):
@@ -31,14 +37,20 @@ class Screen(object):
     def screen_width(self):
         return self.__width
 
-    def clear(self):
+    @staticmethod
+    def clear():
         if platform.system() == 'Windows':
             os.system('cls')
         else:
             os.system('clear')
 
-    def input(self, prompt='', validators=None, default=None):
+    def input(self, prompt='', validators=None, default=None, enable_quit=False, quite_string='q',
+              quit_message='(enter q to Quit)'):
+
         input_string = self._get_input(prompt=prompt)
+
+        if enable_quit and quite_string == input_string:
+            raise UserQuit
 
         if default is not None and input_string == '':
             input_string = default
@@ -64,14 +76,17 @@ class Screen(object):
 
         return InputResult(input_string=input_string, validation_result=validation_result)
 
-    def _get_input(self, prompt):
+    @staticmethod
+    def _get_input(prompt):
         if sys.version[0] == '2':
             return raw_input(prompt)
         else:
             return input(prompt)
 
-    def printf(self, *args):
+    @staticmethod
+    def printf(*args):
         print(*args, end='')
 
-    def println(self, *args):
+    @staticmethod
+    def println(*args):
         print(*args)
