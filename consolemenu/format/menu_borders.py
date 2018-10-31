@@ -403,5 +403,5 @@ class MenuBorderStyleFactory(object):
     @staticmethod
     def is_win_python35_or_earlier():
         """ Convenience method to determine if the current platform is Windows and Python version 3.5 or earlier. """
-        return sys.platform.startswith("win") and sys.version_info.major < 3 or \
-               (sys.version_info.major == 3 and sys.version_info.minor < 6)
+        return sys.platform.startswith("win") and sys.version_info.major < 3 or (
+                    sys.version_info.major == 3 and sys.version_info.minor < 6)

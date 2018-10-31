@@ -9,6 +9,7 @@ class InvalidValidator(Exception):
     """
     pass
 
+
 class BaseValidator(object):
     """
     Validator Base class, each validator should inherit from this one
