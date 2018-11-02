@@ -2,7 +2,7 @@ import unittest
 
 from mock import patch
 
-from consolemenu.screen import Screen
+from consolemenu.screen import Screen, UserQuit
 from consolemenu.validators.base import InvalidValidator
 from consolemenu.validators.regex import RegexValidator
 from consolemenu.validators.url import UrlValidator
@@ -87,6 +87,26 @@ class TestScreen(unittest.TestCase):
     def test_screen_input_validators_with_default(self, get_input_mock):
         input_result = Screen().input(prompt='This is my message', validators=UrlValidator(),
                                       default='https://www.google.com')
+
+        self.assertTrue(input_result.validation_result)
+        self.assertEquals(input_result.input_string, 'https://www.google.com')
+
+    @patch('consolemenu.screen.Screen._get_input', return_value='q')
+    def test_screen_input_quit_enabled_default(self, get_input_mock):
+        with self.assertRaises(UserQuit):
+            Screen().input(prompt='This is my message', validators=UrlValidator(),
+                           default='https://www.google.com', enable_quit=True)
+
+    @patch('consolemenu.screen.Screen._get_input', return_value='exit')
+    def test_screen_input_quit_enabled_none_default(self, get_input_mock):
+        with self.assertRaises(UserQuit):
+            Screen().input(prompt='This is my message', validators=UrlValidator(),
+                           default='https://www.google.com', enable_quit=True, quit_string='exit')
+
+    @patch('consolemenu.screen.Screen._get_input', return_value='https://www.google.com')
+    def test_screen_input_quit_enabled_default_not_quit(self, get_input_mock):
+        input_result = Screen().input(prompt='This is my message', validators=UrlValidator(),
+                                      default='https://www.google.com', enable_quit=True)
 
         self.assertTrue(input_result.validation_result)
         self.assertEquals(input_result.input_string, 'https://www.google.com')
