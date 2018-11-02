@@ -1,4 +1,3 @@
-
 from consolemenu.items import MenuItem
 
 

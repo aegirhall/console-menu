@@ -107,3 +107,15 @@ class TestConsoleMenu(BaseTestCase):
         menu3.join(timeout=5)
         menu2.join(timeout=5)
         menu1.join(timeout=5)
+
+    def test_remove_menu_item(self):
+        menu = ConsoleMenu("menu1", "test_currently_active_menu_1")
+        item1 = MenuItem(text='itemText', menu=menu)
+        item2 = MenuItem(text='itemText2', menu=menu)
+        menu.append_item(item1)
+        menu.append_item(item2)
+        self.assertIn(item1, menu.items)
+        self.assertIn(item2, menu.items)
+        menu.remove_item(item1)
+        self.assertNotIn(item1, menu.items)
+        self.assertIn(item2, menu.items)
