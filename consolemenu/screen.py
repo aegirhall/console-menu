@@ -48,7 +48,7 @@ class Screen(object):
               quit_message='(enter q to Quit)'):
 
         if enable_quit:
-            prompt = '{} '.format(prompt, quit_string)
+            prompt = '{} {}'.format(quit_message, prompt)
 
         input_string = self._get_input(prompt=prompt)
 
