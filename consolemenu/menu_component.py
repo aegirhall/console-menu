@@ -7,6 +7,7 @@ class Dimension(object):
     """
     The Dimension class encapsulates the height and width of a component.
     """
+
     def __init__(self, width=0, height=0, dimension=None):
         self.width = width
         self.height = height
@@ -19,6 +20,7 @@ class MenuComponent(object):
     """
     Base class for a menu component.
     """
+
     def __init__(self, menu_style, max_dimension=None):
         if not isinstance(menu_style, MenuStyle):
             raise TypeError('menu_style must be of type MenuStyle')
@@ -28,19 +30,24 @@ class MenuComponent(object):
         self.__style = menu_style
 
     @property
-    def max_dimension(self): return self.__max_dimension
+    def max_dimension(self):
+        return self.__max_dimension
 
     @property
-    def style(self): return self.__style
+    def style(self):
+        return self.__style
 
     @property
-    def margins(self): return self.__style.margins
+    def margins(self):
+        return self.__style.margins
 
     @property
-    def padding(self): return self.__style.padding
+    def padding(self):
+        return self.__style.padding
 
     @property
-    def border_style(self): return self.__style.border_style
+    def border_style(self):
+        return self.__style.border_style
 
     def calculate_border_width(self):
         """
@@ -138,6 +145,7 @@ class MenuHeader(MenuComponent):
     The menu header contains the top margin, menu top, title/subtitle verticals, bottom padding verticals,
     and optionally a bottom border to separate the header from the next section.
     """
+
     def __init__(self, menu_style, max_dimension=None, title=None, title_align='left',
                  subtitle=None, subtitle_align='left', show_bottom_border=False):
         super(MenuHeader, self).__init__(menu_style, max_dimension)
@@ -169,6 +177,7 @@ class MenuTextSection(MenuComponent):
     The menu text block section.
     A text block section can be used for displaying text to the user above or below the main items section.
     """
+
     def __init__(self, menu_style, max_dimension=None, text=None, text_align='left',
                  show_top_border=False, show_bottom_border=False):
         super(MenuTextSection, self).__init__(menu_style, max_dimension)
@@ -195,6 +204,7 @@ class MenuItemsSection(MenuComponent):
     """
     The menu section for displaying the menu items.
     """
+
     def __init__(self, menu_style, max_dimension=None, items=None, items_align='left'):
         super(MenuItemsSection, self).__init__(menu_style, max_dimension)
         if items is not None:
@@ -206,7 +216,8 @@ class MenuItemsSection(MenuComponent):
         self.__bottom_border_dict = dict()
 
     @property
-    def items(self): return self.__items
+    def items(self):
+        return self.__items
 
     @items.setter
     def items(self, items):
@@ -281,12 +292,14 @@ class MenuPrompt(MenuComponent):
     """
     A string representing the menu prompt for user input.
     """
+
     def __init__(self, menu_style, max_dimension=None, prompt_string=">>"):
         super(MenuPrompt, self).__init__(menu_style, max_dimension)
         self.__prompt = prompt_string
 
     @property
-    def prompt(self): return self.__prompt
+    def prompt(self):
+        return self.__prompt
 
     @prompt.setter
     def prompt(self, prompt):

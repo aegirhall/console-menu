@@ -5,6 +5,7 @@ class PromptUtils(object):
     """
     Utility class with varous routines for prompting for user input.
     """
+
     def __init__(self, screen):
         """
         Creates a new instance of ConsoleUtils with the specified console. If no console was
@@ -14,7 +15,8 @@ class PromptUtils(object):
         self.__screen = screen
 
     @property
-    def screen(self): return self.__screen
+    def screen(self):
+        return self.__screen
 
     def clear(self):
         """

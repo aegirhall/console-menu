@@ -1,6 +1,7 @@
-from setuptools import setup, find_packages
-import re
 import io
+
+import re
+from setuptools import setup, find_packages
 
 
 def read(*filenames, **kwargs):
@@ -32,6 +33,7 @@ setup(
     description='A simple console menu system',
     long_description=read("README.rst", "CHANGELOG.rst"),
     packages=find_packages(),
+    install_requires=['six', 'readline'],
     # setup_requires=['pytest-runner'],
     # tests_require=['tox'],
     # cmdclass={'test': Tox},
