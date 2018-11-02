@@ -1,8 +1,9 @@
 from __future__ import print_function
 
-import os
 import platform
 import threading
+
+import os
 
 from consolemenu.menu_formatter import MenuFormatBuilder
 from consolemenu.screen import Screen
@@ -113,6 +114,13 @@ class ConsoleMenu(object):
         self.items.append(item)
         if did_remove:
             self.add_exit()
+
+    def remove_item(self, item):
+        for idx, _item in enumerate(self.items):
+            if item == _item:
+                del self.items[idx]
+                return True
+        return False
 
     def add_exit(self):
         """
@@ -401,6 +409,9 @@ class MenuItem(object):
         Otherwise just returns the same value the last selected item did.
         """
         return self.menu.returned_value
+
+    def __eq__(self, o):
+        return self.text == o.text and self.menu == o.menu and self.should_exit == o.should_exit
 
 
 class ExitItem(MenuItem):
