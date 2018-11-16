@@ -1,8 +1,6 @@
 from __future__ import print_function
 
 import platform
-# noinspection PyUnresolvedReferences
-import readline
 import sys
 import textwrap
 from collections import namedtuple
