@@ -1,11 +1,10 @@
 from __future__ import print_function
 
 import platform
+import subprocess
 import sys
 import textwrap
 from collections import namedtuple
-
-import os
 
 from consolemenu.validators.base import BaseValidator, InvalidValidator
 
@@ -38,9 +37,9 @@ class Screen(object):
     @staticmethod
     def clear():
         if platform.system() == 'Windows':
-            os.system('cls')
+            subprocess.check_call('cls', shell=True)
         else:
-            os.system('clear')
+            print(subprocess.check_output('clear').decode())
 
     def input(self, prompt='', validators=None, default=None, enable_quit=False, quit_string='q',
               quit_message='(enter q to Quit)'):
