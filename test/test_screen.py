@@ -7,6 +7,8 @@ from consolemenu.validators.base import InvalidValidator
 from consolemenu.validators.regex import RegexValidator
 from consolemenu.validators.url import UrlValidator
 
+import time
+
 
 class TestScreen(unittest.TestCase):
 
@@ -14,6 +16,22 @@ class TestScreen(unittest.TestCase):
         screen = Screen()
         screen.println('Clearing screen...')
         screen.clear()
+
+    def test_flush(self):
+        screen = Screen()
+        # standard printf will buffer, so output won't come until newline
+        screen.println('The next line should print all at once...')
+        for i in range(0, 40):
+            screen.printf('.')
+            time.sleep(0.5)
+        screen.println()
+        # now flush after each dot
+        screen.println('The next line should print smoothly...')
+        for i in range(0, 40):
+            screen.printf('.')
+            screen.flush()
+            time.sleep(0.5)
+        screen.println()
 
     def test_printf(self):
         screen = Screen()

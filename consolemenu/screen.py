@@ -42,6 +42,10 @@ class Screen(object):
         else:
             os.system('clear')
 
+    @staticmethod
+    def flush():
+        sys.stdout.flush()
+
     def input(self, prompt='', validators=None, default=None, enable_quit=False, quit_string='q',
               quit_message='(enter q to Quit)'):
 
