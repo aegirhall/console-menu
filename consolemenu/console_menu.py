@@ -271,7 +271,7 @@ class ConsoleMenu(object):
         :return: the ordinal value of a single character
         :rtype: int
         """
-        return self.screen.input().input_string
+        return self.screen.input()
 
     def process_user_input(self):
         """

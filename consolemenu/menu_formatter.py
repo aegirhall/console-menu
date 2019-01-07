@@ -59,7 +59,7 @@ class MenuFormatBuilder(object):
         """
         Set the instance of MenuBorderStyleFactory to use for generating border styles.
         Typically, this method will never need to be used, unless the default MenuBorderStyleFactory
-        has been subclasses to provide custom border styles.
+        has been subclassed to provide custom border styles.
         :param border_style_factory: an instance of MenuBorderStyleFactory.
         """
         if not isinstance(border_style_factory, MenuBorderStyleFactory):

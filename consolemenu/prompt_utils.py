@@ -1,18 +1,55 @@
 import getpass
 
+from collections import namedtuple
+from consolemenu.validators.base import BaseValidator, InvalidValidator
+
+
+InputResult = namedtuple("InputResult", "input_string validation_result")
+
+
+class PromptFormatter(object):
+    """
+    Class for formatting a text input prompt, to allow overriding the message as desired.
+    """
+    @staticmethod
+    def format_prompt(prompt=None, default=None, enable_quit=False, quit_string='q',
+                      quit_message='(enter q to Quit)'):
+        """
+        Format the prompt.
+        :param prompt: the prompt message.
+        :param default:  the default answer if user does not provide a response.
+        :param enable_quit: specifies whether the user can cancel out of the input prompt.
+        :param quit_string: the string whcih the user must input in order to quit.
+        :param quit_message: the message to explain how to quit.
+        :return: the formatted prompt string.
+        """
+        if prompt is None:
+            return None
+        prompt = prompt.rstrip()
+        prompt = prompt.rstrip(':')
+        if enable_quit:
+            prompt = "{0} {1}".format(prompt, quit_message)
+        if default:
+            prompt = "{0} [{1}]".format(prompt, default)
+        return "{0}: ".format(prompt)
+
 
 class PromptUtils(object):
     """
-    Utility class with varous routines for prompting for user input.
+    Utility class with various routines for prompting for user input.
     """
 
-    def __init__(self, screen):
+    def __init__(self, screen, prompt_formatter=None):
         """
         Creates a new instance of ConsoleUtils with the specified console. If no console was
         specified, creates a new default console using the ConsoleFactory.
         :param console: the console instance.
+        :param prompt_formatter: instance of PromptFormatter for displaying the prompt.
         """
         self.__screen = screen
+        if prompt_formatter is None:
+            prompt_formatter = PromptFormatter()
+        self.__prompt_formatter = prompt_formatter
 
     @property
     def screen(self):
@@ -48,37 +85,33 @@ class PromptUtils(object):
             message = 'Press [Enter] to continue '
         self.__screen.input(message)
 
-    @staticmethod
-    def format_prompt(message=None, default=None):
-        """
-        Format the prompt.
-        """
-        if message is None:
-            return None
-        message = message.rstrip()
-        message = message.rstrip(':')
-        if default:
-            message = "{0} [{1}]".format(message, default)
-        return "{0}: ".format(message)
-
-    def input(self, message=None, default=None):
+    def input(self, prompt=None, default=None, validators=None, enable_quit=False, quit_string='q',
+              quit_message='(enter q to Quit)'):
         """
         Prompt the user for input.
-        :param message: the message to prompt the user.
+        :param prompt: the message to prompt the user.
         :param default: the default value to suggest as an answer.
+        :param validators: list of validators to perform input validation.
+        :param enable_quit: specifies whether the user can cancel out of the input prompt.
+        :param quit_string: the string whcih the user must input in order to quit.
+        :param quit_message: the message to explain how to quit.
+        :return: an InputResult tuple.
         """
-        message = self.format_prompt(message, default)
 
-        user_input = self.__screen.input(message)
+        prompt = self.__prompt_formatter.format_prompt(prompt=prompt, default=default, enable_quit=enable_quit,
+                                                       quit_string=quit_string, quit_message=quit_message)
 
-        # if user gave us input, return it. if no input but we have a default value,
-        # return the default value. if no input and no default, return empty string.
-        if user_input is not None and user_input.strip() != '':
-            return user_input
-        elif default:
-            return default
-        else:
-            return ''
+        input_string = self.__screen.input(prompt=prompt)
+
+        if enable_quit and quit_string == input_string:
+            raise UserQuit
+
+        if default is not None and input_string.strip() == '':
+            input_string = default
+
+        validation_result = self.validate_input(input_string, validators)
+
+        return InputResult(input_string=input_string, validation_result=validation_result)
 
     def input_password(self, message=None):
         """
@@ -86,7 +119,7 @@ class PromptUtils(object):
         characters to the screen.
         :param message: the prompt message.
         """
-        message = self.format_prompt(message)
+        message = self.__prompt_formatter.format_prompt(message)
         try:
             if message:
                 return getpass.getpass(message)
@@ -196,3 +229,36 @@ class PromptUtils(object):
                     return index
             except Exception as e:
                 continue
+
+    def validate_input(self, input_string, validators):
+        """
+        Validate the given input string against the specified list of validators.
+        :param input_string: the input string to verify.
+        :param validators: the list of validators.
+        :raises InvalidValidator if the list of validators does not provide a valid InputValidator class.
+        :return: a boolean representing the validation result. True if the input string is valid; False otherwise.
+        """
+        validation_result = True
+
+        if isinstance(validators, BaseValidator):
+            validators = [validators]
+        elif validators is None:
+            validators = []
+
+        if isinstance(validators, list):
+            validation_results = []
+            for validator in validators:
+                if isinstance(validator, BaseValidator):
+                    validation_results.append(validator.validate(input_string=input_string))
+                else:
+                    raise InvalidValidator("Validator {} is not a valid validator".format(validator))
+
+            validation_result = all(validation_results)
+        else:
+            raise InvalidValidator("Validator {} is not a valid validator".format(validators))
+
+        return validation_result
+
+
+class UserQuit(Exception):
+    pass

@@ -5,9 +5,9 @@ from .console_menu import clear_terminal
 from .menu_formatter import MenuFormatBuilder
 from .multiselect_menu import MultiSelectMenu
 from .prompt_utils import PromptUtils
-from .screen import UserQuit
+from consolemenu.prompt_utils import UserQuit
 from .selection_menu import SelectionMenu
 from .version import __version__
 
 __all__ = ['ConsoleMenu', 'SelectionMenu', 'MultiSelectMenu', 'MenuFormatBuilder', 'PromptUtils',
-           'Screen', 'UserQuit', 'items', 'clear_terminal']
+           'Screen', 'items', 'clear_terminal']

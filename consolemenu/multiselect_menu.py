@@ -42,7 +42,7 @@ class MultiSelectMenu(ConsoleMenu):
         Gets the user input and decides what to do with it.
         This overrides the method in ConsoleMenu to allow for comma-delimited and range inputs.
         """
-        user_input = self.screen.input().input_string
+        user_input = self.screen.input()
 
         try:
             indexes = self.__parse_range_list(user_input)

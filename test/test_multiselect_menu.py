@@ -2,7 +2,7 @@ from base_test_case import BaseTestCase
 
 from consolemenu import MultiSelectMenu
 from consolemenu.items import FunctionItem
-from consolemenu.screen import InputResult
+from consolemenu.prompt_utils import InputResult
 
 
 class TestMultiSelectMenu(BaseTestCase):
