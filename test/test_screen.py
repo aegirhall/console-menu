@@ -58,4 +58,3 @@ class TestScreen(unittest.TestCase):
         print('screen width:', screen.screen_width)
         self.assertEqual(40, screen.screen_height)
         self.assertEqual(80, screen.screen_width)
-
