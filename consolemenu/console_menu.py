@@ -129,10 +129,9 @@ class ConsoleMenu(object):
         :return: True if item needed to be added, False otherwise
         :rtype: bool
         """
-        if self.items:
-            if self.items[-1] is not self.exit_item:
-                self.items.append(self.exit_item)
-                return True
+        if not self.items or self.items[-1] is not self.exit_item:
+            self.items.append(self.exit_item)
+            return True
         return False
 
     def remove_exit(self):
