@@ -20,14 +20,23 @@ class Screen(object):
 
     @property
     def screen_height(self):
+        """
+        int: The screen height in rows.
+        """
         return self.__height
 
     @property
     def screen_width(self):
+        """
+        int: The screen width in columns.
+        """
         return self.__width
 
     @staticmethod
     def clear():
+        """
+        Clear the screen.
+        """
         if platform.system() == 'Windows':
             os.system('cls')
         else:
@@ -35,9 +44,21 @@ class Screen(object):
 
     @staticmethod
     def flush():
+        """
+        Flush any buffered standard output to screen.
+        """
         sys.stdout.flush()
 
     def input(self, prompt=''):
+        """
+        Prompt the end user for input.
+
+        Args:
+            prompt (:obj:`str`, optional): The message to display as the prompt.
+
+        Returns:
+            The input provided by the user.
+        """
         if sys.version[0] == '2':
             return raw_input(prompt)
         else:
@@ -45,8 +66,20 @@ class Screen(object):
 
     @staticmethod
     def printf(*args):
+        """
+        Print the specified arguments to the screen.
+
+        Args:
+            *args: Variable length argument list.
+        """
         print(*args, end='')
 
     @staticmethod
     def println(*args):
+        """
+        Print the specified arguments to the screen, including an appended newline character.
+
+        Args:
+            *args: Variable length argument list.
+        """
         print(*args)

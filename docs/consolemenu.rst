@@ -7,3 +7,4 @@ API Reference
     consolemenu/SelectionMenu
     items
     consolemenu/functions
+    consolemenu/Screen
