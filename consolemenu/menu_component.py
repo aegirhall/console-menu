@@ -6,6 +6,11 @@ from consolemenu.format import MenuStyle
 class Dimension(object):
     """
     The Dimension class encapsulates the height and width of a component.
+
+    Args:
+        width (int): the width of the Dimension, in columns.
+        height (int): the height of the Dimension, in rows.
+        dimension (Dimension, optional): an existing Dimension from which to duplicate the height and width.
     """
 
     def __init__(self, width=0, height=0, dimension=None):

@@ -8,3 +8,6 @@ API Reference
     items
     consolemenu/functions
     consolemenu/Screen
+    consolemenu/MenuComponents
+    consolemenu/format
+
