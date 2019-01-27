@@ -313,30 +313,31 @@ class MenuBorderStyleType(object):
     """
     Defines the various menu border styles, as expected by the border factory.
     """
+
     ASCII_BORDER = 0
-    """ Menu Border using pure ASCII characters. Usable on all platforms. """
+    """ int: Menu Border using pure ASCII characters. Usable on all platforms. """
 
     LIGHT_BORDER = 1
-    """ Menu Border using the "light" box drawing characters. Should be usable on all platforms. """
+    """ int: Menu Border using the "light" box drawing characters. Should be usable on all platforms. """
 
     HEAVY_BORDER = 2
-    """ Menu Border using the "heavy" box drawing characters.  NOTE: On Windows, this border style will work
-        ONLY on Python 3.6 and later.  It will raise a UnicodeEncodeError exception on earlier Python versions.
-        If requesting this border style via the MenuBorderStyleFactory when on Windows/Python 3.5 or earlier, this
-        border style will be substituted by the `DOUBLE_LINE_BORDER`. """
+    """ int: Menu Border using the "heavy" box drawing characters.
+        NOTE: On Windows, this border style will work ONLY on Python 3.6 and later.  It will raise a UnicodeEncodeError
+        exception on earlier Python versions. If requesting this border style via the MenuBorderStyleFactory when on
+        Windows/Python 3.5 or earlier, this border style will be substituted by the `DOUBLE_LINE_BORDER`. """
 
     DOUBLE_LINE_BORDER = 3
-    """ Menu Border using "double-line" box drawing characters. """
+    """ int: Menu Border using "double-line" box drawing characters. """
 
     HEAVY_OUTER_LIGHT_INNER_BORDER = 4
-    """ Menu Border using the "heavy" box drawing characters for the outer border elements, and "light" box-drawing
+    """ int: Menu Border using the "heavy" box drawing characters for the outer border elements, and "light" box-drawing
         characters for the inner border elements.
         NOTE: On Windows, this border style will work ONLY on Python 3.6 and later.  It will raise a UnicodeEncodeError
         exception on earlier Python versions. If requesting this border style via the MenuBorderStyleFactory when
         on Windows/Python 3.5 or earlier, this border style will be substituted by the `DOUBLE_LINE_BORDER`. """
 
     DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER = 5
-    """ Menu Border using the "double-line" box drawing characters for the outer border elements, and "light"
+    """ int: Menu Border using the "double-line" box drawing characters for the outer border elements, and "light"
         box-drawing characters for the inner border elements."""
 
 

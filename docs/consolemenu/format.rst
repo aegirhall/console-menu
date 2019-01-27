@@ -8,3 +8,6 @@ Formatting
    format/MenuBorderStyleType
    format/MenuBorderStyleFactory
    format/borders
+   format/MenuMargins
+   format/MenuPadding
+   format/MenuStyle
