@@ -24,6 +24,14 @@ class Dimension(object):
 class MenuComponent(object):
     """
     Base class for a menu component.
+
+    Args:
+        menu_style (:obj:`MenuStyle`): the style for this component.
+        max_dimension (:obj:`Dimension`): the maximum Dimension (width x height) for the menu. Defaults to width=80
+            and height=40 if not specified.
+
+    Raises:
+        TypeError: if menu_style is not a :obj:`MenuStyle`.
     """
 
     def __init__(self, menu_style, max_dimension=None):
@@ -36,22 +44,37 @@ class MenuComponent(object):
 
     @property
     def max_dimension(self):
+        """
+        :obj:`Dimension`: The maximum dimension for the menu.
+        """
         return self.__max_dimension
 
     @property
     def style(self):
+        """
+        :obj:`consolemenu.format.MenuStyle`: The style for this component.
+        """
         return self.__style
 
     @property
     def margins(self):
+        """
+        :obj:`consolemenu.format.MenuMargins`: The margins for this component.
+        """
         return self.__style.margins
 
     @property
     def padding(self):
+        """
+        :obj:`consolemenu.format.MenuPadding`: The padding for this component.
+        """
         return self.__style.padding
 
     @property
     def border_style(self):
+        """
+        :obj:`consolemenu.format.MenuBorderStyle`: The border style for this component.
+        """
         return self.__style.border_style
 
     def calculate_border_width(self):
@@ -59,8 +82,10 @@ class MenuComponent(object):
         Calculate the width of the menu border. This will be the width of the maximum allowable
         dimensions (usually the screen size), minus the left and right margins and the newline character.
         For example, given a maximum width of 80 characters, with left and right margins both
-        set to 1, the outer_horizontal size would be 77 (80 - 1 - 1 - 1 = 77).
-        :return: an integer representing the menu border width.
+        set to 1, the border width would be 77 (80 - 1 - 1 - 1 = 77).
+
+        Returns:
+            int: the menu border width in columns.
         """
         return self.max_dimension.width - self.margins.left - self.margins.right - 1  # 1=newline
 
@@ -68,27 +93,39 @@ class MenuComponent(object):
         """
         Calculate the width of inner content of the border.  This will be the width of the menu borders,
         minus the left and right padding, and minus the two vertical border characters.
-        For example, given a border with of 77, with left and right margins each set to 2, the content
+        For example, given a border width of 77, with left and right margins each set to 2, the content
         width would be 71 (77 - 2 - 2 - 2 = 71).
-        :return: an integer representing the inner content width.
+
+        Returns:
+            int: the inner content width in columns.
         """
         return self.calculate_border_width() - self.padding.left - self.padding.right - 2
 
     def generate(self):
         """
-        Generate this section.
+        Generate this component.
+
+        Yields:
+            str: The next string of characters for drawing this component.
         """
         raise NotImplemented()
 
     def inner_horizontals(self):
         """
-        The inner horizontal border section (not including the menu margins or verticals).
+        The string of inner horizontal border characters of the required length for this component (not including
+        the menu margins or verticals).
+
+        Returns:
+            str: The inner horizontal characters.
         """
         return u"{0}".format(self.border_style.inner_horizontal * (self.calculate_border_width() - 2))
 
     def inner_horizontal_border(self):
         """
-        The complete inner horizontal border section.
+        The complete inner horizontal border section, including the left and right border verticals.
+
+        Returns:
+            str: The complete inner horizontal border.
         """
         return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
                                           lv=self.border_style.outer_vertical_inner_right,
@@ -97,13 +134,20 @@ class MenuComponent(object):
 
     def outer_horizontals(self):
         """
-        The outer horizontal border section (not including the menu margins or verticals).
+        The string of outer horizontal border characters of the required length for this component (not including
+        the menu margins or verticals).
+
+        Returns:
+            str: The outer horizontal characters.
         """
         return u"{0}".format(self.border_style.outer_horizontal * (self.calculate_border_width() - 2))
 
     def outer_horizontal_border_bottom(self):
         """
-        The complete outer top horizontal border section, including left and right margins.
+        The complete outer bottom horizontal border section, including left and right margins.
+
+        Returns:
+            str: The bottom menu border.
         """
         return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
                                           lv=self.border_style.bottom_left_corner,
@@ -113,6 +157,9 @@ class MenuComponent(object):
     def outer_horizontal_border_top(self):
         """
         The complete outer top horizontal border section, including left and right margins.
+
+        Returns:
+            str: The top menu border.
         """
         return u"{lm}{lv}{hz}{rv}".format(lm=' ' * self.margins.left,
                                           lv=self.border_style.top_left_corner,
@@ -122,6 +169,9 @@ class MenuComponent(object):
     def row(self, content='', align='left'):
         """
         A row of the menu, which comprises the left and right verticals plus the given content.
+
+        Returns:
+            str: A row of this menu component with the specified content.
         """
         return u"{lm}{vert}{cont}{vert}".format(lm=' ' * self.margins.left,
                                                 vert=self.border_style.outer_vertical,

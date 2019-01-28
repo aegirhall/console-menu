@@ -3,8 +3,8 @@ ConsoleMenu --- Standard menu class
 
 .. autoclass:: consolemenu.ConsoleMenu
 
-    .. autodata:: consolemenu.ConsoleMenu.current_item
-    .. autodata:: consolemenu.ConsoleMenu.selected_item
+    .. autoattribute:: consolemenu.ConsoleMenu.current_item
+    .. autoattribute:: consolemenu.ConsoleMenu.selected_item
 
     .. automethod:: consolemenu.ConsoleMenu.start
     .. automethod:: consolemenu.ConsoleMenu.join

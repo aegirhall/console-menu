@@ -17,7 +17,7 @@ class ConsoleMenu(object):
         title (str): The title of the menu.
         subtitle (str): The subtitle of the menu.
         show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
-            Can be overridden when the menu is started
+            Can be overridden when the menu is started.
         screen (:obj:`consolemenu.screen.Screen`): The screen object associated with this menu.
         formatter (:obj:`MenuFormatBuilder`): The MenuFormatBuilder instance used to format this menu.
         prologue_text (str): Text to include in the "prologue" section of the menu.
