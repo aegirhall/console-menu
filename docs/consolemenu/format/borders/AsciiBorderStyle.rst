@@ -1,5 +1,5 @@
-ASCII Border Style
-==================
+AsciiBorderStyle
+================
 
 .. autoclass:: consolemenu.format.AsciiBorderStyle
     :noindex:

@@ -1,5 +1,5 @@
-Menu Padding
-============
+MenuPadding
+===========
 
 .. autoclass:: consolemenu.format.MenuPadding
     :members:

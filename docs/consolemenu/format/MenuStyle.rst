@@ -1,4 +1,4 @@
-Menu Style
+MenuStyle
 ==========
 
 .. autoclass:: consolemenu.format.MenuStyle

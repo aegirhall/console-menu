@@ -1,5 +1,5 @@
-Menu Border Style Type
-======================
+MenuBorderStyleType
+===================
 
 .. autoclass:: consolemenu.format.MenuBorderStyleType
 

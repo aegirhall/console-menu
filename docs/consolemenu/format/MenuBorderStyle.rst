@@ -1,5 +1,5 @@
-Menu Border Style
-=================
+MenuBorderStyle
+===============
 
 .. autoclass:: consolemenu.format.MenuBorderStyle
     :members:

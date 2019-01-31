@@ -1,5 +1,5 @@
-Menu Margins
-============
+MenuMargins
+===========
 
 .. autoclass:: consolemenu.format.MenuMargins
     :members:

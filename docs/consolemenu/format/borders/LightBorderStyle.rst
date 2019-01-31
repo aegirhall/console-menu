@@ -1,5 +1,5 @@
-Light Border Style
-==================
+LightBorderStyle
+================
 
 .. autoclass:: consolemenu.format.LightBorderStyle
     :noindex:

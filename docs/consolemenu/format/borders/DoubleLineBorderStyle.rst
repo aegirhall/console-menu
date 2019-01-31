@@ -1,5 +1,5 @@
-Double-Line Border Style
-========================
+DoubleLineBorderStyle
+=====================
 
 .. autoclass:: consolemenu.format.DoubleLineBorderStyle
     :noindex:

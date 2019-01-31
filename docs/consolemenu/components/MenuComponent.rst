@@ -1,5 +1,5 @@
-Menu Component Base Class
-=========================
+MenuComponent
+=============
 
 .. autoclass:: consolemenu.menu_component.MenuComponent
     :members:

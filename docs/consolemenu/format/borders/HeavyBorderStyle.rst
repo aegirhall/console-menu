@@ -1,5 +1,5 @@
-Heavy Border Style
-==================
+HeavyBorderStyle
+================
 
 .. autoclass:: consolemenu.format.HeavyBorderStyle
     :noindex:

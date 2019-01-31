@@ -1,5 +1,5 @@
-Double-Line Outer, Light Inner, Border Style
-============================================
+DoubleLineOuterLightInnerBorderStyle
+====================================
 
 .. autoclass:: consolemenu.format.DoubleLineOuterLightInnerBorderStyle
     :noindex:
