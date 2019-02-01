@@ -5,6 +5,7 @@ API Reference
 
     consolemenu/ConsoleMenu
     consolemenu/SelectionMenu
+    consolemenu/MultiSelectMenu
     items
     consolemenu/functions
     consolemenu/Screen
