@@ -11,16 +11,19 @@ class MultiSelectMenu(ConsoleMenu):
     Args:
         title: The menu title.
         subtitle: The menu subtitle.
-        show_exit_option: Determines if the exit item should be displayed.
         formatter: The menu formatter instance for styling the menu.
         prologue_text: The text to display in the prologue section of the menu.
         epilogue_text: The text to display in the epilogue section of the menu.
+        show_exit_option (bool): Determines if the exit item should be displayed.
+        exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
     """
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, formatter=None,
-                 prologue_text=None, epilogue_text=None, ack_item_completion=True):
-        super(MultiSelectMenu, self).__init__(title, subtitle, show_exit_option, formatter=formatter,
-                                              prologue_text=prologue_text, epilogue_text=epilogue_text)
+    def __init__(self, title=None, subtitle=None, formatter=None,
+                 prologue_text=None, epilogue_text=None, ack_item_completion=True,
+                 show_exit_option=True, exit_option_text='Exit'):
+        super(MultiSelectMenu, self).__init__(title, subtitle, formatter=formatter,
+                                              prologue_text=prologue_text, epilogue_text=epilogue_text,
+                                              show_exit_option=show_exit_option, exit_option_text=exit_option_text)
         self.ack_item_completion = ack_item_completion
 
     def append_item(self, item):
