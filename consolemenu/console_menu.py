@@ -9,19 +9,31 @@ from consolemenu.menu_formatter import MenuFormatBuilder
 from consolemenu.screen import Screen
 
 
+"""
+Checks if object is a function and returns the result, else returns plain string.
+This makes it possible to pass a method reference to a menu or item instead of a string,
+thus the menu can update itself dynamically as values change. 
+"""
+def string_or_function(object):
+    if callable(object):
+        return object()
+    else:
+        return object
+
+
 class ConsoleMenu(object):
     """
     A class that displays a menu and allows the user to select an option.
 
     Args:
-        title (str): The title of the menu.
-        subtitle (str): The subtitle of the menu.
+        title (str): The title of the menu, or a method reference that returns a string
+        subtitle (str): The subtitle of the menu, or a method reference that returns a string
         show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
             Can be overridden when the menu is started.
         screen (:obj:`consolemenu.screen.Screen`): The screen object associated with this menu.
         formatter (:obj:`MenuFormatBuilder`): The MenuFormatBuilder instance used to format this menu.
-        prologue_text (str): Text to include in the "prologue" section of the menu.
-        epilogue_text (str): Text to include in the "epilogue" section of the menu.
+        prologue_text (str): Text or method reference to include in the "prologue" section of the menu.
+        epilogue_text (str): Text or method reference to include in the "epilogue" section of the menu.
 
     Attributes:
         cls.currently_active_menu (:obj:`ConsoleMenu`): Class variable that holds the currently active menu or None
@@ -76,7 +88,7 @@ class ConsoleMenu(object):
         self._running = threading.Event()
 
     def __repr__(self):
-        return "%s: %s. %d items" % (self.title, self.subtitle, len(self.items))
+        return "%s: %s. %d items" % (string_or_function(self.title), string_or_function(self.subtitle), len(self.items))
 
     @property
     def current_item(self):
@@ -227,8 +239,11 @@ class ConsoleMenu(object):
         """
         Refresh the screen and redraw the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items,
-                                                 prologue_text=self.prologue_text, epilogue_text=self.epilogue_text))
+        self.screen.printf(self.formatter.format(title=string_or_function(self.title),
+                                                 subtitle=string_or_function(self.subtitle),
+                                                 items=self.items,
+                                                 prologue_text=string_or_function(self.prologue_text),
+                                                 epilogue_text=string_or_function(self.epilogue_text)))
 
     def is_running(self):
         """
@@ -388,7 +403,7 @@ class MenuItem(object):
         self.should_exit = should_exit
 
     def __str__(self):
-        return "%s %s" % (self.menu.title, self.text)
+        return "%s %s" % (self.menu.title, string_or_function(self.text))
 
     def show(self, index):
         """
@@ -404,7 +419,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d - %s" % (index + 1, self.text)
+        return "%2d - %s" % (index + 1, string_or_function(self.text))
 
     def set_up(self):
         """
