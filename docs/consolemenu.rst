@@ -11,4 +11,5 @@ API Reference
     consolemenu/Screen
     consolemenu/components
     consolemenu/format
+    consolemenu/prompts
 
