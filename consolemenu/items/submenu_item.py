@@ -1,12 +1,18 @@
 from consolemenu.items import MenuItem
 
-def callable_wrapper(object):
-    if callable(object):
+
+def callable_wrapper(o):
+    """
+    Checks if object is a function and returns the result, else returns plain string.
+    This makes it possible to pass a method reference to a menu or item instead of a string,
+    thus the menu can update itself dynamically as values change.
+    """
+    if callable(o):
         # print("returning %s" % object())
-        return object()
+        return o()
     else:
         # print("returning %s" % object)
-        return object
+        return o
 
 
 class SubmenuItem(MenuItem):

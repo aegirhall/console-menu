@@ -9,16 +9,16 @@ from consolemenu.menu_formatter import MenuFormatBuilder
 from consolemenu.screen import Screen
 
 
-"""
-Checks if object is a function and returns the result, else returns plain string.
-This makes it possible to pass a method reference to a menu or item instead of a string,
-thus the menu can update itself dynamically as values change. 
-"""
-def callable_wrapper(object):
-    if callable(object):
-        return object()
+def callable_wrapper(o):
+    """
+    Checks if object is a function and returns the result, else returns plain string.
+    This makes it possible to pass a method reference to a menu or item instead of a string,
+    thus the menu can update itself dynamically as values change.
+    """
+    if callable(o):
+        return o()
     else:
-        return object
+        return o
 
 
 class ConsoleMenu(object):
