@@ -1,5 +1,13 @@
 from consolemenu.items import MenuItem
 
+def callable_wrapper(object):
+    if callable(object):
+        # print("returning %s" % object())
+        return object()
+    else:
+        # print("returning %s" % object)
+        return object
+
 
 class SubmenuItem(MenuItem):
     """
@@ -14,7 +22,7 @@ class SubmenuItem(MenuItem):
 
         self.submenu = submenu
         if menu:
-            self.submenu.parent = menu
+            callable_wrapper(self.submenu).parent = menu
 
     def set_menu(self, menu):
         """
@@ -24,7 +32,7 @@ class SubmenuItem(MenuItem):
         :param ConsoleMenu menu: the menu
         """
         self.menu = menu
-        self.submenu.parent = menu
+        callable_wrapper(self.submenu).parent = menu
 
     def set_up(self):
         """
@@ -37,13 +45,13 @@ class SubmenuItem(MenuItem):
         """
         This class overrides this method
         """
-        self.submenu.start()
+        callable_wrapper(self.submenu).start()
 
     def clean_up(self):
         """
         This class overrides this method
         """
-        self.submenu.join()
+        callable_wrapper(self.submenu).join()
         self.menu.clear_screen()
         self.menu.resume()
 
@@ -51,4 +59,4 @@ class SubmenuItem(MenuItem):
         """
         :return: The returned value in the submenu
         """
-        return self.submenu.returned_value
+        return callable_wrapper(self.submenu).returned_value

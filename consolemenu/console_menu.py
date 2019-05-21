@@ -14,7 +14,7 @@ Checks if object is a function and returns the result, else returns plain string
 This makes it possible to pass a method reference to a menu or item instead of a string,
 thus the menu can update itself dynamically as values change. 
 """
-def string_or_function(object):
+def callable_wrapper(object):
     if callable(object):
         return object()
     else:
@@ -88,7 +88,7 @@ class ConsoleMenu(object):
         self._running = threading.Event()
 
     def __repr__(self):
-        return "%s: %s. %d items" % (string_or_function(self.title), string_or_function(self.subtitle), len(self.items))
+        return "%s: %s. %d items" % (callable_wrapper(self.title), callable_wrapper(self.subtitle), len(self.items))
 
     @property
     def current_item(self):
@@ -239,11 +239,11 @@ class ConsoleMenu(object):
         """
         Refresh the screen and redraw the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=string_or_function(self.title),
-                                                 subtitle=string_or_function(self.subtitle),
+        self.screen.printf(self.formatter.format(title=callable_wrapper(self.title),
+                                                 subtitle=callable_wrapper(self.subtitle),
                                                  items=self.items,
-                                                 prologue_text=string_or_function(self.prologue_text),
-                                                 epilogue_text=string_or_function(self.epilogue_text)))
+                                                 prologue_text=callable_wrapper(self.prologue_text),
+                                                 epilogue_text=callable_wrapper(self.epilogue_text)))
 
     def is_running(self):
         """
@@ -403,7 +403,7 @@ class MenuItem(object):
         self.should_exit = should_exit
 
     def __str__(self):
-        return "%s %s" % (self.menu.title, string_or_function(self.text))
+        return "%s %s" % (callable_wrapper(self.menu.title), callable_wrapper(self.text))
 
     def show(self, index):
         """
@@ -419,7 +419,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d - %s" % (index + 1, string_or_function(self.text))
+        return "%2d - %s" % (index + 1, callable_wrapper(self.text))
 
     def set_up(self):
         """
@@ -463,7 +463,7 @@ class ExitItem(MenuItem):
         This class overrides this method
         """
         if self.menu and self.menu.parent:
-            self.text = "Return to %s" % self.menu.parent.title
+            self.text = "Return to %s" % callable_wrapper(self.menu.parent.title)
             # Check if menu title ends with menu. (Some menus will include Menu in the name).
             if not self.text.strip().lower().endswith("menu"):
                 self.text += " menu"
