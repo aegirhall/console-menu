@@ -56,7 +56,7 @@ class TestSelectionMenu(BaseTestCase):
 
     def test_init(self):
         selection_menu_1 = SelectionMenu(["1", "2", "3"])
-        selection_menu_2 = SelectionMenu(["4", "5"], "selection_menu_2", "test_init", True)
+        selection_menu_2 = SelectionMenu(["4", "5"], "selection_menu_2", "test_init", show_exit_option=True)
         selection_menu_3 = SelectionMenu(strings=["6", "7", "8", "9"], title="selection_menu_3", subtitle="test_init",
                                          show_exit_option=False)
         self.assertIsNone(selection_menu_1.title)

@@ -26,14 +26,15 @@ class ConsoleMenu(object):
     A class that displays a menu and allows the user to select an option.
 
     Args:
-        title (str): The title of the menu, or a method reference that returns a string
-        subtitle (str): The subtitle of the menu, or a method reference that returns a string
-        show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
-            Can be overridden when the menu is started.
+        title (str): The title of the menu, or a method reference that returns a string.
+        subtitle (str): The subtitle of the menu, or a method reference that returns a string.
         screen (:obj:`consolemenu.screen.Screen`): The screen object associated with this menu.
         formatter (:obj:`MenuFormatBuilder`): The MenuFormatBuilder instance used to format this menu.
         prologue_text (str): Text or method reference to include in the "prologue" section of the menu.
         epilogue_text (str): Text or method reference to include in the "epilogue" section of the menu.
+        show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
+            Can be overridden when the menu is started.
+        exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
 
     Attributes:
         cls.currently_active_menu (:obj:`ConsoleMenu`): Class variable that holds the currently active menu or None
@@ -48,8 +49,9 @@ class ConsoleMenu(object):
 
     currently_active_menu = None
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None,
-                 prologue_text=None, epilogue_text=None):
+    def __init__(self, title=None, subtitle=None, screen=None, formatter=None,
+                 prologue_text=None, epilogue_text=None,
+                 show_exit_option=True, exit_option_text='Exit'):
         if screen is None:
             screen = Screen()
         self.screen = screen
@@ -72,7 +74,7 @@ class ConsoleMenu(object):
 
         self.parent = None
 
-        self.exit_item = ExitItem(menu=self)
+        self.exit_item = ExitItem(menu=self, text=exit_option_text)
 
         self.current_option = 0
         self.selected_option = -1
@@ -460,15 +462,12 @@ class ExitItem(MenuItem):
 
     def show(self, index):
         """
-        This class overrides this method
+        ExitItem overrides this method to display appropriate Exit or Return text.
         """
-        if self.menu and self.menu.parent:
+        # If we have a parent menu, and no overriding exit text was specified,
+        # change Exit text to "Return to {Parent Menu Title}"
+        if self.menu and self.menu.parent and self.text == 'Exit':
             self.text = "Return to %s" % callable_wrapper(self.menu.parent.title)
-            # Check if menu title ends with menu. (Some menus will include Menu in the name).
-            if not self.text.strip().lower().endswith("menu"):
-                self.text += " menu"
-        else:
-            self.text = "Exit"
         return super(ExitItem, self).show(index)
 
 

@@ -1,10 +1,9 @@
 from __future__ import print_function
 
 import platform
+import subprocess
 import sys
 import textwrap
-
-import os
 
 
 class Screen(object):
@@ -38,9 +37,9 @@ class Screen(object):
         Clear the screen.
         """
         if platform.system() == 'Windows':
-            os.system('cls')
+            subprocess.check_call('cls', shell=True)
         else:
-            os.system('clear')
+            print(subprocess.check_output('clear').decode())
 
     @staticmethod
     def flush():
