@@ -456,6 +456,7 @@ class MenuItem(object):
     def get_text(self):
         return self.text() if callable(self.text) else self.text
 
+
 class ExitItem(MenuItem):
     """
     Used to exit the current menu. Handled by :class:`consolemenu.ConsoleMenu`
