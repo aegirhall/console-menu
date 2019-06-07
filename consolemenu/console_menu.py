@@ -9,18 +9,6 @@ from consolemenu.menu_formatter import MenuFormatBuilder
 from consolemenu.screen import Screen
 
 
-def callable_wrapper(o):
-    """
-    Checks if object is a function and returns the result, else returns plain string.
-    This makes it possible to pass a method reference to a menu or item instead of a string,
-    thus the menu can update itself dynamically as values change.
-    """
-    if callable(o):
-        return o()
-    else:
-        return o
-
-
 class ConsoleMenu(object):
     """
     A class that displays a menu and allows the user to select an option.
@@ -390,16 +378,16 @@ class ConsoleMenu(object):
 
     # Getters to get text in case method reference
     def get_title(self):
-        return callable_wrapper(self.title)
+        return self.title() if callable(self.title) else self.title
 
     def get_subtitle(self):
-        return callable_wrapper(self.subtitle)
+        return self.subtitle() if callable(self.subtitle) else self.subtitle
 
     def get_prologue_text(self):
-        return callable_wrapper(self.prologue_text)
+        return self.prologue_text() if callable(self.prologue_text) else self.prologue_text
 
     def get_epilogue_text(self):
-        return callable_wrapper(self.epilogue_text)
+        return self.epilogue_text() if callable(self.epilogue_text) else self.epilogue_text
 
 
 class MenuItem(object):
@@ -466,7 +454,7 @@ class MenuItem(object):
 
     # Getters to get text in case method reference
     def get_text(self):
-        return callable_wrapper(self.text)
+        return self.text() if callable(self.text) else self.text
 
 class ExitItem(MenuItem):
     """
