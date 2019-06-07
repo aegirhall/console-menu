@@ -90,7 +90,7 @@ class ConsoleMenu(object):
         self._running = threading.Event()
 
     def __repr__(self):
-        return "%s: %s. %d items" % (callable_wrapper(self.title), callable_wrapper(self.subtitle), len(self.items))
+        return "%s: %s. %d items" % (self.get_title(), self.get_subtitle(), len(self.items))
 
     @property
     def current_item(self):
@@ -241,11 +241,11 @@ class ConsoleMenu(object):
         """
         Refresh the screen and redraw the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=callable_wrapper(self.title),
-                                                 subtitle=callable_wrapper(self.subtitle),
+        self.screen.printf(self.formatter.format(title=self.get_title(),
+                                                 subtitle=self.get_subtitle(),
                                                  items=self.items,
-                                                 prologue_text=callable_wrapper(self.prologue_text),
-                                                 epilogue_text=callable_wrapper(self.epilogue_text)))
+                                                 prologue_text=self.get_prologue_text(),
+                                                 epilogue_text=self.get_epilogue_text()))
 
     def is_running(self):
         """
@@ -388,6 +388,19 @@ class ConsoleMenu(object):
         """
         self.screen.clear()
 
+    # Getters to get text in case method reference
+    def get_title(self):
+        return callable_wrapper(self.title)
+
+    def get_subtitle(self):
+        return callable_wrapper(self.subtitle)
+
+    def get_prologue_text(self):
+        return callable_wrapper(self.prologue_text)
+
+    def get_epilogue_text(self):
+        return callable_wrapper(self.epilogue_text)
+
 
 class MenuItem(object):
     """
@@ -405,7 +418,7 @@ class MenuItem(object):
         self.should_exit = should_exit
 
     def __str__(self):
-        return "%s %s" % (callable_wrapper(self.menu.title), callable_wrapper(self.text))
+        return "%s %s" % (self.menu.get_title(), self.get_text())
 
     def show(self, index):
         """
@@ -421,7 +434,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d - %s" % (index + 1, callable_wrapper(self.text))
+        return "%2d - %s" % (index + 1, self.get_text())
 
     def set_up(self):
         """
@@ -451,6 +464,9 @@ class MenuItem(object):
     def __eq__(self, o):
         return self.text == o.text and self.menu == o.menu and self.should_exit == o.should_exit
 
+    # Getters to get text in case method reference
+    def get_text(self):
+        return callable_wrapper(self.text)
 
 class ExitItem(MenuItem):
     """
@@ -466,8 +482,8 @@ class ExitItem(MenuItem):
         """
         # If we have a parent menu, and no overriding exit text was specified,
         # change Exit text to "Return to {Parent Menu Title}"
-        if self.menu and self.menu.parent and self.text == 'Exit':
-            self.text = "Return to %s" % callable_wrapper(self.menu.parent.title)
+        if self.menu and self.menu.parent and self.get_text() == 'Exit':
+            self.text = "Return to %s" % self.menu.parent.get_title()
         return super(ExitItem, self).show(index)
 
 

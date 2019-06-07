@@ -72,3 +72,12 @@ It's designed to be pretty simple to use. Here's an example
    :target: https://travis-ci.org/aegirhall/console-menu
 .. |Documentation Status| image:: https://readthedocs.org/projects/console-menu/badge/?version=latest
    :target: http://console-menu.readthedocs.org/en/latest/?badge=latest
+
+Development
+-----------
+
+.. code:: shell
+
+   pip install -r requirements-docs.txt
+   pip install -v -e .
+   pytest
