@@ -1,3 +1,13 @@
+v0.6.0 (2019-09-07)
+===================
+- Fix issue #28, allow console screen argument for SelectionMenu.
+- Fix issue #22, allow custom exit text for main menu.
+- Fix issue #19, failure to clear screen using Windows 10 SSH.
+- Potentially Breaking Change: reverted screen.input() method to return the
+  simple string value, as it did in v0.4.0 and prior. Moved the InputResult
+  tuple for input validation to the PromptUtils class.
+- Expanding documentation and converting to Google-style docstrings (WIP).
+- Add flush() method to screen.
 
 v0.5.1 (2018-11-18)
 ===================
