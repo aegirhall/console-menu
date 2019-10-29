@@ -14,7 +14,7 @@ class SubmenuItem(MenuItem):
 
         self.submenu = submenu
         if menu:
-            self.submenu.parent = menu
+            self.get_submenu().parent = menu
 
     def set_menu(self, menu):
         """
@@ -24,7 +24,7 @@ class SubmenuItem(MenuItem):
         :param ConsoleMenu menu: the menu
         """
         self.menu = menu
-        self.submenu.parent = menu
+        self.get_submenu().parent = menu
 
     def set_up(self):
         """
@@ -37,13 +37,13 @@ class SubmenuItem(MenuItem):
         """
         This class overrides this method
         """
-        self.submenu.start()
+        self.get_submenu().start()
 
     def clean_up(self):
         """
         This class overrides this method
         """
-        self.submenu.join()
+        self.get_submenu().join()
         self.menu.clear_screen()
         self.menu.resume()
 
@@ -51,4 +51,10 @@ class SubmenuItem(MenuItem):
         """
         :return: The returned value in the submenu
         """
-        return self.submenu.returned_value
+        return self.get_submenu().returned_value
+
+    def get_submenu(self):
+        """
+        We unwrap the submenu variable in case it is a reference to a method that returns a submenu
+        """
+        return self.submenu if not callable(self.submenu) else self.submenu()

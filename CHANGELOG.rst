@@ -1,3 +1,7 @@
+v0.6.1 (2019-xx-xx)
+===================
+- Dynamic, updateable menus (#25).
+
 v0.6.0 (2019-09-07)
 ===================
 - Fix issue #28, allow console screen argument for SelectionMenu.
