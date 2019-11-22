@@ -10,9 +10,11 @@ class CommandItem(ExternalItem):
 
     def __init__(self, text, command, arguments=None, menu=None, should_exit=False):
         """
+        :ivar str text: The text shown for this menu item
         :ivar str command: The console command to be executed
         :ivar list[str] arguments: An optional list of string arguments to be passed to the command
-        :ivar int exit_status: the exit status of the command, None if it hasn't been run yet
+        :ivar ConsoleMenu menu: The menu to which this item belongs
+        :ivar bool should_exit: Whether the menu should exit once this item's action is done
         """
         super(CommandItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
         self.command = command
