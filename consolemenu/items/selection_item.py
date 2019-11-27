@@ -8,7 +8,9 @@ class SelectionItem(MenuItem):
 
     def __init__(self, text, index, menu=None):
         """
+        :ivar str text: The text shown for this menu item
         :ivar int index: The index of this item in the list used to initialize the :class:`consolemenu.SelectionMenu`
+        :ivar ConsoleMenu menu: The menu to which this item belongs
         """
         super(SelectionItem, self).__init__(text=text, menu=menu, should_exit=True)
         self.index = index

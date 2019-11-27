@@ -8,7 +8,10 @@ class SubmenuItem(MenuItem):
 
     def __init__(self, text, submenu, menu=None, should_exit=False):
         """
-        :ivar ConsoleMenu self.submenu: The submenu to be opened when this item is selected
+        :ivar str text: The text shown for this menu item
+        :ivar ConsoleMenu submenu: The submenu to be opened when this item is selected
+        :ivar ConsoleMenu menu: The menu to which this item belongs
+        :ivar bool should_exit: Whether the menu should exit once this item's action is done
         """
         super(SubmenuItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
 
