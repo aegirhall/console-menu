@@ -16,14 +16,16 @@ class MultiSelectMenu(ConsoleMenu):
         epilogue_text: The text to display in the epilogue section of the menu.
         show_exit_option (bool): Determines if the exit item should be displayed.
         exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
+        clear_screen (bool): Set to False to disable clearing of screen between menus
     """
 
     def __init__(self, title=None, subtitle=None, formatter=None,
                  prologue_text=None, epilogue_text=None, ack_item_completion=True,
-                 show_exit_option=True, exit_option_text='Exit'):
+                 show_exit_option=True, exit_option_text='Exit', clear_screen=True):
         super(MultiSelectMenu, self).__init__(title, subtitle, formatter=formatter,
                                               prologue_text=prologue_text, epilogue_text=epilogue_text,
-                                              show_exit_option=show_exit_option, exit_option_text=exit_option_text)
+                                              show_exit_option=show_exit_option, exit_option_text=exit_option_text,
+                                              clear_screen=clear_screen)
         self.ack_item_completion = ack_item_completion
 
     def append_item(self, item):
