@@ -1,4 +1,4 @@
-import textwrap
+import ansiwrap
 
 from consolemenu.format import MenuStyle
 
@@ -187,11 +187,12 @@ class MenuComponent(object):
             return '<'
 
     def _format_content(self, content='', align='left'):
+        invisible_chars = len(content) - ansiwrap.ansilen(content)
         return '{lp}{text:{al}{width}}{rp}'.format(lp=' ' * self.padding.left,
                                                    rp=' ' * self.padding.right,
                                                    text=content, al=self._alignment_char(align),
                                                    width=(self.calculate_border_width() - self.padding.left -
-                                                          self.padding.right - 2))
+                                                          self.padding.right - 2 + invisible_chars))
 
 
 class MenuHeader(MenuComponent):
@@ -247,7 +248,7 @@ class MenuTextSection(MenuComponent):
         for x in range(0, self.padding.top):
             yield self.row()
         if self.text is not None and self.text != '':
-            for line in textwrap.wrap(self.text, width=self.calculate_content_width()):
+            for line in ansiwrap.wrap(self.text, width=self.calculate_content_width()):
                 yield self.row(content=line, align=self.text_align)
         for x in range(0, self.padding.bottom):
             yield self.row()
