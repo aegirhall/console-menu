@@ -417,7 +417,7 @@ class MenuItem(object):
     def __str__(self):
         return "%s %s" % (self.menu.get_title(), self.get_text())
 
-    def show(self, index):
+    def show(self, index, available_width=None):
         """
         How this item should be displayed in the menu. Can be overridden, but should keep the same signature.
 
@@ -431,7 +431,12 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d - %s" % (index + 1, self.get_text())
+        print(available_width)
+        content = "%2d - %s" % (index + 1, self.get_text())
+        if available_width is None:
+            return content
+        else:
+            return [ content[start:start+available_width] for start in range(0, len(content), available_width) ]
 
     def set_up(self):
         """
@@ -474,7 +479,7 @@ class ExitItem(MenuItem):
     def __init__(self, text="Exit", menu=None):
         super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True)
 
-    def show(self, index):
+    def show(self, index, available_width=None):
         """
         ExitItem overrides this method to display appropriate Exit or Return text.
         """
