@@ -432,10 +432,31 @@ class MenuItem(object):
         :rtype: str
         """
         content = "%2d - %s" % (index + 1, self.get_text())
-        if available_width is None:
-            return content
+        return self._intelligent_split(content, max_width=available_width)
+
+    @staticmethod
+    def _intelligent_split(string, max_width=None):
+        lines = []
+        if max_width is None:
+            return string
         else:
-            return [ content[start:start+available_width] for start in range(0, len(content), available_width) ]
+            split = string.split("\n")
+            for line in split:
+
+                if len(line) < max_width:
+                    lines.append(line)
+                else:
+                    # no newlines present and line is still too long
+                    remaining = line
+                    while len(remaining) > max_width:
+                        # find last space before width boundary and split on that
+                        word_split_index = remaining.rfind(" ", 0, max_width)
+                        lines.append(remaining[:word_split_index])
+                        # shorten remaining so the loop ends
+                        remaining = remaining[word_split_index:]
+                    lines.append(remaining)
+
+        return lines
 
     def set_up(self):
         """
