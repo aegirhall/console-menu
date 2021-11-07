@@ -335,9 +335,11 @@ class MenuItemsSection(MenuComponent):
         if isinstance(content, list):
             lines = []
             for line in content:
+                # TODO: check compatability on super() calls
                 lines.append(super().row(line, align))
             return '\n'.join(lines)
         else:
+            # TODO: check compatability on super() calls
             return super().row(content, align)
 
 
