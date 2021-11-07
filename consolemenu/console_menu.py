@@ -442,6 +442,10 @@ class MenuItem(object):
         else:
             split = string.split("\n")
             for line in split:
+                # add spaces after newlines if they werent already added by the user.
+                # this preserves alignment with the numbered menu options
+                if not line.startswith(" "):
+                    line = " " + line
 
                 if len(line) < max_width:
                     lines.append(line)
