@@ -432,10 +432,11 @@ class MenuItem(object):
         :rtype: str
         """
         content = "%2d - %s" % (index + 1, self.get_text())
-        return self._intelligent_split(content, max_width=available_width)
+        indent = 4 #1 for single digit number (more digits extend left), 3 for " - " separator 
+        return self._intelligent_split(content, max_width=available_width, item_indent=indent)
 
     @staticmethod
-    def _intelligent_split(string, max_width=None):
+    def _intelligent_split(string, max_width=None, item_indent=0):
         lines = []
         if max_width is None:
             return string
@@ -444,8 +445,10 @@ class MenuItem(object):
             for line in split:
                 # add spaces after newlines if they werent already added by the user.
                 # this preserves alignment with the numbered menu options
-                if line != split[0] and not line.startswith(" "):
-                    line = " " + line
+                if line != split[0]:
+                    if not line.startswith(" "):
+                        line = " " + line
+                    line = ' ' * item_indent + line
 
                 if len(line) < max_width:
                     lines.append(line)
@@ -457,7 +460,7 @@ class MenuItem(object):
                         word_split_index = remaining.rfind(" ", 0, max_width)
                         lines.append(remaining[:word_split_index])
                         # shorten remaining so the loop ends
-                        remaining = remaining[word_split_index:]
+                        remaining = ' ' * item_indent + remaining[word_split_index:]
                     lines.append(remaining)
 
         return lines
