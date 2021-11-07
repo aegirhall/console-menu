@@ -431,7 +431,6 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        print(available_width)
         content = "%2d - %s" % (index + 1, self.get_text())
         if available_width is None:
             return content
