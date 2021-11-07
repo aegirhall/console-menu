@@ -328,6 +328,18 @@ class MenuItemsSection(MenuComponent):
                 yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
             yield self.row()
+    
+    def row(self, content='', align='left'):
+        """wrapper script around row that handles multiple-line menu items and returns a single string
+        """
+        if isinstance(content, list):
+            lines = []
+            for line in content:
+                lines.append(super().row(line, align))
+            return '\n'.join(lines)
+        else:
+            return super().row(content, align)
+
 
 
 class MenuFooter(MenuComponent):
