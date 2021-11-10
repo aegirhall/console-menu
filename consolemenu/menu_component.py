@@ -323,24 +323,31 @@ class MenuItemsSection(MenuComponent):
         for index, item in enumerate(self.items):
             if item.text in self.items_with_top_border:
                 yield self.inner_horizontal_border()
-            yield self.row(content=item.show(index, available_width=self.calculate_content_width()), align=self.items_align)
+            yield self.row(content=item.show(index), align=self.items_align, indent_len=self.padding.left)
             if item.text in self.items_with_bottom_border:
                 yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
             yield self.row()
     
-    def row(self, content='', align='left'):
-        """wrapper script around row that handles multiple-line menu items and returns a single string
+    def row(self, content='', align='left', indent_len=0):
+        """wrapper script around row that handles breaking up arbitraty length content into wrapped lines while respecting user-included newline characters. returns a single string correctly formatted for the menu
         """
-        if isinstance(content, list):
-            lines = []
-            for line in content:
+        # split on user newlines
+        content = content.split("\n")
+        lines = []
+        indent = ' '*indent_len
+
+        for line in content:
+            if line != content[0]:
+                # apply indentation to any lines after the first that were split by a users newline
+                line = indent + line
+            # apply any wrapping and indentation if the line is still too long
+            wrapped = textwrap.wrap(line, width=self.calculate_content_width(), subsequent_indent=indent)
+            for wrapline in wrapped:
+                # Finally, this adds the borders and things to the string
                 # TODO: check compatability on super() calls
-                lines.append(super().row(line, align))
-            return '\n'.join(lines)
-        else:
-            # TODO: check compatability on super() calls
-            return super().row(content, align)
+                lines.append(super().row(wrapline, align))
+        return '\n'.join(lines)
 
 
 

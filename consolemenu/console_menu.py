@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import platform
 import threading
+import textwrap
 
 import os
 
@@ -417,7 +418,7 @@ class MenuItem(object):
     def __str__(self):
         return "%s %s" % (self.menu.get_title(), self.get_text())
 
-    def show(self, index, available_width=None):
+    def show(self, index):
         """
         How this item should be displayed in the menu. Can be overridden, but should keep the same signature.
 
@@ -431,39 +432,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        content = "%2d - %s" % (index + 1, self.get_text())
-        indent = 4 #1 for single digit number (more digits extend left), 3 for " - " separator 
-        return self._intelligent_split(content, max_width=available_width, item_indent=indent)
-
-    @staticmethod
-    def _intelligent_split(string, max_width=None, item_indent=0):
-        lines = []
-        if max_width is None:
-            return string
-        else:
-            split = string.split("\n")
-            for line in split:
-                # add spaces after newlines if they werent already added by the user.
-                # this preserves alignment with the numbered menu options
-                if line != split[0]:
-                    if not line.startswith(" "):
-                        line = " " + line
-                    line = ' ' * item_indent + line
-
-                if len(line) < max_width:
-                    lines.append(line)
-                else:
-                    # no newlines present and line is still too long
-                    remaining = line
-                    while len(remaining) > max_width:
-                        # find last space before width boundary and split on that
-                        word_split_index = remaining.rfind(" ", 0, max_width)
-                        lines.append(remaining[:word_split_index])
-                        # shorten remaining so the loop ends
-                        remaining = ' ' * item_indent + remaining[word_split_index:]
-                    lines.append(remaining)
-
-        return lines
+        return "%2d - %s" % (index + 1, self.get_text())
 
     def set_up(self):
         """
