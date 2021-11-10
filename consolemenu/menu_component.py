@@ -323,7 +323,9 @@ class MenuItemsSection(MenuComponent):
         for index, item in enumerate(self.items):
             if item.text in self.items_with_top_border:
                 yield self.inner_horizontal_border()
-            yield self.row(content=item.show(index), align=self.items_align, indent_len=self.padding.left)
+            # the length of the separator plus the length of the longest index number
+            indent_size = len(item.index_item_separator) + len(str(len(self.items)))
+            yield self.row(content=item.show(index), align=self.items_align, indent_len=indent_size)
             if item.text in self.items_with_bottom_border:
                 yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
