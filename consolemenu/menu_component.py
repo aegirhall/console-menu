@@ -337,7 +337,7 @@ class MenuItemsSection(MenuComponent):
         if len(content) == 0:
             return super().row()
         # split on user newlines
-        content = content.split("\n")
+        content = content.splitlines()
         lines = []
         indent = ' '*indent_len
 
