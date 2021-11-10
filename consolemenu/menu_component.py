@@ -334,6 +334,8 @@ class MenuItemsSection(MenuComponent):
     def row(self, content='', align='left', indent_len=0):
         """wrapper script around row that handles breaking up arbitraty length content into wrapped lines while respecting user-included newline characters. returns a single string correctly formatted for the menu
         """
+        if len(content) == 0:
+            return super().row()
         # split on user newlines
         content = content.split("\n")
         lines = []
