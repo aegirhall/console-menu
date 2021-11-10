@@ -166,7 +166,7 @@ class MenuComponent(object):
                                           rv=self.border_style.top_right_corner,
                                           hz=self.outer_horizontals())
 
-    def row(self, content='', align='left'):
+    def _generate_single_row(self, content='', align='left'):
         """
         A row of the menu, which comprises the left and right verticals plus the given content.
 
@@ -176,6 +176,28 @@ class MenuComponent(object):
         return u"{lm}{vert}{cont}{vert}".format(lm=' ' * self.margins.left,
                                                 vert=self.border_style.outer_vertical,
                                                 cont=self._format_content(content, align))
+
+    def row(self, content='', align='left', indent_len=0):
+        """wrapper script around row that handles breaking up arbitraty length content into wrapped lines while respecting user-included newline characters. returns a single string correctly formatted for the menu
+        """
+        if len(content) == 0:
+            return self._generate_single_row()
+        # split on user newlines
+        content = content.splitlines()
+        lines = []
+        indent = ' '*indent_len
+
+        for line in content:
+            if line != content[0]:
+                # apply indentation to any lines after the first that were split by a users newline
+                line = indent + line
+            # apply any wrapping and indentation if the line is still too long
+            wrapped = textwrap.wrap(line, width=self.calculate_content_width(), subsequent_indent=indent)
+            for wrapline in wrapped:
+                # Finally, this adds the borders and things to the string
+                # TODO: check compatability on super() calls
+                lines.append(self._generate_single_row(wrapline, align))
+        return '\n'.join(lines)
 
     @staticmethod
     def _alignment_char(align):
@@ -331,27 +353,7 @@ class MenuItemsSection(MenuComponent):
         for x in range(0, self.padding.bottom):
             yield self.row()
     
-    def row(self, content='', align='left', indent_len=0):
-        """wrapper script around row that handles breaking up arbitraty length content into wrapped lines while respecting user-included newline characters. returns a single string correctly formatted for the menu
-        """
-        if len(content) == 0:
-            return super().row()
-        # split on user newlines
-        content = content.splitlines()
-        lines = []
-        indent = ' '*indent_len
-
-        for line in content:
-            if line != content[0]:
-                # apply indentation to any lines after the first that were split by a users newline
-                line = indent + line
-            # apply any wrapping and indentation if the line is still too long
-            wrapped = textwrap.wrap(line, width=self.calculate_content_width(), subsequent_indent=indent)
-            for wrapline in wrapped:
-                # Finally, this adds the borders and things to the string
-                # TODO: check compatability on super() calls
-                lines.append(super().row(wrapline, align))
-        return '\n'.join(lines)
+    
 
 
 
