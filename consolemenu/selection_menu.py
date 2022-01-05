@@ -17,13 +17,16 @@ class SelectionMenu(ConsoleMenu):
         show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
             Can be overridden when the menu is started.
         exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
+        clear_screen (bool): Set to False to disable clearing of screen between menus
     """
 
     def __init__(self, strings, title=None, subtitle=None, screen=None, formatter=None,
-                 prologue_text=None, epilogue_text=None, show_exit_option=True, exit_option_text='Exit'):
+                 prologue_text=None, epilogue_text=None, show_exit_option=True, exit_option_text='Exit',
+                 clear_screen=True):
         super(SelectionMenu, self).__init__(title, subtitle, screen=screen, formatter=formatter,
                                             prologue_text=prologue_text, epilogue_text=epilogue_text,
-                                            show_exit_option=show_exit_option, exit_option_text=exit_option_text)
+                                            show_exit_option=show_exit_option, exit_option_text=exit_option_text,
+                                            clear_screen=clear_screen)
         for index, item in enumerate(strings):
             self.append_item(SelectionItem(item, index, self))
 
