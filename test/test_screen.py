@@ -1,3 +1,4 @@
+import os
 import time
 import unittest
 
@@ -9,6 +10,9 @@ from consolemenu.screen import Screen
 class TestScreen(unittest.TestCase):
 
     def test_clear(self):
+        # clear will raise error if TERM is not set
+        if os.getenv('TERM') is None:
+            os.environ['TERM'] = 'xterm'
         screen = Screen()
         screen.println('Clearing screen...')
         screen.clear()
