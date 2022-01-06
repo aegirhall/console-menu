@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ * ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ * ]
+    branches: [ 'develop', 'master' ]
   # Allow manual workflow execution
   workflow_dispatch:
 
