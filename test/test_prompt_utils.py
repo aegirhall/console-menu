@@ -161,14 +161,14 @@ class PromptUtilsTest(unittest.TestCase):
         prompt_utils = PromptUtils(Screen())
         input_result = prompt_utils.input(prompt='This is my message', validators=RegexValidator(pattern='.*Cat.*'))
         self.assertTrue(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'This is my Cat')
+        self.assertEqual(input_result.input_string, 'This is my Cat')
 
     @patch('consolemenu.screen.Screen.input', return_value='This is my Cat')
     def test_input_validation_regex_false(self, get_input_mock):
         prompt_utils = PromptUtils(Screen())
         input_result = prompt_utils.input(prompt='This is my message', validators=RegexValidator(pattern='Cat'))
         self.assertFalse(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'This is my Cat')
+        self.assertEqual(input_result.input_string, 'This is my Cat')
 
     @patch('consolemenu.screen.Screen.input', return_value='https://www.google.com')
     def test_input_validation_regex_and_url_one_false(self, get_input_mock):
@@ -176,7 +176,7 @@ class PromptUtilsTest(unittest.TestCase):
         input_result = prompt_utils.input(prompt='This is my message',
                                           validators=[RegexValidator(pattern='notpresent'), UrlValidator()])
         self.assertFalse(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://www.google.com')
+        self.assertEqual(input_result.input_string, 'https://www.google.com')
 
     @patch('consolemenu.screen.Screen.input', return_value='https://www.google.com')
     def test_input_validation_regex_and_url_all_false(self, get_input_mock):
@@ -184,14 +184,14 @@ class PromptUtilsTest(unittest.TestCase):
         input_result = prompt_utils.input(prompt='This is my message',
                                           validators=[RegexValidator(pattern='notpresent'), UrlValidator()])
         self.assertFalse(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://www.google.com')
+        self.assertEqual(input_result.input_string, 'https://www.google.com')
 
     @patch('consolemenu.screen.Screen.input', return_value='https://asdasd')
     def test_input_validation_emtpy_list(self, get_input_mock):
         prompt_utils = PromptUtils(Screen())
         input_result = prompt_utils.input(prompt='This is my message', validators=[])
         self.assertTrue(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://asdasd')
+        self.assertEqual(input_result.input_string, 'https://asdasd')
 
     @patch('consolemenu.screen.Screen.input', return_value='https://asdasd')
     def test_input_validation_invalid_validation(self, get_input_mock):
@@ -204,7 +204,7 @@ class PromptUtilsTest(unittest.TestCase):
         prompt_utils = PromptUtils(Screen())
         input_result = prompt_utils.input(prompt='This is my message', validators=None)
         self.assertTrue(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://asdasd')
+        self.assertEqual(input_result.input_string, 'https://asdasd')
 
     @patch('consolemenu.screen.Screen.input', return_value='')
     def test_input_validators_with_default(self, get_input_mock):
@@ -212,7 +212,7 @@ class PromptUtilsTest(unittest.TestCase):
         input_result = prompt_utils.input(prompt='This is my message', validators=UrlValidator(),
                                           default='https://www.google.com')
         self.assertTrue(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://www.google.com')
+        self.assertEqual(input_result.input_string, 'https://www.google.com')
 
     @patch('consolemenu.screen.Screen.input', return_value='q')
     def test_input_quit_enabled_default(self, get_input_mock):
@@ -234,7 +234,7 @@ class PromptUtilsTest(unittest.TestCase):
         input_result = prompt_utils.input(prompt='This is my message', validators=UrlValidator(),
                                           default='https://www.google.com', enable_quit=True)
         self.assertTrue(input_result.validation_result)
-        self.assertEquals(input_result.input_string, 'https://www.google.com')
+        self.assertEqual(input_result.input_string, 'https://www.google.com')
 
     @patch('getpass.getpass', return_value='p@ssw0rd')
     def test_input_password(self, mock_getpass):

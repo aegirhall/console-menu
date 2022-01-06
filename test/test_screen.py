@@ -20,7 +20,7 @@ class TestScreen(unittest.TestCase):
     @patch('consolemenu.screen.Screen.input', return_value='This is my Cat')
     def test_input(self, get_input_mock):
         input_string = Screen().input(prompt='This is my message')
-        self.assertEquals(input_string, 'This is my Cat')
+        self.assertEqual(input_string, 'This is my Cat')
 
     def test_flush(self):
         screen = Screen()
