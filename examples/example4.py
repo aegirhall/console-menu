@@ -40,7 +40,7 @@ def main():
 
     menu_format.show_item_top_border(menu_item_2.text, True)     # Show a border above item 2
     menu_format.show_item_top_border(menu_item_4.text, True)     # Show a border above item 4
-    menu_format.show_item_bottom_border(menu_item_5.text, True)  # Show a border *below* item 4
+    menu_format.show_item_bottom_border(menu_item_5.text, True)  # Show a border *below* item 5
 
     # To separate the exit item from other menu items, you can either put a bottom border on the
     # last item you added to the menu (menu_item_8 in this example), or, you can put a top

@@ -187,15 +187,15 @@ class MenuFormatBuilder(object):
 
     def show_item_bottom_border(self, item_text, flag):
         # Allow a menu item to be passed in instead of text.
-        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
-            item_text = item_text.text
+        if not isinstance(item_text, str) and hasattr(item_text, 'get_text'):
+            item_text = item_text.get_text()
         self.__items_section.show_item_bottom_border(item_text, flag)
         return self
 
     def show_item_top_border(self, item_text, flag):
         # Allow a menu item to be passed in instead of text.
-        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
-            item_text = item_text.text
+        if not isinstance(item_text, str) and hasattr(item_text, 'get_text'):
+            item_text = item_text.get_text()
         self.__items_section.show_item_top_border(item_text, flag)
         return self
 
