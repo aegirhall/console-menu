@@ -306,7 +306,12 @@ class ConsoleMenu(object):
         """
         Gets the next single character and decides what to do with it
         """
-        user_input = self.get_input()
+
+        try:
+            user_input = self.get_input()
+        except EOFError:
+            self.should_exit = True
+            return
 
         try:
             num = int(user_input)
