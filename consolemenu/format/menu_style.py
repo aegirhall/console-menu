@@ -5,7 +5,15 @@ from consolemenu.format.menu_padding import MenuPadding
 
 class MenuStyle(object):
     """
-    Class for specifying menu styling, such as margins, padding, and border style.
+    Class for specifying all menu styling, such as margins, padding, and border style.
+
+    Args:
+        margins (:obj:`MenuMargins`): The menu margin settings.
+        padding (:obj:`MenuPadding`): The menu padding.
+        border_style (:obj:MenuBorderStyle`): The menu border style. Takes precedence over `border_style_type` if both
+            are specified.
+        border_style_type (int): The border style type as defined by :obj:`MenuBorderStyleType`.
+        border_style_factory (:obj:`MenuBorderStyleFactory`): The factory instance to use to create the borders.
     """
 
     def __init__(self, margins=None, padding=None, border_style=None, border_style_type=None,
@@ -39,6 +47,12 @@ class MenuStyle(object):
 
     @property
     def margins(self):
+        """
+        The margins instance.
+
+        Returns:
+            :obj:`MenuMargins`: The MenuMargins instance.
+        """
         return self.__margins
 
     @margins.setter
@@ -49,6 +63,12 @@ class MenuStyle(object):
 
     @property
     def padding(self):
+        """
+        The padding instance.
+
+        Returns:
+            :obj:`MenuPadding`: The MenuPadding instance.
+        """
         return self.__padding
 
     @padding.setter
@@ -59,6 +79,12 @@ class MenuStyle(object):
 
     @property
     def border_style(self):
+        """
+        The border style instance.
+
+        Returns:
+            :obj:`MenuBorderStyle`: The MenuBorderStyle instance.
+        """
         return self.__border_style
 
     @border_style.setter
@@ -69,6 +95,13 @@ class MenuStyle(object):
 
     @property
     def border_style_factory(self):
+        """
+        The border style factory instance.
+
+        Returns:
+            :obj:`MenuBorderStyleFactory`: The MenuBorderStyleFactory instance.
+
+        """
         return self.__border_style_factory
 
     @border_style_factory.setter

@@ -8,13 +8,16 @@ class SubmenuItem(MenuItem):
 
     def __init__(self, text, submenu, menu=None, should_exit=False):
         """
-        :ivar ConsoleMenu self.submenu: The submenu to be opened when this item is selected
+        :ivar str text: The text shown for this menu item
+        :ivar ConsoleMenu submenu: The submenu to be opened when this item is selected
+        :ivar ConsoleMenu menu: The menu to which this item belongs
+        :ivar bool should_exit: Whether the menu should exit once this item's action is done
         """
         super(SubmenuItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
 
         self.submenu = submenu
         if menu:
-            self.submenu.parent = menu
+            self.get_submenu().parent = menu
 
     def set_menu(self, menu):
         """
@@ -24,7 +27,7 @@ class SubmenuItem(MenuItem):
         :param ConsoleMenu menu: the menu
         """
         self.menu = menu
-        self.submenu.parent = menu
+        self.get_submenu().parent = menu
 
     def set_up(self):
         """
@@ -37,13 +40,13 @@ class SubmenuItem(MenuItem):
         """
         This class overrides this method
         """
-        self.submenu.start()
+        self.get_submenu().start()
 
     def clean_up(self):
         """
         This class overrides this method
         """
-        self.submenu.join()
+        self.get_submenu().join()
         self.menu.clear_screen()
         self.menu.resume()
 
@@ -51,4 +54,10 @@ class SubmenuItem(MenuItem):
         """
         :return: The returned value in the submenu
         """
-        return self.submenu.returned_value
+        return self.get_submenu().returned_value
+
+    def get_submenu(self):
+        """
+        We unwrap the submenu variable in case it is a reference to a method that returns a submenu
+        """
+        return self.submenu if not callable(self.submenu) else self.submenu()

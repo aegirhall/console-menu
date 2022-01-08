@@ -59,7 +59,7 @@ class MenuFormatBuilder(object):
         """
         Set the instance of MenuBorderStyleFactory to use for generating border styles.
         Typically, this method will never need to be used, unless the default MenuBorderStyleFactory
-        has been subclasses to provide custom border styles.
+        has been subclassed to provide custom border styles.
         :param border_style_factory: an instance of MenuBorderStyleFactory.
         """
         if not isinstance(border_style_factory, MenuBorderStyleFactory):
@@ -187,15 +187,15 @@ class MenuFormatBuilder(object):
 
     def show_item_bottom_border(self, item_text, flag):
         # Allow a menu item to be passed in instead of text.
-        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
-            item_text = item_text.text
+        if not isinstance(item_text, str) and hasattr(item_text, 'get_text'):
+            item_text = item_text.get_text()
         self.__items_section.show_item_bottom_border(item_text, flag)
         return self
 
     def show_item_top_border(self, item_text, flag):
         # Allow a menu item to be passed in instead of text.
-        if not isinstance(item_text, str) and hasattr(item_text, 'text'):
-            item_text = item_text.text
+        if not isinstance(item_text, str) and hasattr(item_text, 'get_text'):
+            item_text = item_text.get_text()
         self.__items_section.show_item_top_border(item_text, flag)
         return self
 

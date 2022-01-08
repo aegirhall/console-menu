@@ -15,11 +15,13 @@ http://console-menu.readthedocs.org/en/latest/
 
 .. image:: ./images/console-menu_screenshot2.png
 
+.. image:: ./images/console-menu_screenshot3.png
+
 
 Installation
 ~~~~~~~~~~~~
 
-Tested on Python 2.7, 3.4, 3.5, and 3.6, as well as pypy and pypy 3.
+Tested on Python 3.4 - 3.10, as well as pypy and pypy 3.
 
 Installation can be performed by running pip
 
@@ -68,7 +70,16 @@ It's designed to be pretty simple to use. Here's an example
     # Finally, we call show to show the menu and allow the user to interact
     menu.show()
 
-.. |Build Status| image:: https://travis-ci.org/aegirhall/console-menu.svg
-   :target: https://travis-ci.org/aegirhall/console-menu
+.. |Build Status| image:: https://github.com/aegirhall/console-menu/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/aegirhall/console-menu/actions/workflows/ci.yml
 .. |Documentation Status| image:: https://readthedocs.org/projects/console-menu/badge/?version=latest
    :target: http://console-menu.readthedocs.org/en/latest/?badge=latest
+
+Development
+-----------
+
+.. code:: shell
+
+   pip install -r requirements-docs.txt
+   pip install -v -e .
+   pytest

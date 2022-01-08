@@ -18,7 +18,8 @@ def main():
     # Create the root menu
     menu = MultiSelectMenu("Root Menu", "This is a Multi-Select Menu",
                            epilogue_text=("Please select one or more entries separated by commas, and/or a range "
-                                          "of numbers. For example:  1,2,3   or   1-4   or   1,3-4"))
+                                          "of numbers. For example:  1,2,3   or   1-4   or   1,3-4"),
+                           exit_option_text='Exit Application')  # Customize the exit text
 
     # Add all the items to the root menu
     menu.append_item(FunctionItem("Action Item 1", action, args=['one']))

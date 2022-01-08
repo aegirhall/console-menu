@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import platform
 import threading
+import textwrap
 
 import os
 
@@ -11,41 +12,41 @@ from consolemenu.screen import Screen
 
 class ConsoleMenu(object):
     """
-    A class that displays a menu and allows the user to select an option
+    A class that displays a menu and allows the user to select an option.
 
-    :cvar ConsoleMenu cls.currently_active_menu: Class variable that holds the currently active menu or None if no menu\
-    is currently active (E.G. when switching between menus)
+    Args:
+        title (str): The title of the menu, or a method reference that returns a string.
+        subtitle (str): The subtitle of the menu, or a method reference that returns a string.
+        screen (:obj:`consolemenu.screen.Screen`): The screen object associated with this menu.
+        formatter (:obj:`MenuFormatBuilder`): The MenuFormatBuilder instance used to format this menu.
+        prologue_text (str): Text or method reference to include in the "prologue" section of the menu.
+        epilogue_text (str): Text or method reference to include in the "epilogue" section of the menu.
+        show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
+            Can be overridden when the menu is started.
+        exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
+        clear_screen (bool): Set to False to disable clearing of screen between menus
+
+    Attributes:
+        cls.currently_active_menu (:obj:`ConsoleMenu`): Class variable that holds the currently active menu or None
+            if no menu is currently active (e.g. when switching between menus)
+        items (:obj:`list` of :obj:`MenuItem`): The list of MenuItems that the menu will display
+        parent (:obj:`ConsoleMenu`): The parent of this menu
+        previous_active_menu (:obj:`ConsoleMenu`): the previously active menu to be restored into the class's
+            currently active menu
+        current_option (int): The currently highlighted menu option
+        selected_option (int): The option that the user has most recently selected
     """
+
     currently_active_menu = None
 
-    def __init__(self, title=None, subtitle=None, show_exit_option=True, screen=None, formatter=None,
-                 prologue_text=None, epilogue_text=None):
-        """
-        :ivar str title: The title of the menu
-        :ivar str subtitle: The subtitle of the menu
-        :ivar bool show_exit_option: Whether this menu should show an exit item by default. Can be overridden \
-        when the menu is started
-        :ivar items: The list of MenuItems that the menu will display
-        :vartype items: list[:class:`MenuItem<consolemenu.items.MenuItem>`]
-        :ivar ConsoleMenu parent: The parent of this menu
-        :ivar ConsoleMenu previous_active_menu: the previously active menu to be restored into the class's \
-        currently active menu
-        :ivar int current_option: The currently highlighted menu option
-        :ivar MenuItem current_item: The item corresponding to the menu option that is currently highlighted
-        :ivar int selected_option: The option that the user has most recently selected
-        :ivar MenuItem selected_item: The item in :attr:`items` that the user most recently selected
-        :ivar returned_value: The value returned by the most recently selected item
-        :ivar screen: the screen object associated with this menu
-        :ivar formatter: the MenuFormatBuilder instance used to format this menu.
-        :ivar prologue_text: Text to include in the "prologue" section of the menu.
-        :ivar epilogue_text: Text to include in the "epilogue" section of the menu.
-        :ivar normal: the normal text color pair for this menu
-        :ivar highlight: the highlight color pair associated with this window
-        """
-
+    def __init__(self, title=None, subtitle=None, screen=None, formatter=None,
+                 prologue_text=None, epilogue_text=None, clear_screen=True,
+                 show_exit_option=True, exit_option_text='Exit'):
         if screen is None:
             screen = Screen()
         self.screen = screen
+
+        self.clear_screen_before_render = clear_screen
 
         if formatter is None:
             formatter = MenuFormatBuilder()
@@ -65,7 +66,7 @@ class ConsoleMenu(object):
 
         self.parent = None
 
-        self.exit_item = ExitItem(menu=self)
+        self.exit_item = ExitItem(menu=self, text=exit_option_text)
 
         self.current_option = 0
         self.selected_option = -1
@@ -81,12 +82,13 @@ class ConsoleMenu(object):
         self._running = threading.Event()
 
     def __repr__(self):
-        return "%s: %s. %d items" % (self.title, self.subtitle, len(self.items))
+        return "%s: %s. %d items" % (self.get_title(), self.get_subtitle(), len(self.items))
 
     @property
     def current_item(self):
         """
-        :rtype: MenuItem|None
+        :obj:`consolemenu.items.MenuItem`: The item corresponding to the menu option that is currently highlighted,
+            or None.
         """
         if self.items:
             return self.items[self.current_option]
@@ -96,7 +98,7 @@ class ConsoleMenu(object):
     @property
     def selected_item(self):
         """
-        :rtype: MenuItem|None
+        :obj:`consolemenu.items.MenuItem`:  The item in :attr:`items` that the user most recently selected, or None.
         """
         if self.items and self.selected_option != -1:
             return self.items[self.current_option]
@@ -105,9 +107,11 @@ class ConsoleMenu(object):
 
     def append_item(self, item):
         """
-        Add an item to the end of the menu before the exit item
+        Add an item to the end of the menu before the exit item.
 
-        :param MenuItem item: The item to be added
+        Args:
+            item (MenuItem): The item to be added.
+
         """
         did_remove = self.remove_exit()
         item.menu = self
@@ -116,6 +120,15 @@ class ConsoleMenu(object):
             self.add_exit()
 
     def remove_item(self, item):
+        """
+        Remove the specified item from the menu.
+
+        Args:
+            item (MenuItem): the item to be removed.
+
+        Returns:
+            bool: True if the item was removed; False otherwise.
+        """
         for idx, _item in enumerate(self.items):
             if item == _item:
                 del self.items[idx]
@@ -124,23 +137,22 @@ class ConsoleMenu(object):
 
     def add_exit(self):
         """
-        Add the exit item if necessary. Used to make sure there aren't multiple exit items
+        Add the exit item if necessary. Used to make sure there aren't multiple exit items.
 
-        :return: True if item needed to be added, False otherwise
-        :rtype: bool
+        Returns:
+            bool: True if item needed to be added, False otherwise.
         """
-        if self.items:
-            if self.items[-1] is not self.exit_item:
-                self.items.append(self.exit_item)
-                return True
+        if not self.items or self.items[-1] is not self.exit_item:
+            self.items.append(self.exit_item)
+            return True
         return False
 
     def remove_exit(self):
         """
-        Remove the exit item if necessary. Used to make sure we only remove the exit item, not something else
+        Remove the exit item if necessary. Used to make sure we only remove the exit item, not something else.
 
-        :return: True if item needed to be removed, False otherwise
-        :rtype: bool
+        Returns:
+            bool: True if item needed to be removed, False otherwise.
         """
         if self.items:
             if self.items[-1] is self.exit_item:
@@ -152,8 +164,8 @@ class ConsoleMenu(object):
         """
         Checks to determine if the currently selected item is the Exit Menu item.
 
-        :return: True if the currently selected item is the Exit Menu item; False otherwise.
-        :rtype: bool
+        Returns:
+            bool: True if the currently selected item is the Exit Menu item; False otherwise.
         """
         return self.selected_item and self.selected_item is self.exit_item
 
@@ -169,10 +181,11 @@ class ConsoleMenu(object):
         The thread is a daemon, so :meth:`join()<consolemenu.ConsoleMenu.join>` should be called if there's a
         possibility that the main thread will exit before the menu is done
 
-        :param bool show_exit_option: Whether the exit item should be shown, defaults to\
-        the value set in the constructor
-        """
+        Args:
+            show_exit_option (bool): Specify whether the exit item should be shown, defaults to the value
+                set in the constructor
 
+        """
         self.previous_active_menu = ConsoleMenu.currently_active_menu
         ConsoleMenu.currently_active_menu = None
 
@@ -198,8 +211,10 @@ class ConsoleMenu(object):
         """
         Calls start and then immediately joins.
 
-        :param bool show_exit_option: Whether the exit item should be shown, defaults to the value set \
-        in the constructor
+        Args:
+            show_exit_option (bool):  Specify whether the exit item should be shown, defaults to the value set
+                in the constructor
+
         """
         self.start(show_exit_option)
         self.join()
@@ -210,47 +225,59 @@ class ConsoleMenu(object):
         self._running.set()
 
         while self._running.wait() is not False and not self.should_exit:
-            self.screen.clear()
+            self.clear_screen()
             self.draw()
             self.process_user_input()
 
     def draw(self):
         """
-        Refreshes the screen and redraws the menu. Should be called whenever something changes that needs to be redrawn.
+        Refresh the screen and redraw the menu. Should be called whenever something changes that needs to be redrawn.
         """
-        self.screen.printf(self.formatter.format(title=self.title, subtitle=self.subtitle, items=self.items,
-                                                 prologue_text=self.prologue_text, epilogue_text=self.epilogue_text))
+        self.screen.printf(self.formatter.format(title=self.get_title(),
+                                                 subtitle=self.get_subtitle(),
+                                                 items=self.items,
+                                                 prologue_text=self.get_prologue_text(),
+                                                 epilogue_text=self.get_epilogue_text()))
 
     def is_running(self):
         """
-        :return: True if the menu is started and hasn't been paused
+        Check if the menu has been started and is not paused.
+
+        Returns:
+            bool: True if the menu is started and hasn't been paused; False otherwise.
         """
         return self._running.is_set()
 
     def wait_for_start(self, timeout=None):
         """
-        Block until the menu is started
+        Block until the menu is started.
 
-        :param timeout: How long to wait before timing out
-        :return: False if timeout is given and operation times out, True otherwise. None before Python 2.7
+        Args:
+            timeout:  How long to wait before timing out.
+
+        Returns:
+            bool: False if timeout is given and operation times out, True otherwise. None before Python 2.7.
         """
         return self._running.wait(timeout)
 
     def is_alive(self):
         """
-        :return: True if the thread is still alive, False otherwise
+        Check whether the thread is stil alive.
+
+        Returns:
+            bool: True if the thread is still alive; False otherwise.
         """
         return self._main_thread.is_alive()
 
     def pause(self):
         """
-        Temporarily pause the menu until resume is called
+        Temporarily pause the menu until resume is called.
         """
         self._running.clear()
 
     def resume(self):
         """
-        Sets the currently active menu to this one and resumes it
+        Sets the currently active menu to this one and resumes it.
         """
         ConsoleMenu.currently_active_menu = self
         self._running.set()
@@ -259,7 +286,10 @@ class ConsoleMenu(object):
         """
         Should be called at some point after :meth:`start()<consolemenu.ConsoleMenu.start>` to block until
         the menu exits.
-        :param Number timeout: How long to wait before timing out
+
+        Args:
+            timeout (Number): How long to wait before timing out.
+
         """
         self._main_thread.join(timeout=timeout)
 
@@ -271,13 +301,18 @@ class ConsoleMenu(object):
         :return: the ordinal value of a single character
         :rtype: int
         """
-        return self.screen.input().input_string
+        return self.screen.input()
 
     def process_user_input(self):
         """
         Gets the next single character and decides what to do with it
         """
-        user_input = self.get_input()
+
+        try:
+            user_input = self.get_input()
+        except EOFError:
+            self.should_exit = True
+            return
 
         try:
             num = int(user_input)
@@ -348,7 +383,21 @@ class ConsoleMenu(object):
         """
         Clear the screen belonging to this menu
         """
-        self.screen.clear()
+        if self.clear_screen_before_render:
+            self.screen.clear()
+
+    # Getters to get text in case method reference
+    def get_title(self):
+        return self.title() if callable(self.title) else self.title
+
+    def get_subtitle(self):
+        return self.subtitle() if callable(self.subtitle) else self.subtitle
+
+    def get_prologue_text(self):
+        return self.prologue_text() if callable(self.prologue_text) else self.prologue_text
+
+    def get_epilogue_text(self):
+        return self.epilogue_text() if callable(self.epilogue_text) else self.epilogue_text
 
 
 class MenuItem(object):
@@ -365,9 +414,10 @@ class MenuItem(object):
         self.text = text
         self.menu = menu
         self.should_exit = should_exit
+        self.index_item_separator = " - "
 
     def __str__(self):
-        return "%s %s" % (self.menu.title, self.text)
+        return "%s %s" % (self.menu.get_title(), self.get_text())
 
     def show(self, index):
         """
@@ -383,7 +433,7 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d - %s" % (index + 1, self.text)
+        return "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
 
     def set_up(self):
         """
@@ -413,6 +463,10 @@ class MenuItem(object):
     def __eq__(self, o):
         return self.text == o.text and self.menu == o.menu and self.should_exit == o.should_exit
 
+    # Getters to get text in case method reference
+    def get_text(self):
+        return self.text() if callable(self.text) else self.text
+
 
 class ExitItem(MenuItem):
     """
@@ -422,17 +476,14 @@ class ExitItem(MenuItem):
     def __init__(self, text="Exit", menu=None):
         super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True)
 
-    def show(self, index):
+    def show(self, index, available_width=None):
         """
-        This class overrides this method
+        ExitItem overrides this method to display appropriate Exit or Return text.
         """
-        if self.menu and self.menu.parent:
-            self.text = "Return to %s" % self.menu.parent.title
-            # Check if menu title ends with menu. (Some menus will include Menu in the name).
-            if not self.text.strip().lower().endswith("menu"):
-                self.text += " menu"
-        else:
-            self.text = "Exit"
+        # If we have a parent menu, and no overriding exit text was specified,
+        # change Exit text to "Return to {Parent Menu Title}"
+        if self.menu and self.menu.parent and self.get_text() == 'Exit':
+            self.text = "Return to %s" % self.menu.parent.get_title()
         return super(ExitItem, self).show(index)
 
 
