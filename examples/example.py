@@ -4,14 +4,22 @@ from consolemenu import *
 from consolemenu.items import *
 
 
+def input_handler():
+    pu = PromptUtils(Screen())
+    # PromptUtils.input() returns an InputResult
+    result = pu.input("Enter an input")
+    pu.println("\nYou entered:", result.input_string, "\n")
+    pu.enter_to_continue()
+
+
 def main():
     # Create the root menu
     menu = ConsoleMenu("Root Menu", "This is the Root Menu Subtitle")
 
-    item1 = MenuItem("Item 1", menu)
+    item1 = MenuItem("Item 1")
 
     # Create a menu item that calls a function
-    function_item = FunctionItem("Fun item", Screen().input, kwargs={"prompt": "Enter an input: "})
+    function_item = FunctionItem("Fun item", input_handler)
 
     # Create a menu item that calls a system command, based on OS type
     if sys.platform.startswith('win'):
