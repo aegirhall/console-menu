@@ -15,11 +15,13 @@ http://console-menu.readthedocs.org/en/latest/
 
 .. image:: ./images/console-menu_screenshot2.png
 
+.. image:: ./images/console-menu_screenshot3.png
+
 
 Installation
 ~~~~~~~~~~~~
 
-Tested on Python 2.7, 3.4, 3.5, and 3.6, as well as pypy and pypy 3.
+Tested on Python 3.4 - 3.10, as well as pypy and pypy 3.
 
 Installation can be performed by running pip
 
