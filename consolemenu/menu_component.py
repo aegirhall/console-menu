@@ -178,7 +178,13 @@ class MenuComponent(object):
                                                 cont=self._format_content(content, align))
 
     def row(self, content='', align='left', indent_len=0):
-        """wrapper script around row that handles breaking up arbitraty length content into wrapped lines while respecting user-included newline characters. returns a single string correctly formatted for the menu
+        """
+        A row of the menu, which comprises the left and right verticals plus the given content.
+        If the content is larger than the alloted space for a single row, the content is wrapped
+        onto multiple lines, while also respecting user-included newline characters.
+
+        Returns:
+            str: One or more rows of this menu component with the specified content.
         """
         if len(content) == 0:
             return self._generate_single_row()
@@ -351,9 +357,6 @@ class MenuItemsSection(MenuComponent):
                 yield self.inner_horizontal_border()
         for x in range(0, self.padding.bottom):
             yield self.row()
-    
-    
-
 
 
 class MenuFooter(MenuComponent):
