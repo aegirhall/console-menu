@@ -14,8 +14,8 @@ from colors import color
 def action(color_name):
     text = """
 Dark spruce forest frowned on either side of the frozen waterway.
-The trees had been stripped by a recent wind of their white covering of frost, 
-and they seemed to lean toward each other, black and ominous, in the fading
+The trees had been stripped by a recent wind of their white covering of frost,
+ and they seemed to lean toward each other, black and ominous, in the fading
 light. A vast silence reigned over the land.
  """
     print(color(text, fg=color_name))
