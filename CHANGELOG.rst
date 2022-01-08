@@ -1,10 +1,12 @@
-v0.7.0 (2022-01-xx)
+v0.7.0 (2022-01-08)
 ===================
 - Add feature to allow menu text to be dynamically updated (issue #25).
 - Add feature to disable the automatic screen refresh when a menu item is
   selected - add "clear_screen=False" argument during Menu instantiation
   (issue #23).
 - Allow colors in menu item names (issue #45).
+- Menu items with text longer than the menu width will now wrap and indent
+  properly (issue #62)
 - Migrate from Travis-CI to GitHub Actions.
 
 v0.6.0 (2019-09-07)
