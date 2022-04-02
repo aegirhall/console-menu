@@ -1,3 +1,11 @@
+v0.7.1 (2022-04-01)
+===================
+- Partial fix for ansiwrap import when using PyInstaller (issue #66). The issue
+  is caused by the ansiwrap library (ansiwrap issue #6). Until ansiwrap #6 is
+  properly fixed, the workaround is to use a conditional import and fall back
+  to textwrap if ansiwrap fails to import. The drawback to this workaround is
+  that ANSI colored text will no longer wrap properly when using PyInstaller.
+
 v0.7.0 (2022-01-08)
 ===================
 - Add feature to allow menu text to be dynamically updated (issue #25).
