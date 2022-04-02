@@ -18,7 +18,7 @@ def ansilen(s):
         return textwrap.ansilen(s)
     else:
         return len(s)
-    
+
 
 class Dimension(object):
     """
