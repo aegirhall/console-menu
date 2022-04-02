@@ -3,7 +3,6 @@ from __future__ import print_function
 import platform
 import subprocess
 import sys
-import textwrap
 
 
 class Screen(object):
@@ -12,7 +11,6 @@ class Screen(object):
     """
 
     def __init__(self):
-        self.__tw = textwrap.TextWrapper()
         # TODO get actual screen size
         self.__height = 40
         self.__width = 80

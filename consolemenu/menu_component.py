@@ -1,6 +1,23 @@
-import ansiwrap
+try:
+    import ansiwrap as textwrap
+except ImportError:
+    import textwrap
 
 from consolemenu.format import MenuStyle
+
+
+def ansilen(s):
+    """
+    Return the length of the string minus any ANSI control codes.
+    Args:
+        s (string): The input string to check.
+    Returns:
+        int: The string length.
+    """
+    if hasattr(textwrap, 'ansilen'):
+        return textwrap.ansilen(s)
+    else:
+        return len(s)
 
 
 class Dimension(object):
@@ -198,7 +215,7 @@ class MenuComponent(object):
                 # apply indentation to any lines after the first that were split by a users newline
                 line = indent + line
             # apply any wrapping and indentation if the line is still too long
-            wrapped = ansiwrap.wrap(line, width=self.calculate_content_width(), subsequent_indent=indent)
+            wrapped = textwrap.wrap(line, width=self.calculate_content_width(), subsequent_indent=indent)
             for wrapline in wrapped:
                 # Finally, this adds the borders and things to the string
                 # TODO: check compatability on super() calls
@@ -215,7 +232,7 @@ class MenuComponent(object):
             return '<'
 
     def _format_content(self, content='', align='left'):
-        invisible_chars = len(content) - ansiwrap.ansilen(content)
+        invisible_chars = len(content) - ansilen(content)
         return '{lp}{text:{al}{width}}{rp}'.format(lp=' ' * self.padding.left,
                                                    rp=' ' * self.padding.right,
                                                    text=content, al=self._alignment_char(align),
