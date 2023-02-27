@@ -40,7 +40,7 @@ class ConsoleMenu(object):
 
     def __init__(self, title=None, subtitle=None, screen=None, formatter=None,
                  prologue_text=None, epilogue_text=None, clear_screen=True,
-                 show_exit_option=True, exit_option_text='Exit'):
+                 show_exit_option=True, exit_option_text='Exit', exit_menu_char=None):   
         if screen is None:
             screen = Screen()
         self.screen = screen
@@ -65,7 +65,7 @@ class ConsoleMenu(object):
 
         self.parent = None
 
-        self.exit_item = ExitItem(menu=self, text=exit_option_text)
+        self.exit_item = ExitItem(menu=self, text=exit_option_text, menu_char=exit_menu_char)
 
         self.current_option = 0
         self.selected_option = -1
@@ -313,6 +313,12 @@ class ConsoleMenu(object):
             self.should_exit = True
             return
 
+        for i, cm in enumerate(self.items):
+            if cm.menu_char == user_input:
+                self.current_option = i
+                self.select()
+                return user_input
+            
         try:
             num = int(user_input)
         except Exception:
@@ -403,8 +409,8 @@ class MenuItem(object):
     """
     A generic menu item
     """
-
-    def __init__(self, text, menu=None, should_exit=False):
+        
+    def __init__(self, text, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
         :ivar ConsoleMenu menu: The menu to which this item belongs
@@ -414,6 +420,7 @@ class MenuItem(object):
         self.menu = menu
         self.should_exit = should_exit
         self.index_item_separator = " - "
+        self.menu_char = menu_char
 
     def __str__(self):
         return "%s %s" % (self.menu.get_title(), self.get_text())
@@ -432,7 +439,12 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
+        self.index = index + 1
+        if self.menu_char == None:
+            ret = "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
+        else:
+            ret = " %c%s%s" % (self.menu_char, self.index_item_separator, self.get_text())
+        return ret
 
     def set_up(self):
         """
@@ -472,8 +484,8 @@ class ExitItem(MenuItem):
     Used to exit the current menu. Handled by :class:`consolemenu.ConsoleMenu`
     """
 
-    def __init__(self, text="Exit", menu=None):
-        super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True)
+    def __init__(self, text="Exit", menu=None, menu_char=None):
+        super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True, menu_char=menu_char)
 
     def show(self, index, available_width=None):
         """

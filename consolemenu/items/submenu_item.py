@@ -6,14 +6,14 @@ class SubmenuItem(MenuItem):
     A menu item to open a submenu
     """
 
-    def __init__(self, text, submenu, menu=None, should_exit=False):
+    def __init__(self, text, submenu, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
         :ivar ConsoleMenu submenu: The submenu to be opened when this item is selected
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
         """
-        super(SubmenuItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
+        super(SubmenuItem, self).__init__(text=text, menu=menu, should_exit=should_exit, menu_char=menu_char)
 
         self.submenu = submenu
         if menu:
