@@ -40,7 +40,7 @@ class ConsoleMenu(object):
 
     def __init__(self, title=None, subtitle=None, screen=None, formatter=None,
                  prologue_text=None, epilogue_text=None, clear_screen=True,
-                 show_exit_option=True, exit_option_text='Exit', exit_menu_char=None):   
+                 show_exit_option=True, exit_option_text='Exit', exit_menu_char=None):
         if screen is None:
             screen = Screen()
         self.screen = screen
@@ -318,7 +318,7 @@ class ConsoleMenu(object):
                 self.current_option = i
                 self.select()
                 return user_input
-            
+
         try:
             num = int(user_input)
         except Exception:
@@ -409,7 +409,7 @@ class MenuItem(object):
     """
     A generic menu item
     """
-        
+
     def __init__(self, text, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
@@ -440,7 +440,7 @@ class MenuItem(object):
         :rtype: str
         """
         self.index = index + 1
-        if self.menu_char == None:
+        if self.menu_char is None:
             ret = "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
         else:
             ret = " %c%s%s" % (self.menu_char, self.index_item_separator, self.get_text())
