@@ -22,7 +22,7 @@ http://console-menu.readthedocs.org/en/latest/
 Installation
 ~~~~~~~~~~~~
 
-Tested on Python 3.4 - 3.10, as well as pypy and pypy 3.
+Tested on Python 3.7 - 3.11, as well as pypy and pypy 3.
 
 Installation can be performed by running pip
 
