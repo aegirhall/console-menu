@@ -14,6 +14,7 @@ class FunctionItem(ExternalItem):
         :ivar dict kwargs: An optional dictionary of keyword arguments to be passed to the function
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
+        :ivar str menu_char: The character used to select this menu item. Optional - defaults to None.
         """
         super(FunctionItem, self).__init__(text=text, menu=menu, should_exit=should_exit, menu_char=menu_char)
 

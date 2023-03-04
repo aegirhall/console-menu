@@ -23,6 +23,7 @@ class ConsoleMenu(object):
         show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
             Can be overridden when the menu is started.
         exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
+        exit_menu_char (str): Character to use for exiting the menu. Defaults to None.
         clear_screen (bool): Set to False to disable clearing of screen between menus
 
     Attributes:
@@ -313,6 +314,7 @@ class ConsoleMenu(object):
             self.should_exit = True
             return
 
+        # Process menu characters first
         for i, cm in enumerate(self.items):
             if cm.menu_char == user_input:
                 self.current_option = i
@@ -415,6 +417,7 @@ class MenuItem(object):
         :ivar str text: The text shown for this menu item
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
+        :ivar str menu_char: The character used to select this menu item. Optional - defaults to None.
         """
         self.text = text
         self.menu = menu

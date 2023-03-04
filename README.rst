@@ -17,6 +17,7 @@ http://console-menu.readthedocs.org/en/latest/
 
 .. image:: ./images/console-menu_screenshot3.png
 
+.. image:: ./images/console-menu_screenshot4.png
 
 Installation
 ~~~~~~~~~~~~
