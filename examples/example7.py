@@ -25,13 +25,19 @@ light. A vast silence reigned over the land.
 def main():
 
     # Create the root menu
-    menu = ConsoleMenu("Color Menu with Letter Selection", "This Console Menu uses menu characters rather than numbers.", exit_menu_char='q')
+    menu = ConsoleMenu("Color Menu with Letter Selection",
+                       "This Console Menu uses menu characters rather than numbers.",
+                       exit_menu_char='q')
 
     # Add all the items to the root menu
-    menu.append_item(FunctionItem("Show {} text".format(color("Red", fg='red')), action, args=['red'], menu_char='r'))
-    menu.append_item(FunctionItem("Show {} text".format(color("Blue", fg='blue')), action, args=['blue'], menu_char='b'))
-    menu.append_item(FunctionItem("Show {} text".format(color("Green", fg='green')), action, args=['green'], menu_char='g'))
-    menu.append_item(FunctionItem("Show {} text".format(color("Yellow", fg='yellow')), action, args=['yellow'], menu_char='y'))
+    menu.append_item(FunctionItem("Show {} text".format(color("Red", fg='red')), action,
+                                  args=['red'], menu_char='r'))
+    menu.append_item(FunctionItem("Show {} text".format(color("Blue", fg='blue')), action,
+                                  args=['blue'], menu_char='b'))
+    menu.append_item(FunctionItem("Show {} text".format(color("Green", fg='green')), action,
+                                  args=['green'], menu_char='g'))
+    menu.append_item(FunctionItem("Show {} text".format(color("Yellow", fg='yellow')), action,
+                                  args=['yellow'], menu_char='y'))
 
     # Show the menu
     menu.start()
