@@ -11,13 +11,13 @@ Derived from the curses-menu project, but with curses dependency removed.
 
 http://console-menu.readthedocs.org/en/latest/
 
-.. image:: ./images/console-menu_screenshot1.png
+.. image:: https://raw.githubusercontent.com/aegirhall/console-menu/develop/images/console-menu_screenshot1.png
 
-.. image:: ./images/console-menu_screenshot2.png
+.. image:: https://raw.githubusercontent.com/aegirhall/console-menu/develop/images/console-menu_screenshot2.png
 
-.. image:: ./images/console-menu_screenshot3.png
+.. image:: https://raw.githubusercontent.com/aegirhall/console-menu/develop/images/console-menu_screenshot3.png
 
-.. image:: ./images/console-menu_screenshot4.png
+.. image:: https://raw.githubusercontent.com/aegirhall/console-menu/develop/images/console-menu_screenshot4.png
 
 Installation
 ~~~~~~~~~~~~
