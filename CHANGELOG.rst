@@ -1,3 +1,11 @@
+v0.8.0 (2023-03-04)
+===================
+- Partial fix for using letter selection for menu items (issue #73). Menu items
+  can now be selected using letters rather than numbers; however, the Enter key
+  is still required for input to be accepted.
+- Added support for Python 3.10 and 3.11.
+- Dropped support for Python 3.6.
+
 v0.7.1 (2022-04-01)
 ===================
 - Partial fix for ansiwrap import when using PyInstaller (issue #66). The issue

@@ -8,15 +8,16 @@ class CommandItem(ExternalItem):
     A menu item to execute a console command
     """
 
-    def __init__(self, text, command, arguments=None, menu=None, should_exit=False):
+    def __init__(self, text, command, arguments=None, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
         :ivar str command: The console command to be executed
         :ivar list[str] arguments: An optional list of string arguments to be passed to the command
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
+        :ivar str menu_char: The character used to select this menu item. Optional - defaults to None.
         """
-        super(CommandItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
+        super(CommandItem, self).__init__(text=text, menu=menu, should_exit=should_exit, menu_char=menu_char)
         self.command = command
 
         if arguments:

@@ -6,7 +6,7 @@ class FunctionItem(ExternalItem):
     A menu item to call a Python function
     """
 
-    def __init__(self, text, function, args=None, kwargs=None, menu=None, should_exit=False):
+    def __init__(self, text, function, args=None, kwargs=None, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
         :ivar function: The function to be called
@@ -14,8 +14,9 @@ class FunctionItem(ExternalItem):
         :ivar dict kwargs: An optional dictionary of keyword arguments to be passed to the function
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
+        :ivar str menu_char: The character used to select this menu item. Optional - defaults to None.
         """
-        super(FunctionItem, self).__init__(text=text, menu=menu, should_exit=should_exit)
+        super(FunctionItem, self).__init__(text=text, menu=menu, should_exit=should_exit, menu_char=menu_char)
 
         self.function = function
 

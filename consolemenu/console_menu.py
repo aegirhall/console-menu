@@ -23,6 +23,7 @@ class ConsoleMenu(object):
         show_exit_option (bool): Specifies whether this menu should show an exit item by default. Defaults to True.
             Can be overridden when the menu is started.
         exit_option_text (str): Text for the Exit menu item. Defaults to 'Exit'.
+        exit_menu_char (str): Character to use for exiting the menu. Defaults to None.
         clear_screen (bool): Set to False to disable clearing of screen between menus
 
     Attributes:
@@ -40,7 +41,7 @@ class ConsoleMenu(object):
 
     def __init__(self, title=None, subtitle=None, screen=None, formatter=None,
                  prologue_text=None, epilogue_text=None, clear_screen=True,
-                 show_exit_option=True, exit_option_text='Exit'):
+                 show_exit_option=True, exit_option_text='Exit', exit_menu_char=None):
         if screen is None:
             screen = Screen()
         self.screen = screen
@@ -65,7 +66,7 @@ class ConsoleMenu(object):
 
         self.parent = None
 
-        self.exit_item = ExitItem(menu=self, text=exit_option_text)
+        self.exit_item = ExitItem(menu=self, text=exit_option_text, menu_char=exit_menu_char)
 
         self.current_option = 0
         self.selected_option = -1
@@ -313,6 +314,13 @@ class ConsoleMenu(object):
             self.should_exit = True
             return
 
+        # Process menu characters first
+        for i, cm in enumerate(self.items):
+            if cm.menu_char == user_input:
+                self.current_option = i
+                self.select()
+                return user_input
+
         try:
             num = int(user_input)
         except Exception:
@@ -404,16 +412,18 @@ class MenuItem(object):
     A generic menu item
     """
 
-    def __init__(self, text, menu=None, should_exit=False):
+    def __init__(self, text, menu=None, should_exit=False, menu_char=None):
         """
         :ivar str text: The text shown for this menu item
         :ivar ConsoleMenu menu: The menu to which this item belongs
         :ivar bool should_exit: Whether the menu should exit once this item's action is done
+        :ivar str menu_char: The character used to select this menu item. Optional - defaults to None.
         """
         self.text = text
         self.menu = menu
         self.should_exit = should_exit
         self.index_item_separator = " - "
+        self.menu_char = menu_char
 
     def __str__(self):
         return "%s %s" % (self.menu.get_title(), self.get_text())
@@ -432,7 +442,12 @@ class MenuItem(object):
         :return: The representation of the item to be shown in a menu
         :rtype: str
         """
-        return "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
+        self.index = index + 1
+        if self.menu_char is None:
+            ret = "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
+        else:
+            ret = " %c%s%s" % (self.menu_char, self.index_item_separator, self.get_text())
+        return ret
 
     def set_up(self):
         """
@@ -472,8 +487,8 @@ class ExitItem(MenuItem):
     Used to exit the current menu. Handled by :class:`consolemenu.ConsoleMenu`
     """
 
-    def __init__(self, text="Exit", menu=None):
-        super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True)
+    def __init__(self, text="Exit", menu=None, menu_char=None):
+        super(ExitItem, self).__init__(text=text, menu=menu, should_exit=True, menu_char=menu_char)
 
     def show(self, index, available_width=None):
         """
