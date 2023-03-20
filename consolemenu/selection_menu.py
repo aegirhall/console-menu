@@ -22,16 +22,16 @@ class SelectionMenu(ConsoleMenu):
 
     def __init__(self, strings, title=None, subtitle=None, screen=None, formatter=None,
                  prologue_text=None, epilogue_text=None, show_exit_option=True, exit_option_text='Exit',
-                 clear_screen=True):
+                 exit_menu_char=None, clear_screen=True):
         super(SelectionMenu, self).__init__(title, subtitle, screen=screen, formatter=formatter,
                                             prologue_text=prologue_text, epilogue_text=epilogue_text,
                                             show_exit_option=show_exit_option, exit_option_text=exit_option_text,
-                                            clear_screen=clear_screen)
+                                            exit_menu_char=exit_menu_char, clear_screen=clear_screen)
         for index, item in enumerate(strings):
             self.append_item(SelectionItem(item, index, self))
 
     @classmethod
-    def get_selection(cls, strings, title="Select an option", subtitle=None, show_exit_option=True, _menu=None):
+    def get_selection(cls, strings, title="Select an option", subtitle=None, show_exit_option=True, exit_menu_char=None, _menu=None):
         """
         Single-method way of getting a selection out of a list of strings.
 
@@ -47,7 +47,7 @@ class SelectionMenu(ConsoleMenu):
             int: The index of the selected option.
 
         """
-        menu = cls(strings, title, subtitle, show_exit_option=show_exit_option)
+        menu = cls(strings, title, subtitle, show_exit_option=show_exit_option, exit_menu_char=exit_menu_char)
         if _menu is not None:
             _menu.append(menu)
         menu.show()
