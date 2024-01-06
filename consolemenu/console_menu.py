@@ -446,7 +446,7 @@ class MenuItem(object):
         if self.menu_char is None:
             ret = "%2d%s%s" % (index + 1, self.index_item_separator, self.get_text())
         else:
-            ret = " %c%s%s" % (self.menu_char, self.index_item_separator, self.get_text())
+            ret = " %s%s%s" % (self.menu_char, self.index_item_separator, self.get_text())
         return ret
 
     def set_up(self):
