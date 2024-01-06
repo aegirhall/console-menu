@@ -312,7 +312,7 @@ class DoubleLineOuterLightInnerBorderStyle(DoubleLineBorderStyle):
 
 class ZeroBorderStyle(MenuBorderStyle):
     """
-    A borderless border. This fills the border with blank characters
+    A borderless border. This fills the border with empty strings
     """
 
     @property
@@ -387,7 +387,7 @@ class MenuBorderStyleType(object):
     
     ZERO_BORDER = 6
     """
-    int: Menu border that is borderless. This uses blank characters instead of borders.
+    int: Menu border that is borderless. This uses empty strings instead of borders with characters.
     """
 
 
@@ -504,7 +504,7 @@ class MenuBorderStyleFactory(object):
     
     def create_zero_border(self):
         """
-        Creates a zero border with blank characters.
+        Creates a zero border with empty strings.
 
         Returns:
             :obj:`ZeroBorder`: a new instance of ZeroBorderStyle
