@@ -1,5 +1,3 @@
-"""MODIFIED VERSION OF CONSOLEMENU"""
-
 import logging
 import sys
 
