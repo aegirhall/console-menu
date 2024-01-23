@@ -309,6 +309,51 @@ class DoubleLineOuterLightInnerBorderStyle(DoubleLineBorderStyle):
     def outer_vertical_inner_right(self): return u'\u255F'
 
 
+
+class ZeroBorderStyle(MenuBorderStyle):
+    """
+    A borderless border. This fills the border with empty strings
+    """
+
+    @property
+    def bottom_left_corner(self): return ''
+
+    @property
+    def bottom_right_corner(self): return ''
+
+    @property
+    def inner_horizontal(self): return ''
+
+    @property
+    def inner_vertical(self): return ''
+
+    @property
+    def intersection(self): return ''
+
+    @property
+    def outer_horizontal(self): return ''
+
+    @property
+    def outer_horizontal_inner_down(self): return ''
+
+    @property
+    def outer_horizontal_inner_up(self): return ''
+
+    @property
+    def outer_vertical(self): return ''
+
+    @property
+    def outer_vertical_inner_left(self): return ''
+
+    @property
+    def outer_vertical_inner_right(self): return ''
+
+    @property
+    def top_left_corner(self): return ''
+
+    @property
+    def top_right_corner(self): return ''
+
 class MenuBorderStyleType(object):
     """
     Defines the various menu border styles, as expected by the border factory.
@@ -339,6 +384,11 @@ class MenuBorderStyleType(object):
     DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER = 5
     """ int: Menu Border using the "double-line" box drawing characters for the outer border elements, and "light"
         box-drawing characters for the inner border elements."""
+    
+    ZERO_BORDER = 6
+    """
+    int: Menu border that is borderless. This uses empty strings instead of borders with characters.
+    """
 
 
 class MenuBorderStyleFactory(object):
@@ -372,6 +422,8 @@ class MenuBorderStyleFactory(object):
             return self.create_heavy_outer_light_inner_border()
         elif border_style_type == MenuBorderStyleType.DOUBLE_LINE_OUTER_LIGHT_INNER_BORDER:
             return self.create_doubleline_outer_light_inner_border()
+        elif border_style_type == MenuBorderStyleType.ZERO_BORDER:
+            return self.create_zero_border()
         else:
             # Use ASCII if we don't recognize the type
             self.logger.info('Unrecognized border style type: {}. Defaulting to ASCII.'.format(border_style_type))
@@ -449,6 +501,15 @@ class MenuBorderStyleFactory(object):
             :obj:`DoubleLineOuterLightInnerBorderStyle`: a new instance of DoubleLineOuterLightInnerBorderStyle
         """
         return DoubleLineOuterLightInnerBorderStyle()
+    
+    def create_zero_border(self):
+        """
+        Creates a zero border with empty strings.
+
+        Returns:
+            :obj:`ZeroBorder`: a new instance of ZeroBorderStyle
+        """
+        return ZeroBorderStyle()
 
     @staticmethod
     def is_win_python35_or_earlier():
