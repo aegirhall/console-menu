@@ -236,8 +236,8 @@ class MenuComponent(object):
         return '{lp}{text:{al}{width}}{rp}'.format(lp=' ' * self.padding.left,
                                                    rp=' ' * self.padding.right,
                                                    text=content, al=self._alignment_char(align),
-                                                   width=(self.calculate_border_width() - self.padding.left -
-                                                          self.padding.right - 2 + invisible_chars))
+                                                   width=max(self.calculate_border_width() - self.padding.left -
+                                                          self.padding.right - 2 + invisible_chars, 0))
 
 
 class MenuHeader(MenuComponent):
